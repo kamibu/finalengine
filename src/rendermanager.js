@@ -31,15 +31,20 @@ RenderManager.prototype = {
             case 'WorldMatrix':
                 return g.WorldMatrix;
             case 'ViewProjectionMatrix':
-                if ( g.
+                if ( g.ViewProjectionMatrix ) {
+                    return g.ViewProjectionMatrix;
+                }
                 return g.ViewProjectionMatrix.set( camera.projectionMatrix ).multiply( g.ViewMatrix );
-                break;
             case 'WorldViewMatrix':
-            g.WorldViewMatrix.set( g.ViewMatrix ).multiply( g.WorldMatrix );
-                break;
+                if ( g.WorldViewMatrix ) {
+                    return g.WorldViewMatrix );
+                }
+                return g.WorldViewMatrix.set( g.ViewMatrix ).multiply( g.WorldMatrix );
             case 'WorldViewProjectionMatrix':
-            g.WorldViewProjectionMatrix.set( g.ProjectionMatrix ).multiply( g.WorldViewMatrix );
-                break;
+                if ( g.WorldViewProjectionMatrix ) {
+                    return g.WorldViewProjectionmatrix;
+                }
+                return g.WorldViewProjectionMatrix.set( g.ProjectionMatrix ).multiply( g.ViewMatrix ).multiply( g.WorldMatrix );
         }
     },
     renderScene: function( scene, camera ) {
@@ -62,7 +67,6 @@ RenderManager.prototype = {
         var l = bucket.length;
         while ( l-- ) {
             var currentDrawable = bucket[ l ];
-
             currentDrawable.onBeforeRender( camera );
             currentDrawable.getMatrix( g.WorldMatrix );
             

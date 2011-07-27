@@ -10,7 +10,7 @@ BoundingSphere.prototype = {
         var temp = TempVars.vec3b;
 
 
-        var center.set( [ 0, 0, 0 ] );
+        center.set( [ 0, 0, 0 ] );
         var l = vertices.length;
         while ( l-- ) {
             center.add( vertices[ l ] );

@@ -1,7 +1,5 @@
 var Mesh = function() {
     this.mode = Mesh.TRIANGLES;
-    
-    this.boundingVolume = null;
     this.vertexAttributes = {};
 	this.indexBuffer = null;
 }
@@ -24,7 +22,7 @@ Mesh.prototype = {
     },
     interleave: function() {
         /*DEBUG*/
-            assert( this.isInterleaved, 'Tried to interleave an already interleaved Mesh' );
+            assert( !this.isInterleaved, 'Tried to interleave an already interleaved Mesh' );
         /*DEBUG*/
         var interleavedBuffer, data, stride, attribute, buffer, attr, i, j;
 

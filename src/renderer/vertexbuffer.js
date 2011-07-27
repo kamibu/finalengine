@@ -8,7 +8,7 @@ function VertexBuffer( semantic ) {
 };
 
 VertexBuffer.prototype = {
-    getElement( n, dest ) {
+    getElement: function( n, dest ) {
         var s = this.size;
         if ( !dest ) {
             dest = new Float32Array( s );

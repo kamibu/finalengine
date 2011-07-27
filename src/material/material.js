@@ -66,6 +66,7 @@ Material.prototype = {
         }
         ret.vertexShader = this.vertexShader;
         ret.fragmentShader = this.fragmentShader;
+        return ret;
     },
     getExportData: function( exporter ) {
         var ret = {};

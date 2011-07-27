@@ -3,5 +3,34 @@
     </head>
     <body>
         <script type="text/javascript" src="../build/GFX.js" ></script>
+        <script>
+            function TestApplication() {
+                Application.call( this );
+
+            }
+
+            TestApplication.prototype = {
+                start: function() {
+                    this.Application_start();
+
+                    document.body.appendChild( this.renderManager.renderer.canvas );
+
+                    s = new Shader();
+                    s.setVertexSource( 'attribute vec3 Position; void main() { gl_Position = vec4( Position, 1.0 ); }' );
+                    s.setFragmentSource( 'precision highp float; uniform vec4 Color; void main(){ gl_FragColor = Color; }' );
+                    s.uniforms.Color = [ 1, 0, 0, 1 ];
+
+                    
+                    this.renderManager.renderer.useShader( s );
+
+                    this.scene.add( new Cube() );
+                    return this;
+                }
+            }
+            
+            TestApplication.extend( Application );
+
+            var foo = new TestApplication().start();
+        </script>
     </body>
 </html>

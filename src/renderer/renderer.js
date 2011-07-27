@@ -164,14 +164,14 @@ Renderer.prototype = {
      */
     deleteBuffer: function( buffer ) {
         /*DEBUG*/
-            //assert( !this.gl.isBuffer( this.bufferObjects[ buffer ] ), 'Illegal type. buffer must be a GL Buffer object.' );
+            assert( this.gl.isBuffer( this.bufferObjects[ buffer ] ), 'Illegal type. buffer must be a GL Buffer object.' );
         /*DEBUG_END*/
         this.gl.deleteBuffer( this.bufferObjects[ buffer.id ] );
         delete this.bufferObjects[ buffer.id ];
     },
 	updateBuffer: function( buffer ) {
 		/*DEBUG*/
-            //assert( !this.gl.isBuffer( this.bufferObjects[ buffer ] ), 'Illegal type. buffer must be a GL Buffer object.' );
+            assert( this.gl.isBuffer( this.bufferObjects[ buffer ] ), 'Illegal type. buffer must be a GL Buffer object.' );
         /*DEBUG_END*/
 		var bufferObject = this.bufferObjects[ buffer.id ];
 		if ( typeof bufferObject == 'undefined' ) {
@@ -199,7 +199,7 @@ Renderer.prototype = {
 	},
 	bindBuffer: function( buffer ) {
         /*DEBUG*/
-            //assert( !this.gl.isBuffer( buffer ), 'Illegal type. buffer must be a GL Buffer object.' );
+            assert( this.gl.isBuffer( buffer ), 'Illegal type. buffer must be a GL Buffer object.' );
         /*DEBUG_END*/
         if ( buffer.data == null ) {
             return;
@@ -587,6 +587,13 @@ Renderer.prototype = {
             this.currentShader = shader;
         }
 
+        programObject.lastTimeUsed = Date.now();
+    },
+    uploadShaderUniforms: function() {
+        /*DEBUG*/
+            assert( this.currentShader, 'No shader to upload uniforms. Call useShader() before rendering anything' );
+        /*DEBUG_END*/
+        var programObject = this.programObjects[ shader.uid ];
         for ( uniform in programObject.uniforms ) {
             /*DEBUG*/
                 assert( typeof shader.uniforms[ uniform ] != 'undefined', 'Uniform "' + uniform + '" is undefined! You must set a value.' );
@@ -652,15 +659,13 @@ Renderer.prototype = {
                 break;
         }
 		
+        this.uploadShaderUniforms();
 		var shader = this.currentShader;
-        this.useShader( this.currentShader );
 
 		var program = this.programObjects[ shader.id ];
-        program.lastTimeUsed = Date.now();
 		
 		for ( attribute in program.attributes ) {
 			var vertexAttribute = mesh.vertexAttributes[ attribute ];
-			var name = shader.attributes[ attribute ];
 
 			this.bindBuffer( vertexAttribute.buffer );
 			gl.vertexAttribPointer( program.attributes[ attribute ].location, vertexAttribute.size, gl.FLOAT, false, vertexAttribute.stride, vertexAttribute.offset );
