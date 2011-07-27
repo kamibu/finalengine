@@ -1,0 +1,17 @@
+<html>
+    <head>
+        <title>Renderer Test</title>
+    </head>
+    <body>
+        <script type="text/javascript" src="../../../build/dev-build.php"></script>
+        <script type="text/javascript">
+            var s = new Shader();
+            Request.get( 'vertex.c', function( data ) {
+                s.setSource( Shader.VERTEX_SHADER, data );
+            } );
+            Request.get( 'fragment.c', function( data ) {
+                s.setSource( Shader.FRAGMENT_SHADER, data );
+            } );
+        </script>
+    </body>
+</html>

@@ -1,0 +1,31 @@
+<html>
+    <head>
+        <title>Renderer Test</title>
+    </head>
+    <body>
+        <script type="text/javascript" src="../../build/dev-build.php"></script>
+        <script type="text/javascript">
+            var renderer = new Renderer();
+            document.body.appendChild( renderer.canvas );
+
+            var triangle = [ 
+                 1,  0, 0,
+                 0,  1, 0,
+                 0,  0, 0
+            ]
+            vertices = renderer.createBuffer( new Float32Array( triangle ) );
+            indices = renderer.createBuffer( new Uint16Array( [ 0, 1, 2 ] ), renderer.ELEMENT_ARRAY );
+
+            vShader = 'attribute vec3 position; void main() { gl_Position = vec4( position, 1.0 ); }';
+            fShader = 'precision highp float; void main() { gl_FragColor = vec4( 1.0 ); }';
+
+            var program = renderer.createShader( vShader, fShader );
+            program.attributes.position.buffer = vertices;
+            program.attributes.position.size = 3;
+            renderer.useShader( program );
+            
+            renderer.clear();
+            renderer.render( indices );
+        </script>
+    </body>
+</html>

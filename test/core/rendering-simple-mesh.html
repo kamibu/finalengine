@@ -1,0 +1,36 @@
+<html>
+    <head>
+        <title>Renderering a simple Mesh</title>
+    </head>
+    <body>
+        <script type="text/javascript" src="../../build/dev-build.php"></script>
+        <script type="text/javascript">
+            var r = new Renderer();
+            document.body.appendChild( r.canvas );
+            var s = new Shader();
+            s.setVertexSource( 'attribute vec3 Position; void main() { gl_Position = vec4( Position, 1.0 ); }' );
+            s.setFragmentSource( 'precision highp float; uniform vec4 Color; void main(){ gl_FragColor = Color; }' );
+            s.uniforms.Color = [ 1, 0, 0, 1 ];
+            
+            var b = new Buffer( Buffer.DATA_BUFFER, Buffer.STATIC );
+            b.setData( [ -1, 0, 0, 1, 0, 0, 0, 1, 0 ] );
+
+            var i = new Buffer( Buffer.ELEMENT_BUFFER, Buffer.STATIC );
+            i.setData( [ 0, 1, 2 ] );
+
+            var v = new VertexBuffer( 'Position' );
+            v.setBuffer( b );
+
+            var m = new Mesh();
+            m.setVertexAttribute( v );
+            m.setIndexBuffer( i );
+
+            r.useShader( s );
+            
+            setInterval( function() {
+                r.clear();
+                r.render( m );
+            }, 6000 );
+        </script>
+    </body>
+</html>

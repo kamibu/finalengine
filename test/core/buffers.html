@@ -1,0 +1,17 @@
+<html>
+    <head>
+        <title>Renderer Test</title>
+    </head>
+    <body>
+        <script type="text/javascript" src="../../build/dev-build.php"></script>
+        <script type="text/javascript">
+            var renderer = new Renderer();
+
+            var b = new Buffer( Buffer.DATA_BUFFER, Buffer.DYNAMIC );
+            b.setData( [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ] );
+
+            renderer.bindBuffer( b );
+
+        </script>
+    </body>
+</html>

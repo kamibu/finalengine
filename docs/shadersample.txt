@@ -1,0 +1,19 @@
+//Shader Sample
+{
+    "inputs": {
+        "position": {
+            "defaultValue": [ 0, 0, 0 ],
+            "semantic": "Position"
+        },
+        "uvpos": {
+            "defaultValue": [ 0, 0 ],
+            "semantic": "UVCoords"
+        },
+        
+        "foo": {
+            "semantic": "NormalMap"
+        }
+    }
+    "vertexSource": <vertexURL>,
+    "fragmentSource": <fragmentURL>
+}

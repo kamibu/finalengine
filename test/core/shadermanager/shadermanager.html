@@ -1,0 +1,29 @@
+<html>
+    <head>
+        <title>Renderer Test</title>
+    </head>
+    <body>
+        <script type="text/javascript" src="../../../build/dev-build.php"></script>
+        <script type="text/javascript">
+            var renderer = new Renderer();
+            document.body.appendChild( renderer.canvas );
+            var shadermanager = new ShaderManager( renderer );
+
+            var triangle = [ 
+                 1,  0, 0,
+                 0,  1, 0,
+                 0,  0, 0
+            ]
+            vertices = renderer.createBuffer( new Float32Array( triangle ) );
+            indices = renderer.createBuffer( new Uint16Array( [ 0, 1, 2 ] ), renderer.ELEMENT_ARRAY );
+
+            var shader = shadermanager.load( '.' );
+            //shader.attributes.position.buffer = vertices;
+            //shader.attributes.position.size = 3;
+            //renderer.useShader( program );
+            
+            //renderer.clear();
+            //renderer.render( indices );
+        </script>
+    </body>
+</html>
