@@ -109,4 +109,4 @@ Transform.prototype = {
     invalidate: function() {
         this.needsUpdate = true;
     }
-}
+};

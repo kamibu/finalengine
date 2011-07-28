@@ -20,10 +20,10 @@ RenderManager.prototype = {
         var g = this.globalUniformCache;
         switch ( name ) {
             case 'Time':
-                if ( g.Time ) {
-                    return g.Time;
+                if ( !g.Time ) {
+                    g.Time = Date.now();
                 }
-                return g.Time = Date.now();
+                return g.Time;
             case 'ProjectionMatrix':
                 return g.ProjectionMatrix;
             case 'ViewMatrix':
@@ -31,20 +31,20 @@ RenderManager.prototype = {
             case 'WorldMatrix':
                 return g.WorldMatrix;
             case 'ViewProjectionMatrix':
-                if ( g.ViewProjectionMatrix ) {
-                    return g.ViewProjectionMatrix;
+                if ( !g.ViewProjectionMatrix ) {
+                    g.ViewProjectionMatrix.set( camera.projectionMatrix ).multiply( g.ViewMatrix );
                 }
-                return g.ViewProjectionMatrix.set( camera.projectionMatrix ).multiply( g.ViewMatrix );
+                return g.ViewProjectionMatrix;
             case 'WorldViewMatrix':
-                if ( g.WorldViewMatrix ) {
-                    return g.WorldViewMatrix );
+                if ( !g.WorldViewMatrix ) {
+                    g.WorldViewMatrix.set( g.ViewMatrix ).multiply( g.WorldMatrix );
                 }
-                return g.WorldViewMatrix.set( g.ViewMatrix ).multiply( g.WorldMatrix );
+                return g.WorldViewMatrix;
             case 'WorldViewProjectionMatrix':
-                if ( g.WorldViewProjectionMatrix ) {
-                    return g.WorldViewProjectionmatrix;
+                if ( !g.WorldViewProjectionMatrix ) {
+                    g.WorldViewProjectionMatrix.set( g.ProjectionMatrix ).multiply( g.ViewMatrix ).multiply( g.WorldMatrix );
                 }
-                return g.WorldViewProjectionMatrix.set( g.ProjectionMatrix ).multiply( g.ViewMatrix ).multiply( g.WorldMatrix );
+                return g.WorldViewProjectionmatrix;
         }
     },
     renderScene: function( scene, camera ) {
@@ -71,7 +71,7 @@ RenderManager.prototype = {
             currentDrawable.getMatrix( g.WorldMatrix );
             
             var material = currentDrawable.material;
-            for ( engineParameter in material.engineParameters ) {
+            for ( var engineParameter in material.engineParameters ) {
                 material.set( engineParameter, this.getParameter( engineParameter ) );
             }
 

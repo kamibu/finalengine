@@ -1,6 +1,6 @@
 function Vector3( data ) {
     var ret = new Float32Array( 3 );
-    ret.__proto__  = Vector3.prototype;
+    ret[ '__proto__' ]  = Vector3.prototype;
     if ( data ) {
         ret.set( data );
     }
@@ -81,6 +81,6 @@ Vector3.prototype = {
         }
         return dest.set( this );
     }
-}
+};
 
-Vector3.prototype.__proto__ = Float32Array.prototype;
+Vector3.prototype[ '__proto__' ] = Float32Array.prototype;
