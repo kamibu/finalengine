@@ -1,4 +1,4 @@
-var Shader = function() {
+function Shader() {
     this.vertexSource = '';
     this.fragmentSource = '';
 	
@@ -17,4 +17,4 @@ Shader.prototype = {
         this.fragmentSource = source;
         this.needsUpdate = true;
     }
-}
+};

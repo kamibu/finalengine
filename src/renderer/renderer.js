@@ -29,7 +29,7 @@ var Renderer = function( canvas, width, height ) {
      * This should change to .getContext( 'webgl' ) at some point.
      */
     var gl = this.gl = this.canvas.getContext( 'experimental-webgl' );
-    if ( this.gl == null ) {
+    if ( this.gl === null ) {
         throw 'Could not initialize WebGL';
     }
 
@@ -44,14 +44,14 @@ var Renderer = function( canvas, width, height ) {
       
     gl.mineUniformMatrix2fv = function( location, value ) { 
         gl.uniformMatrix2fv( location, false, value );
-    }
+    };
     gl.mineUniformMatrix3fv = function( location, value ) { 
         gl.uniformMatrix3fv( location, false, value );
-    }
+    };
     gl.mineUniformMatrix4fv = function( location, value ) { 
         gl.uniformMatrix4fv.call( gl, location, false, value );
-    }
-    
+    };
+
     /*These objects will hold references to the underlying API*/
     this.bufferObjects = {};
     this.textureObjects = {};
@@ -103,6 +103,7 @@ Renderer.prototype = {
         var now = Date.now();
         var decayTime = this.decayTime;
         var gl = this.gl;
+        var object;
         for ( object in this.bufferObjects ) {
             if ( now - this.bufferObjects[ object ].lastTimeUsed > decayTime ) {
                 gl.deleteBuffer( this.bufferObjects[ object ] );
@@ -201,7 +202,7 @@ Renderer.prototype = {
         /*DEBUG*/
             assert( this.gl.isBuffer( buffer ), 'Illegal type. buffer must be a GL Buffer object.' );
         /*DEBUG_END*/
-        if ( buffer.data == null ) {
+        if ( buffer.data === null ) {
             return;
         }
 		var bufferObject, type;
@@ -259,7 +260,7 @@ Renderer.prototype = {
             case texture.TEXTURE2D:
                 target = gl.TEXTURE_2D;
                 gl.bindTexture( target, textureObject );
-                if ( texture.source != null ) {
+                if ( texture.source !== null ) {
                     gl.texImage2D( gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, texture.source );
                 }
                 break;
@@ -507,7 +508,7 @@ Renderer.prototype = {
             program.uniforms[ info.name ] = {
                 location: gl.getUniformLocation( program, info.name ),
                 set: null
-            }
+            };
 
             switch ( info.type ) {
                 case gl.FLOAT:
@@ -521,7 +522,7 @@ Renderer.prototype = {
                     break;
                 case gl.FLOAT_VEC4:
                     program.uniforms[ info.name ].set = gl.uniform4fv.bind( gl );
-                    break
+                    break;
                 case gl.INT:
                 case gl.BOOL:
                 case gl.SAMPLER_2D:
@@ -559,7 +560,7 @@ Renderer.prototype = {
             info = gl.getActiveAttrib( program, attributeCount );
             program.attributes[ info.name ] = {
                 location: gl.getAttribLocation( program, info.name )
-            }
+            };
         }
         gl.useProgram( null );
 
@@ -594,7 +595,7 @@ Renderer.prototype = {
             assert( this.currentShader, 'No shader to upload uniforms. Call useShader() before rendering anything' );
         /*DEBUG_END*/
         var programObject = this.programObjects[ shader.uid ];
-        for ( uniform in programObject.uniforms ) {
+        for ( var uniform in programObject.uniforms ) {
             /*DEBUG*/
                 assert( typeof shader.uniforms[ uniform ] != 'undefined', 'Uniform "' + uniform + '" is undefined! You must set a value.' );
             /*DEBUG_END*/
@@ -664,7 +665,7 @@ Renderer.prototype = {
 
 		var program = this.programObjects[ shader.id ];
 		
-		for ( attribute in program.attributes ) {
+		for ( var attribute in program.attributes ) {
 			var vertexAttribute = mesh.vertexAttributes[ attribute ];
 
 			this.bindBuffer( vertexAttribute.buffer );
@@ -674,4 +675,4 @@ Renderer.prototype = {
 		this.bindBuffer( mesh.indexBuffer );
         gl.drawElements( mode, mesh.indexBuffer.data.length, gl.UNSIGNED_SHORT, 0 );
     }
-}
+};

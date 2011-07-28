@@ -79,4 +79,4 @@ RenderManager.prototype = {
             this.renderer.render( currentDrawable.mesh );
         }
     }
-}
+};

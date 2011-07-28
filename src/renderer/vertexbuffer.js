@@ -5,7 +5,7 @@ function VertexBuffer( semantic ) {
 	this.offset = 0;
     this.length = 0;
 	this.buffer = null;
-};
+}
 
 VertexBuffer.prototype = {
     getElement: function( n, dest ) {

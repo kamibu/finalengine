@@ -23,4 +23,4 @@ ShaderManager.prototype = {
         this.cache[ url ] = shader;
         return shader;
     }
-}
+};
