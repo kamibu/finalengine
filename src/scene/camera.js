@@ -23,6 +23,6 @@ Camera.prototype = {
         this.horizCosFOV = Math.cos( Math.atan( this.tanFOV * this.ratio ) );
         this.horizTanFOV = this.tanFOV * this.ratio;
     }
-}
+};
 
 Camera.extend( Node );

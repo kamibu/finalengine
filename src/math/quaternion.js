@@ -1,8 +1,9 @@
+/*jshint sub:true */
 function Quaternion( data ) {
     var ret = new Float32Array( 4 );
     ret[ 3 ] = 1;
 
-    ret.__proto__  = Quaternion.prototype;
+    ret[ '__proto__' ]  = Quaternion.prototype;
     if ( data ) {
         ret.set( data );
     }
@@ -130,5 +131,5 @@ Quaternion.prototype = {
     }
 };
 
-Quaternion.prototype.__proto__ = Float32Array.prototype;
+Quaternion.prototype[ '__proto__' ] = Float32Array.prototype;
 

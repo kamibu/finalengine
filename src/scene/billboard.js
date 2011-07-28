@@ -41,4 +41,4 @@ Billboard.prototype.setText = function( text ) {
     this.renderer.gl.generateMipmap( this.renderer.gl.TEXTURE_2D );
     this.renderer.gl.bindTexture( renderer.gl.TEXTURE_2D, null );
     this.material.inputs.s2texture = texture;
-}
+};

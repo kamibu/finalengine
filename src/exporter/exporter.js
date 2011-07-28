@@ -5,4 +5,4 @@ function Exporter() {
 
 Exporter.prototype = {
 
-}
+};
