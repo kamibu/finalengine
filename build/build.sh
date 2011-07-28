@@ -1,5 +1,5 @@
-src_dir=`dirname $0`
-src_dir="$src_dir/../src"
+cur_dir=`dirname $0`
+src_dir="$cur_dir/../src"
 
 if ! jshint $src_dir; then
     echo ""
@@ -7,5 +7,6 @@ if ! jshint $src_dir; then
     exit 1;
 fi
 
-echo "Building..."
-node build.js
+echo -n "Building..."
+node "$cur_dir/build.js"
+echo "OK"
