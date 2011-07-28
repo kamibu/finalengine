@@ -141,7 +141,7 @@ function EventChain() {
         running = true;
         ( chain.shift( arguments ) )( function() {
             that.emit( 'one' );
-            that.next.apply( that, arguments )
+            that.next.apply( that, arguments );
         } );
     };
     this.start = function() {

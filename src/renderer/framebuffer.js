@@ -1,4 +1,4 @@
-var Framebuffer = function( width, height ) {
+function FrameBuffer( width, height ) {
     this.id = Framebuffer.uid++;
     this.width = width || 256;
     this.height = height || 256;
@@ -13,4 +13,4 @@ Framebuffer.prototype = {
         this.width = width;
         this.height = height;
     }
-}
+};

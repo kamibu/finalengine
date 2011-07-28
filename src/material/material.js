@@ -22,19 +22,21 @@ Material.prototype = {
         this.parameters[ name ] = value;
     },
     getShader: function() {
+        var vertexShader = '',
+            fragmentShader = '',
+            i, l = this.libraries.length,
+            define,
+            parameterName;
+
         if ( !this.validShader ) {
             this.validShader = true;
-
-            var vertexShader = '';
-            var fragmentShader = '';
 
             for ( define in this.defines ) {
                 vertexShader += '#define ' + define + ' ' + this.defines[ define ] + '\n';
                 fragmentShader += '#define ' + define + ' ' + this.defines[ define ] + '\n';
             }
 
-            var l = this.libraries.length;
-            for ( var i = 0; i < l; i++ ) {
+            for ( i = 0; i < l; i++ ) {
                 vertexShader += this.libraries[ i ].vertexShader + '\n';
                 fragmentShader += this.libraries[ i ].fragmentShader + '\n';
             }
@@ -51,7 +53,11 @@ Material.prototype = {
         return this.shaderCache;
     },
     clone: function() {
-        var ret = new Material();
+        var ret = new Material(),
+            l = this.libaries.length,
+            define,
+            parameter;
+
         ret.shaderCache = this.shaderCache;
         this.validShader = true;
         for ( define in this.defines ) {
@@ -60,7 +66,6 @@ Material.prototype = {
         for ( parameter in this.parameters ) {
             ret.parameters[ parameter ] = this.parameters[ parameter ];
         }
-        var l = this.libraries.length;
         while ( l-- ) {
             ret.libraries[ l ] = this.libraries[ l ];
         }
@@ -69,7 +74,8 @@ Material.prototype = {
         return ret;
     },
     getExportData: function( exporter ) {
-        var ret = {};
+        var ret = {}, parameter;
+
         ret.shader = this.shader.uuid;
         ret.parameters = {};
         for ( parameter in this.parameters ) {
@@ -83,7 +89,5 @@ Material.prototype = {
         }
     },
     setImportData: function( importer ) {
-
-
     }
-}
+};

@@ -7,6 +7,6 @@ Drawable.prototype = {
     onBeforeRender: function( camera ) {
         
     }
-}
+};
 
 Drawable.extend( Node );

@@ -17,7 +17,7 @@ var Texture = function( type ) {
     this.source = null;
 
     this.needsUpdate = true;
-}
+};
 
 Texture.uid = 0;
 Texture.IMAGE = 1;
@@ -84,4 +84,4 @@ Texture.prototype = {
             this.height = height;
         }
     }
-}
+};

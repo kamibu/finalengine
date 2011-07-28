@@ -1,4 +1,4 @@
-var Mesh = function() {
+function Mesh() {
     this.mode = Mesh.TRIANGLES;
     this.vertexAttributes = {};
 	this.indexBuffer = null;
@@ -60,4 +60,4 @@ Mesh.prototype = {
         /*DEBUG_END*/
         this.mode = mode;
     }
-}
+};

@@ -1,16 +1,12 @@
-src_dir=$1
-if [ $# -ne 1 ]; then
-    echo "Assuming ../ as source directory"
-    src_dir=../
-fi
-if [ ! -d $src_dir ]; then
-    echo "Please give a valid directory as source directory"
-    exit 1;
-fi
-if ! jshint $src_dir; then
+cur_dir=`dirname $0`
+cd $cur_dir
+
+if ! jshint ../src; then
     echo ""
     echo "Please fix these errors before building"
     exit 1;
 fi
-echo "Building..."
+
+echo -n "Building..."
 node build.js
+echo "OK"

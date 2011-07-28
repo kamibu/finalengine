@@ -1,8 +1,8 @@
 function BoundingSphere() {
     BoundingVolume.call( this );
-    this.radius;
+    this.radius = 0;
     this.type = 1;
-};
+}
 
 BoundingSphere.prototype = {
     set: function( vertices ) {
@@ -19,9 +19,10 @@ BoundingSphere.prototype = {
         this.setPosition( center );
 
         var maxRadius = 0;
-        var l = vertices.length;
+        var radius;
+        l = vertices.length;
         while ( l-- ) {
-            var radius = temp.set( center ).subtract( vertices[ l ] ).length2();
+            radius = temp.set( center ).subtract( vertices[ l ] ).length2();
             if ( radius > maxRadius ) {
                 maxRadius = radius;
             }
@@ -33,7 +34,7 @@ BoundingSphere.prototype = {
         return this.radius;
     },
     collide: function( boundingVolume ) {
-        if ( boundingVolume.type == 0 ) {
+        if ( boundingVolume.type === 0 ) {
             return false;
         }
         else if ( this.type > boundingVolume.type ) {

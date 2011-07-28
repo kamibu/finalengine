@@ -8,7 +8,7 @@ function Node() {
     this.children = [];
     this.name = '';
     Transform.call( this );
-};
+}
 
 Node.prototype = {
     getAbsolutePosition: function( dest ) {

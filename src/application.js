@@ -14,4 +14,4 @@ Application.prototype = {
         }.bind( this ), 3000 );
         return this;
     }
-}
+};
