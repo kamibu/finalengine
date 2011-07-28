@@ -1,12 +1,12 @@
 cur_dir=`dirname $0`
-src_dir="$cur_dir/../src"
+cd $cur_dir
 
-if ! jshint $src_dir; then
+if ! jshint ../src; then
     echo ""
     echo "Please fix these errors before building"
     exit 1;
 fi
 
 echo -n "Building..."
-node "$cur_dir/build.js"
+node build.js
 echo "OK"
