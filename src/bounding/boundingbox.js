@@ -4,7 +4,7 @@ function BoundingBox() {
         Vector3(), Vector3(), Vector3(), Vector3(), 
         Vector3(), Vector3(), Vector3(), Vector3()
     ];
-};
+}
 
 BoundingBox.prototype = {
     set: function( vertices ) {
@@ -44,7 +44,7 @@ BoundingBox.prototype = {
         return p;
     },
     collide: function( boundingVolume ) {
-        if ( boundingVolume.type == 0 ) {
+        if ( boundingVolume.type === 0 ) {
             return false;
         }
         else if ( this.type > boundingVolume.type ) {

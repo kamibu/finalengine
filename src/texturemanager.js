@@ -14,11 +14,11 @@ TextureManager.prototype = {
         var img = new Image();
         img.onload = function() {
             texture.setImage( img );
-        }
+        };
         img.src = url;
 
         this.cache[ url ] = texture;
 
         return texture;
     }
-}
+};

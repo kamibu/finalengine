@@ -1,6 +1,6 @@
 function Matrix4( data ) {
     var ret = new Float32Array( 16 );
-    ret.__proto__  = Matrix4.prototype;
+    ret[ '__proto__' ]  = Matrix4.prototype;
     if ( data ) {
         ret.set( data );
     }
@@ -83,7 +83,7 @@ Matrix4.prototype = {
                         a30*a01*a22*a13 - a00*a31*a22*a13 - a20*a01*a32*a13 + a00*a21*a32*a13 +
                         a30*a11*a02*a23 - a10*a31*a02*a23 - a30*a01*a12*a23 + a00*a31*a12*a23 +
                         a10*a01*a32*a23 - a00*a11*a32*a23 - a20*a11*a02*a33 + a10*a21*a02*a33 +
-                        a20*a01*a12*a33 - a00*a21*a12*a33 - a10*a01*a22*a33 + a00*a11*a22*a33
+                        a20*a01*a12*a33 - a00*a21*a12*a33 - a10*a01*a22*a33 + a00*a11*a22*a33;
     },
     inverse: function() {
         // Cache the matrix values (makes for huge speed increases!)
@@ -231,4 +231,4 @@ Matrix4.prototype = {
     }
 };
 
-Matrix4.prototype.__proto__ = Float32Array.prototype;
+Matrix4.prototype[ '__proto__' ] = Float32Array.prototype;
