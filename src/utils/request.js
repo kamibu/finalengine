@@ -6,7 +6,7 @@ Request = {
             if ( v.readyState == 4 ) {
                 callback( v.responseText );
             }
-        }
+        };
         v.send();
     },
     get: function( url, callback ) {
@@ -15,4 +15,4 @@ Request = {
     post: function( url, callback ) {
         this.send( 'GET', url, callback );
     }
-}
+};

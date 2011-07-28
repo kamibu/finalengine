@@ -1,5 +1,5 @@
 function Bounds() {
-};
+}
 
 Bounds.prototype = { 
     findBoundingRectangle: function( vert ) { 
@@ -66,4 +66,3 @@ Bounds.prototype = {
         return Math.sqrt( maxd );//return radius   
     }
 };
-

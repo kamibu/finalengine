@@ -54,4 +54,4 @@ Buffer.prototype = {
         this.data = data;
         this.length = data.length;
     }
-}
+};

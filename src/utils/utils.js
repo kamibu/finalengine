@@ -2,13 +2,13 @@ define( function( require, exports, module ) {
     var	dian3 = require( 'libs/math' ).dian3;
     return  {
         makeSphere : function( R ) {
+            var p, m;
             if ( arguments.length === 2 ) {
-                var p, m;
                 p = m = 1 / arguments[ 1 ];
             }
             else if ( arguments.length == 3 ) {
-                var p = arguments[ 1 ];
-                var m = arguments[ 2 ];
+                p = arguments[ 1 ];
+                m = arguments[ 2 ];
             }
         
             //p parallhloi, p > 1
@@ -52,7 +52,7 @@ define( function( require, exports, module ) {
                 
                 if ( i > 1 ) {
                     var st = ( i - 2 )*m;
-                    for ( var x = 0; x < m; x++ ) {					
+                    for ( x = 0; x < m; x++ ) {					
                         model.indices[ cnt2 ] = st + x;
                         model.indices[ cnt2+1 ] = st + prev( x, m ) + m;
                         model.indices[ cnt2+2 ] = st + x + m;
@@ -77,7 +77,7 @@ define( function( require, exports, module ) {
             cnt += 3;
             
             var top = down + 1;
-            for ( var x = 0; x < m; x++ ) {
+            for ( x = 0; x < m; x++ ) {
                 model.indices[ cnt2 ] = down;
                 model.indices[ cnt2+1 ] = prev( x, m );
                 model.indices[ cnt2+2 ] = x;
@@ -86,7 +86,7 @@ define( function( require, exports, module ) {
                 model.indices[ cnt2 ] = down - m + x;
                 model.indices[ cnt2+1 ] = down - m + prev( x, m );		
                 model.indices[ cnt2+2 ] = top;
-                cnt2 +=3
+                cnt2 += 3;
             }
             return model;
         },
@@ -220,7 +220,7 @@ define( function( require, exports, module ) {
                     x1, y1, 0,
                     x2, y1, 0,
                     x1, y2, 0,
-                    x2, y2, 0,
+                    x2, y2, 0
                 ],
                 indices: [
                     0, 1, 2,
@@ -236,7 +236,7 @@ define( function( require, exports, module ) {
                     0, 0,
                     1, 0,
                     0, 1,
-                    1, 1,
+                    1, 1
                 ]
             };
         },
@@ -391,7 +391,7 @@ define( function( require, exports, module ) {
             
             var temp = [ 0, 0, 0 ];
             var uvcoords = [];
-            for( var i = 0; i < vertexCount; ++i ) {
+            for( i = 0; i < vertexCount; ++i ) {
                 temp[ 0 ] = vertices[ i * 3 ] - center[ 0 ];
                 temp[ 1 ] = vertices[ i * 3 + 1 ] - center[ 1 ];
                 temp[ 2 ] = vertices[ i * 3 + 2 ] - center[ 2 ];

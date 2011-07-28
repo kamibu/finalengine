@@ -5,7 +5,7 @@
 */
 Object.defineProperty( Function.prototype, "extend", {
     value: function( parent ) {
-        for ( method in parent.prototype ) {
+        for ( var method in parent.prototype ) {
             if ( this.prototype[ method ] ) {
                 this.prototype[ parent.name + '_' + method ] = parent.prototype[ method ];
             }
