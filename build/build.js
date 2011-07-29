@@ -58,4 +58,4 @@ for( var i = 0; i < files.length; ++i ) {
 if( !debug ) {
     res = res.replace( debugRegExp, '' );
 }
-fs.writeFileSync( 'GFX.js', res );
+fs.writeFileSync( 'final-engine.js', res );

@@ -1,5 +1,5 @@
 function Rect() {
-};
+}
 
 Rect.prototype = {
     rectInterfere : function( rect1, rect2  ) {
