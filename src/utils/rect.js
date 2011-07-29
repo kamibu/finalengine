@@ -101,45 +101,33 @@ Rect.prototype = {
 	    return true;
     },
     isSeperatingPlane : function( tri, points1, points2 ) {
-        var normal = dian3.cross( dian3.subtract( tri[0], tri[1] ), dian3.subtract( tri[0], tri[2] ) );
-        var proshmo = "und", temp, proshmo2 = "und";
-        var i;
-        for ( i = 0; i < points1.length; i++ ) {
-            temp = dian3.dot( normal, dian3.subtract( points1[i], tri[0] ) );
+       var normal = dian3.cross( dian3.subtract( tri[0], tri[1] ), dian3.subtract( tri[0], tri[2] ) );
 
-            if ( temp === 0 ) {
-                temp = "und";
-                continue;
+       var checkDotProductSign = function( points ) {
+            var sign = 0;
+            for ( var i = 0; i < points.length; ++i ) {
+                var prod = dian3.dot( normal, dian3.subtract( points1[i], tri[0] ) );
+                if ( !prod ) {
+                    continue; // cannot decide sign yet
+                }
+                if ( !sign ) { // we didn't have sign decided, so this is the element that decides it
+                    sign = prod;
+                    continue; // sign decided, go on checking next dot products
+                }
+                if ( sign * prod < 0 ) { // if different signs
+                    return 0; // not a separating plane
+                }
             }
-            if ( proshmo === "und" ) {
-                proshmo = temp + 0;
-                continue;
-            }
-            if ( proshmo*temp < 0 ) {
-                return false;
-            }
-        }
-        for ( i = 0; i < points2.length; i++ ) {
-            temp = dian3.dot( normal, dian3.subtract( points2[i], tri[0] ) );
-            
-            if ( temp === 0 ) {
-                temp = "und";
-                continue;
-            }
-            if ( proshmo2 === "und" ) {
-                proshmo2 = temp + 0;
-                continue;
-            }
-            if ( proshmo2*temp < 0 ) {
-                return false;
-            }
-        }
-        if ( proshmo === "und" || proshmo2 === "und" ) {
+            return sign; // may be a separating plane if the other has opposite sign
+        };
+
+        var sign1 = checkDotProductSign( points1 );
+        if ( !sign1 ) { // no need to compute next product
             return false;
         }
-        if ( proshmo*proshmo2 > 0 ) {
-            return false;
-        }
-        return true;
+
+        var sign2 = checkDotProductSign( points2 );
+
+        return ( sign1 * sign2 < 0 );
     }
 };
