@@ -88,13 +88,13 @@ Testcase.prototype.assertArrayEquals = function( got, expected, description ) {
         return s;
     };
 
-    if ( got instanceof Float32Array ) {
+    if ( got instanceof Float32Array && !got.hasOwnProperty( "toString" ) ) {
         Object.defineProperty( got, "toString", {
             value: arrayToString.bind( got ),
             enumerable: false
         } );
     }
-    if ( expected instanceof Float32Array ) {
+    if ( expected instanceof Float32Array && !expected.hasOwnProperty( "toString" ) ) {
         Object.defineProperty( expected, "toString", {
             value: arrayToString.bind( expected ),
             enumerable: false

@@ -102,6 +102,33 @@ testcase.setScale = function() {
 };
 
 testcase.setIdentity = function() {
+    var transform = new Transform();
+
+    transform.setIdentity();
+    this.assertArrayEquals( transform.getMatrix(), [ 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 ], 'setIdentity on new transform' );
+
+    transform.setPosition( [ -2, 3, 4 ] );
+    transform.setOrientation( [ 0.5, 0.5, 0.5, 0.5 ] );
+    transform.setScale( 2 );
+    transform.setIdentity();
+    this.assertArrayEquals( transform.getMatrix(), [ 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 ], 'setIdentity after setters' );
+
+    // BUG: setIdentity does not invalidate matrix
+    transform.setPosition( [ -2, 3, 4 ] );
+    transform.setOrientation( [ 0.5, 0.5, 0.5, 0.5 ] );
+    transform.setScale( 2 );
+    transform.getMatrix();
+    transform.setIdentity();
+    this.assertArrayEquals( transform.getMatrix(), [ 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 ], 'setIdentity after getMatrix' );
+};
+
+testcase.set = function() {
+    var t1 = new Transform();
+
+    var t2 = new Transform();
+    t2.set( t1 );
+
+    this.assertArrayEquals( t2.getMatrix(), Matrix4().identity(), 'set transformation to an empty transformation' );
 };
 
 // check getMatrix after multiple setters
@@ -110,22 +137,119 @@ testcase.setIdentity = function() {
 testcase.getMatrix = function() {
     var transform = new Transform();
 
+    this.assertArrayEquals( transform.getMatrix(), Matrix4().identity(), 'getMatrix on new transformation' );
+
     transform.setPosition( [ 10, -2, 3 ] );
     var m = Matrix4().identity();
+
     m[ 12 ] = 10;
     m[ 13 ] = -2;
     m[ 14 ] = 3;
+
     this.assertArrayEquals( transform.getMatrix(), m, 'getMatrix after setPosition' );
+
+    transform.setOrientation( [ 0.5, 0.5, 0.5, 0.5 ] );
+
+    m[ 0 ] = 0;
+    m[ 1 ] = 0;
+    m[ 2 ] = 1;
+    m[ 3 ] = 0;
+
+    m[ 4 ] = 1;
+    m[ 5 ] = 0;
+    m[ 6 ] = 0;
+    m[ 7 ] = 0;
+
+    m[ 8 ] = 0;
+    m[ 9 ] = 1;
+    m[ 10 ] = 0;
+    m[ 11 ] = 0;
+
+    this.assertArrayEquals( transform.getMatrix(), m, 'getMatrix after setPosition and setOrientation' );
+
+    transform.setScale( 2 );
+
+    m[ 2 ] = 2;
+    m[ 4 ] = 2;
+    m[ 9 ] = 2;
+
+    this.assertArrayEquals( transform.getMatrix(), m, 'getMatrix after having changed position, orientation and scale' ); 
 };
 
 testcase.getInverseMatrix = function() {
-};
+    var t = new Transform();
+    this.assertArrayEquals( t.getInverseMatrix(), Matrix4().identity(), 'getInverseMatrix on new transformation' );
 
-testcase.set = function() {
+    t.setIdentity();
+    this.assertArrayEquals( t.getInverseMatrix(), Matrix4().identity(), 'getInverseMatrix after setIdentity' );
+
+    t.setPosition( [ 0.5, 2, 1 ] );
+    var m1 = t.getMatrix();
+    var m2 = t.getInverseMatrix();
+    this.assertArrayEquals( m1.multiply( m2 ), Matrix4().identity(), 'getInverseMatrix after setting position' );
 };
 
 
 // at last, check combined transformations
-
 testcase.combineWith = function() {
+    var root = new Transform();
+    root.setIdentity();
+    
+    var p1 = new Transform(); 
+    p1.setPosition( [ 2, -4, 1 ] );
+    var m1 = p1.getMatrix();
+    p1.combineWith( root );
+    
+    this.assertArrayEquals( p1.getMatrix(), m1, 'combine position transformation with identity' );
+
+    var p2 = new Transform();
+    p2.setPosition( [ -1.5, 5, -1 ] );
+    var m2 = p2.getMatrix();
+    p2.combineWith( p1 );
+
+    m2[ 12 ] = 0.5;
+    m2[ 13 ] = 1;
+    m2[ 14 ] = 0;
+
+    this.assertArrayEquals( p2.getMatrix(), m2, 'combine position transformations' );
+
+    var o1 = new Transform();
+    o1.setOrientation( [ 0.5, 0.5, 0.5, 0.5 ] );
+    var m3 = o1.getMatrix();
+    o1.combineWith( root );
+
+    this.assertArrayEquals( o1.getMatrix(), m3, 'combine orientation transformation with identity' );
+
+    var o2 = new Transform();
+    o2.setOrientation( [ 0.5, 0.5, 0.5, 0.5 ] );
+    o2.combineWith( o1 );
+
+    this.assertArrayEquals( o2.getMatrix(), 
+                            [ 0, 1, 0, 0,
+                              0, 0, 1, 0,
+                              1, 0, 0, 0,
+                              0, 0, 0, 1 ],
+                            'combine orientation transformations' );
+
+    var c1 = new Transform();
+    c1.set( o2 );
+    c1.combineWith( p2 );
+
+    this.assertArrayEquals( c1.getMatrix(), 
+                            [ 0, 1, 0, 0,
+                              0, 0, 1, 0,
+                              1, 0, 0, 0,
+                              1, 0, 0.5, 1 ],
+                            'combine orientation transformations with position transformations' );
+
+    var c2 = new Transform();
+    c2.setScale( 2 );
+    c2.combineWith( c1 );
+
+    this.assertArrayEquals( c2.getMatrix(), 
+                            [ 0, 2, 0, 0,
+                              0, 0, 2, 0,
+                              2, 0, 0, 0,
+                              2, 0, 1, 1 ],
+                            'combine all transformations' );
 };
