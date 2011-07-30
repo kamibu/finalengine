@@ -19,7 +19,7 @@ var TempVars = {
     vector3Counter: 0,
     vector3Stack: [],
     getVector3: function() {
-        var ret = this.vector3Stack[ this.vector3counter++ ];
+        var ret = this.vector3Stack[ this.vector3Counter++ ];
         if ( !ret ) {
             ret = this.vector3Stack[ this.vector3Counter - 1 ] = Vector3();
         }
