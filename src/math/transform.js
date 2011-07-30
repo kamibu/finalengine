@@ -4,7 +4,6 @@ function Transform() {
     this.scale = 1;
     this.invalidate();
     this.matrix = Matrix4();
-    this.needsUpdate = false;
 }
 
 Transform.prototype = {
@@ -49,6 +48,7 @@ Transform.prototype = {
         this.position.set( [ 0, 0, 0 ] );
         this.orientation.set( [ 0, 0, 0, 1 ] );
         this.scale = 1;
+        this.invalidate();
         return this;
     },
     combineWith: function( transform ) {
