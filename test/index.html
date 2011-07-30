@@ -2,6 +2,76 @@
     <head>
     </head>
     <body>
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
         <script type="text/javascript" src="../build/GFX.js" ></script>
+        <script type="text/javascript">
+            var params = window.location.search.slice( 1 ).split( '&' ), i, param, name;
+            for ( i in params ) {
+                param = params[ i ].split( '=' );
+                if ( param[ 0 ] != 'test' && param[ 0 ] != 'test[]' ) {
+                    continue;
+                }
+                name = param[ 1 ];
+                name = unescape( name );
+
+                console.log( 'loading ../test/' + name );
+
+                $.getScript( name + '.js', function() {
+                    console.log( testcase );
+                    testcase.run();
+                    var view = new TestView( testcase );
+                } );
+            }
+        </script>
+        <style>
+        body {
+            background-color: black;
+        }
+
+        #test {
+           z-index: 9001; 
+           color: black;
+           width: 100%;
+           height: 100%;
+           padding: 0;
+           margin: 0px;
+           padding: 0px;
+        }
+
+        #test ul.runs {
+            width: 90%;
+            margin-left: 5%;
+            margin-right: 5%;
+            list-style-type: none;
+            padding: 0;
+            padding-top: 30px;
+        }
+
+        #test ul.runs li {
+            // margin-top: 15px;
+            padding: 0px 0px;
+            width: 100%;
+            border: 1px solid black;
+        }
+
+        #test ul.runs li.success {
+            background-color: green;
+        }
+
+        #test ul.runs li.fail {
+            background-color: red;
+        }
+
+        #test ul.assertions {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        #test ul.assertions li {
+            margin: 0;
+            padding: 0;
+            background-color: #eee; 
+            border: 0px;
     </body>
 </html>

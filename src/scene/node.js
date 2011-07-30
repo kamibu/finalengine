@@ -15,9 +15,7 @@ Node.prototype = {
         if ( !dest ) {
             dest = Vector3();
         }
-        if ( this.needsUpdate ) {
-            this.update();
-        }
+        this.update();
         return dest.set( this.worldTransform.position );
     },
     setAbsolutePosition: function( position ) {
@@ -73,24 +71,20 @@ Node.prototype = {
         if ( !dest ) {
             dest = Matrix4();
         }
-        if ( this.needsUpdate ) {
-            this.update();
-        }
+        this.update();
         return dest.set( this.worldMatrix );
     },
     update: function() {
         if ( this.needsUpdate ) {
             this.Transform_update();
             var parent = this.parent;
-            if ( parent.needsUpdate ) {
-                parent.update();
-            }
+            parent.update();
             this.worldTransform.set( parent.worldTransform ).combineWith( this );
         }
         return this;
     },
     invalidate: function() {
-        this.needsUpdate = true;
+        this.Transform_invalidate();
         var l = this.children.length;
         while ( l-- ) {
             this.children[ l ].invalidate();

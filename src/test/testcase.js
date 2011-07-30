@@ -1,24 +1,14 @@
-var Testcase = function( name ) {
+function Testcase( name ) {
     this.name = name;
-    this.results = {};
-};
+    this.reports = {};
+}
 
 Testcase.prototype.arrayEquals = function( expected, actual ) {
     if ( expected.length != actual.length ) {
         return false;
     }
-    for ( var i in expected ) {
+    for ( var i = 0; i < expected.length; ++i ) {
         if ( expected[ i ] != actual[ i ] ) {
-            actual[ i ] = 255;
-            actual[ i + 1 ] = 0;
-            actual[ i + 2 ] = 0;
-            actual[ i + 3 ] = 255;
-            /*
-            console.log( +i, expected[ +i ], actual[ +i ] );
-            console.log( +i + 1, expected[ +i + 1 ], actual[ +i + 1 ] );
-            console.log( +i + 2, expected[ +i + 2 ], actual[ +i + 2 ] );
-            console.log( +i + 3, expected[ +i + 3 ], actual[ +i + 3 ] );
-            */
             return false;
         }
     }
@@ -29,8 +19,11 @@ Testcase.prototype.equals = function( expected, actual ) {
     if ( typeof expected != typeof actual ) {
         return false;
     }
-    else if ( typeof expected == "array" ) {
-        return  this.arrayEquals( expected, actual );
+    else if ( Array.isArray( expected ) || expected instanceof Float32Array ) {
+        if ( !Array.isArray( actual ) || !( actual instanceof Float32Array ) ) {
+            return false;
+        }
+        return this.arrayEquals( expected, actual );
     }
     else if ( typeof expected == "object" ) {
         for ( var i in expected ) {
@@ -55,9 +48,9 @@ Testcase.prototype.equals = function( expected, actual ) {
 
 Testcase.prototype._assert = function( result, description, label, data  ) {
     if ( !result ) {
-        this.results[ this.currentMethod ].pass = false;
+        this.reports[ this.currentMethod ].pass = false;
     }
-    this.results[ this.currentMethod ].asserts.push( {
+    this.reports[ this.currentMethod ].asserts.push( {
         result: result,
         description: description,
         label: label,
@@ -82,6 +75,37 @@ Testcase.prototype.assertEquals = function( got, expected, description ) {
     } );
 };
 
+Testcase.prototype.assertArrayEquals = function( got, expected, description ) {
+    var arrayToString = function() {
+        var s = "";
+        var l = this.length;
+        for ( i = 0; i < l; ++i ) {
+            s += this[ i ];
+            if ( s != l - 1 ) {
+                s += ",";
+            }
+        }
+        return s;
+    };
+
+    if ( got instanceof Float32Array && !got.hasOwnProperty( "toString" ) ) {
+        Object.defineProperty( got, "toString", {
+            value: arrayToString.bind( got ),
+            enumerable: false
+        } );
+    }
+    if ( expected instanceof Float32Array && !expected.hasOwnProperty( "toString" ) ) {
+        Object.defineProperty( expected, "toString", {
+            value: arrayToString.bind( expected ),
+            enumerable: false
+        } );
+    }
+    return this._assert( this.arrayEquals( expected, got ), description, "assertArrayEquals", {
+        expected: expected,
+        got: got
+    } );
+};
+
 Testcase.prototype.assertType = function( obj, type, description ) {
     return this._assert( typeof obj == type, description, "assertType", {
         object: obj,
@@ -97,7 +121,17 @@ Testcase.prototype.assertDOMTagName = function( element, tagname, description ) 
     return this._assert( element instanceof HTMLElement && element.tagName.toLowerCase() == tagname, description, 'assertDOMTagName', { element: element } );
 };
 
-Testcase.prototype.run = function( name, next ) {
+Testcase.prototype.runMethod = function( name ) {
     this.currentMethod = name;
-    this.results[ currentMethod ] = { asserts: [], pass: true };
+    this.reports[ this.currentMethod ] = { asserts: [], pass: true, name: name };
+    this[ name ]();
+};
+
+Testcase.prototype.run = function() {
+    for ( var i in this ) {
+        if ( !this.hasOwnProperty( i ) || typeof this[ i ] != "function" ) {
+            continue;
+        }
+        this.runMethod( i );
+    }
 };

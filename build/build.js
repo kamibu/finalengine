@@ -44,7 +44,8 @@ var files = [
     'rendermanager.js',
     'application.js',
 
-    'test/testcase.js'
+    'test/testcase.js',
+    'test/browser/testview.js'
 ];
 
 
