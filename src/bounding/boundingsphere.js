@@ -6,8 +6,9 @@ function BoundingSphere() {
 
 BoundingSphere.prototype = {
     set: function( vertices ) {
-        var center = TempVars.vec3a;
-        var temp = TempVars.vec3b;
+        TempVars.lock();
+        var center = TempVars.getVector3();
+        var temp = TempVars.getVector();
 
 
         center.set( [ 0, 0, 0 ] );
@@ -28,6 +29,7 @@ BoundingSphere.prototype = {
             }
         }
         this.radius = Math.sqrt( radius );
+        TempVars.release();
         return this;
     },
     getRadius: function() {
@@ -43,11 +45,12 @@ BoundingSphere.prototype = {
         else {
             if ( boundingVolume.type == 1 ) {
                 //sphere against sphere
-                var temp = TempVars.vec3a;
+                TempVars.lock();
+                var temp = TempVars.getVector3();
 
                 var distance = temp.set( this.position ).subtract( boundingVolume.position ).length();
                 var R = this.radius + boundingVolume.radius;
-
+                TempVars.release();
                 return dist <= R;
             }
             else if ( boundingVolume.type == 2 ) {

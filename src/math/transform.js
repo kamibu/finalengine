@@ -52,14 +52,16 @@ Transform.prototype = {
         return this;
     },
     combineWith: function( transform ) {
+        TempVars.lock();
         this.scale *= transform.scale;
 
-        var p = this.orientation.multiplyVec3( transform.getPosition( TempVars.vec3a ) );
+        var p = this.orientation.multiplyVec3( transform.getPosition( TempVars.getVector3() ) );
         p.scale( this.scale );
         this.position.add( p );
         this.orientation.multiply( transform.orientation );
         this.invalidate();
-
+        
+        TempVars.release();
         return this;
     },
     getMatrix: function( dest ) {

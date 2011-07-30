@@ -37,12 +37,14 @@ Quaternion.prototype = {
         return this;
     },
     setAxisAngle: function( axis, angle ) {
-        var a = TempVars.vec3a;
+        TempVars.lock();
+        var a = TempVars.getVector3();
         a.set( axis ).normalize().scale( Math.sin( angle / 2 ) );
         this[ 0 ] = a[ 0 ];
         this[ 1 ] = a[ 1 ];
         this[ 2 ] = a[ 2 ];
         this[ 3 ] = Math.cos( angle / 2 );
+        TempVars.release();
         return this;
     },
     inverse: function() {

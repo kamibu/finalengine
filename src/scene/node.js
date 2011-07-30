@@ -19,11 +19,12 @@ Node.prototype = {
         return dest.set( this.worldTransform.position );
     },
     setAbsolutePosition: function( position ) {
+        TempVars.lock();
         this.worldTransform.setPosition( position );
-        position = TempVars.vec3a.set( position );
+        position = TempVars.getVector3().set( position );
         var p = this.parent;
-        var q = p.getAbsoluteOrientation( TempVars.quat4a );
-        var v = p.getAbsolutePosition( TempVars.vec3b );
+        var q = p.getAbsoluteOrientation( TempVars.getQuaternion() );
+        var v = p.getAbsolutePosition( TempVars.getVector3() );
         var s = p.getAbsoluteScale();
 
         this.position.set( q.inverse().multiplyVector3( position.subtract( v ) ) );
@@ -31,14 +32,17 @@ Node.prototype = {
             this.position.scale( 1 / s );
         }
         this.invalidate();
+        TempVars.release();
         return this;
     },
     getAbsoluteOrientation: function( dest ) {
         return this.worldTransform.getOrientation( dest );
     },
     setAbsoluteOrientation: function( orientation ) {
+        TempVars.lock();
         this.worldTransform.setOrientation( orientation );
-        this.orientation.set( this.parent.getAbsoluteOrientation( TempVars.quat4a ).inverse().multiply( orientation ) );
+        this.orientation.set( this.parent.getAbsoluteOrientation( TempVars.getQuaternion() ).inverse().multiply( orientation ) );
+        TempVars.release();
         return this;
     },
     getAbsoluteScale: function() {
