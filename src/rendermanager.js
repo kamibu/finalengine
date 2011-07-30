@@ -52,6 +52,7 @@ RenderManager.prototype = {
         g.ProjectionMatrix.set( camera.projectionMatrix );
         camera.getInverseMatrix( g.ViewMatrix );
 
+        var bucket = [];
         function fillDrawBucket( node ) {
             if ( node.mesh ) {
                 bucket.push( node );
@@ -61,8 +62,12 @@ RenderManager.prototype = {
                 fillDrawBucket( node.children[ l ] );
             }
         }
-        var bucket = [];
         fillDrawBucket( scene.root );
+
+        //Sort drawables by material
+        bucket.sort( function( a, b ) {
+            return a.material.uid - b.material.uid;    
+        } );
 
         var l = bucket.length;
         while ( l-- ) {

@@ -1,5 +1,6 @@
 function Material() {
     this.uuid = UUID();
+    this.uid = Material.uid++;
 
     this.libraries = [];
     this.defines = {};
@@ -10,6 +11,8 @@ function Material() {
     this.shaderCache = null;
     this.validShader = false;
 }
+
+Material.uid = 0;
 
 Material.prototype = {
     define: function( name, value ) {

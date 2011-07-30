@@ -4,20 +4,47 @@
   than native arrays.
 */
 var TempVars = {
-    mat4a: Matrix4(),
-    mat4b: Matrix4(),
-    mat4c: Matrix4(),
-    mat4d: Matrix4(),
+    lock: function() {
+        this.vector3ReleasePoints.push( this.vector3Counter );
+        this.matrix4ReleasePoints.push( this.matrix4Counter );
+        this.quaternionReleasePoints.push( this.quaternionCounter );
+    },
+    release: function() {
+        this.vector3Counter = this.vector3ReleasePoints.pop();
+        this.matrix4Counter = this.matrix4ReleasePoints.pop();
+        this.quaternionCounter = this.quaternionReleasePoints.pop();
+    },
 
-//    mat3a: Matrix3(),
-//    mat3b: Matrix3(),
-//    mat3c: Matrix3(),
+    vector3ReleasePoints: [],
+    vector3Counter: 0,
+    vector3Stack: [],
+    getVector3: function() {
+        var ret = this.vector3Stack[ this.vector3counter++ ];
+        if ( !ret ) {
+            ret = this.vector3Stack[ this.vector3Counter - 1 ] = Vector3();
+        }
+        return ret;
+    },
 
-    vec3a: Vector3(),
-    vec3b: Vector3(),
-    vec3c: Vector3(),
+    matrix4ReleasePoints: [],
+    matrix4Counter: 0,
+    matrix4Stack: [],
+    getMatrix4: function() {
+        var ret = this.matrix4Stack[ this.matrix4Counter++ ];
+        if ( !ret ) {
+            ret = this.matrix4Stack[ this.matrix4Counter - 1 ] = Matrix4();
+        }
+        return ret;
+    },
 
-    quat4a: Quaternion(),
-    quat4b: Quaternion(),
-    quat4c: Quaternion()
+    quaternionReleasePoints: [],
+    quaternionCounter: 0,
+    quaternionStack: [],
+    getQuaternion: function() {
+        var ret = this.quaternionStack[ this.quaternionCounter++ ];
+        if ( !ret ) {
+            ret = this.quaternionStack[ this.quaternionCounter - 1 ] = Quaternion();
+        }
+        return ret;
+    }
 };

@@ -1,4 +1,6 @@
 function Shader() {
+    this.uid = Shader.uid++;
+
     this.vertexSource = '';
     this.fragmentSource = '';
 	
@@ -7,6 +9,8 @@ function Shader() {
     
     this.needsUpdate = false;
 }
+
+Shader.uid = 0;
 
 Shader.prototype = {
     setVertexSource: function( source ) {
