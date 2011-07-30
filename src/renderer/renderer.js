@@ -155,7 +155,7 @@ Renderer.prototype = {
         this.gl.bindBuffer( type, null );
 
         bufferObject.length = buffer.data.length;
-        this.bufferObjects[ buffer.id ] = bufferObject;
+        this.bufferObjects[ buffer.uid ] = bufferObject;
     },
     /*
      * This method will delete a buffer previously made with createBuffer.
@@ -167,14 +167,14 @@ Renderer.prototype = {
         /*DEBUG*/
             assert( this.gl.isBuffer( this.bufferObjects[ buffer ] ), 'Illegal type. buffer must be a GL Buffer object.' );
         /*DEBUG_END*/
-        this.gl.deleteBuffer( this.bufferObjects[ buffer.id ] );
-        delete this.bufferObjects[ buffer.id ];
+        this.gl.deleteBuffer( this.bufferObjects[ buffer.uid ] );
+        delete this.bufferObjects[ buffer.uid ];
     },
 	updateBuffer: function( buffer ) {
 		/*DEBUG*/
             assert( this.gl.isBuffer( this.bufferObjects[ buffer ] ), 'Illegal type. buffer must be a GL Buffer object.' );
         /*DEBUG_END*/
-		var bufferObject = this.bufferObjects[ buffer.id ];
+		var bufferObject = this.bufferObjects[ buffer.uid ];
 		if ( typeof bufferObject == 'undefined' ) {
 			this.createBuffer( buffer );
 		}
@@ -192,7 +192,7 @@ Renderer.prototype = {
                     type = this.gl.ELEMENT_BUFFER;
                     break;
             }
-            this.gl.bindBuffer( type, this.bufferObjects[ buffer.id ] );
+            this.gl.bindBuffer( type, this.bufferObjects[ buffer.uid ] );
             this.gl.bufferSubData( type, 0, buffer.data );
             this.gl.bindbuffer( type, null );
         }
@@ -215,7 +215,7 @@ Renderer.prototype = {
 				break;
 		}
 		
-		if ( !this.bufferObjects[ buffer.id ] || buffer.needsUpdate ) {
+		if ( !this.bufferObjects[ buffer.uid ] || buffer.needsUpdate ) {
 			this.updateBuffer( buffer );
             this.boundedBuffer = null;
         }
@@ -224,7 +224,7 @@ Renderer.prototype = {
             return;
         }
         this.boundedBuffer = buffer;
-        bufferObject = this.bufferObjects[ buffer.id ];
+        bufferObject = this.bufferObjects[ buffer.uid ];
         this.gl.bindBuffer( type, bufferObject );
         bufferObject.lastTimeUsed = Date.now();
     },
@@ -332,13 +332,13 @@ Renderer.prototype = {
         }
         gl.bindTexture( target, null );
         
-        this.textureObjects[ texture.id ] = textureObject;
+        this.textureObjects[ texture.uid ] = textureObject;
     },
     updateTexture: function( texture ) {
         /*DEBUG*/
             assert( texture.constructor == Texture, 'Invalid type. texture must be a Texture instance' );
         /*DEBUG_END*/
-        if ( typeof this.textureObjects[ texture.id ] == 'undefined' ) {
+        if ( typeof this.textureObjects[ texture.uid ] == 'undefined' ) {
             this.createTexture( texture );
         }
         else if ( texture.flags & texture.DIMENTIONS ) {
@@ -346,7 +346,7 @@ Renderer.prototype = {
             this.createTexture( texture );
         }
         else if ( texture.flags & texture.IMAGE ) {
-            var textureObject = this.textureObjects[ texture.id ];
+            var textureObject = this.textureObjects[ texture.uid ];
             var gl = this.gl;
             gl.texSubImage2D( gl.TEXTURE_2D, 0, 0, 0, texture.width, texture.height, gl.RGB, gl.UNSIGNED_BYTE, texture.source );
         }
@@ -363,7 +363,7 @@ Renderer.prototype = {
             assert( texture.constructor == Texture, 'Invalid type. texture must be a Texture instance' );
             assert( position < 0 || position > this.getParameter( Renderer.MAX_FRAGMENT_TEXTURE_UNITS ), 'Texture bind position is out of bounds' );
         /*DEBUG_END*/
-        if ( !this.textureObjects[ texture.id ] || texture.needsUpdate ) {
+        if ( !this.textureObjects[ texture.uid ] || texture.needsUpdate ) {
             this.updateTexture( texture );
         }
         var type, textureObject, gl;
@@ -377,16 +377,16 @@ Renderer.prototype = {
                 break;
         }
 
-        textureObject = this.textureObjects[ texture.id ];
+        textureObject = this.textureObjects[ texture.uid ];
         textureObject.lastTimeUsed = Date.now();
         gl.activeTexture( this.gl.TEXTURE0 + position );
         gl.bindTexture( type, textureObject );
     },
     deleteTexture: function( texture ) {
-        var textureObject = this.textureObjects[ texture.id ];
+        var textureObject = this.textureObjects[ texture.uid ];
         if ( typeof textureObject != 'undefined' ) {
             this.gl.deleteTexture( textureObject );
-            delete this.textureObjects[ texture.id ];
+            delete this.textureObjects[ texture.uid ];
         }
     },
 //    /*
@@ -451,7 +451,7 @@ Renderer.prototype = {
     deleteShader: function( shader ) {
         var programObject, gl;
         gl = this.gl;
-        programObject = this.programObjects[ shader.id ];
+        programObject = this.programObjects[ shader.uid ];
 
         if ( this.currentShader == shader ) {
             this.currentShader = null;
@@ -461,7 +461,7 @@ Renderer.prototype = {
             gl.deleteShader( programObject.vertexShader );
             gl.deleteShader( programObject.fragmentShader );
             gl.deleteProgram( programObject );
-            delete this.programObjects[ shader.id ];
+            delete this.programObjects[ shader.uid ];
         }
     },
     /*
@@ -565,7 +565,7 @@ Renderer.prototype = {
         gl.useProgram( null );
 
         program.lastTimeUsed = Date.now();
-        this.programObjects[ shader.id ] = program;
+        this.programObjects[ shader.uid ] = program;
         shader.needsUpdate = false;
     },
     /*
@@ -663,7 +663,7 @@ Renderer.prototype = {
         this.uploadShaderUniforms();
 		var shader = this.currentShader;
 
-		var program = this.programObjects[ shader.id ];
+		var program = this.programObjects[ shader.uid ];
 		
 		for ( var attribute in program.attributes ) {
 			var vertexAttribute = mesh.vertexAttributes[ attribute ];

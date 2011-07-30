@@ -1,5 +1,5 @@
 function Buffer( type, usage ) {
-    this.id = Buffer.uid++;
+    this.uid = Buffer.uid++;
     this.data = null;
     this.length = 0;
     this.usage = usage || Buffer.STATIC;

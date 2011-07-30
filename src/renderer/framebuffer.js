@@ -1,5 +1,5 @@
 function FrameBuffer( width, height ) {
-    this.id = Framebuffer.uid++;
+    this.uid = Framebuffer.uid++;
     this.width = width || 256;
     this.height = height || 256;
     this.depthBuffer = null;

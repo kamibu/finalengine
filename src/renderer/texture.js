@@ -3,7 +3,7 @@ var Texture = function( type ) {
         assertIn( type, Texture.IMAGE, Texture.CUBEMAP, 'Illegal value. type must be TEXTURE_2D or TEXTURE_CUBEMAP' );
     /*DEBUG_END*/
     this.uid = Texture.uid++;
-    this.name = 'Texture #' + this.id;
+    this.name = 'Texture #' + this.uid;
     this.width = 1;
     this.height = 1;
     this.minFilter = Texture.LINEAR_MIPMAP_LINEAR;
@@ -41,7 +41,7 @@ Texture.UPPER_LEFT_CORNER = 2;
 
 Texture.prototype = {
     setName: function( name ) {
-        this.name = name || 'Texture #' + this.id;
+        this.name = name || 'Texture #' + this.uid;
     },
     setMinFilter: function( filter ) {
         /*DEBUG*/
