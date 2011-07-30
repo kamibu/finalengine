@@ -20,10 +20,10 @@ Node.prototype = {
     },
     setAbsolutePosition: function( position ) {
         this.worldTransform.setPosition( position );
-
+        position = TempVars.vec3a.set( position );
         var p = this.parent;
         var q = p.getAbsoluteOrientation( TempVars.quat4a );
-        var v = p.getAbsolutePosition( TempVars.vec3a );
+        var v = p.getAbsolutePosition( TempVars.vec3b );
         var s = p.getAbsoluteScale();
 
         this.position.set( q.inverse().multiplyVector3( position.subtract( v ) ) );
