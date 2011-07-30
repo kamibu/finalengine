@@ -55,7 +55,7 @@ Transform.prototype = {
         TempVars.lock();
         this.scale *= transform.scale;
 
-        var p = this.orientation.multiplyVec3( transform.getPosition( TempVars.getVector3() ) );
+        var p = this.orientation.multiplyVector3( transform.getPosition( TempVars.getVector3() ) );
         p.scale( this.scale );
         this.position.add( p );
         this.orientation.multiply( transform.orientation );

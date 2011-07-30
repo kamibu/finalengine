@@ -64,7 +64,7 @@ Quaternion.prototype = {
         
         return this;
     },
-    multiplyVec3: function( vector ) {
+    multiplyVector3: function( vector ) {
         var x = vector[ 0 ], y = vector[ 1 ], z = vector[ 2 ];
         var qx = this[ 0 ], qy = this[ 1 ], qz = this[ 2 ], qw = this[ 3 ];
 
