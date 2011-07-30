@@ -2,7 +2,7 @@ var Texture = function( type ) {
     /*DEBUG*/
         assertIn( type, Texture.IMAGE, Texture.CUBEMAP, 'Illegal value. type must be TEXTURE_2D or TEXTURE_CUBEMAP' );
     /*DEBUG_END*/
-    this.id = Texture.uid++;
+    this.uid = Texture.uid++;
     this.name = 'Texture #' + this.id;
     this.width = 1;
     this.height = 1;
