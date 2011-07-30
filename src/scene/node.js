@@ -100,3 +100,4 @@ Node.prototype = {
 Node.extend( Transform );
 
 Node.Origin = new Node();
+Node.Origin.parent = Node.Origin;

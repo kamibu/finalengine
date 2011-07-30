@@ -13,11 +13,10 @@ TestView.prototype.printReport = function( run ) {
         return;
     }
     $( '#test ul.runs' ).append( '<li class="fail"><div style="padding: 5px;">' + run.name + ': FAIL</div><ul class="assertions">' );
+    var listNode = $( '#test ul.assertions:last' );
     for ( var i in run.asserts ) {
         var assertion = run.asserts[ i ];
-        var listNode = $( '#test ul.assertions:last' );
-        listNode.append( '<li></li>' );
-        var assertionNode = listNode.find( 'li:last' );
+        var assertionNode = listNode.append( '<li></li>' );
         if ( assertion.result ) {
             assertionNode.append( '<div style="padding: 5px;">SUCCESS: ' + assertion.description + '</div>' );
         }
@@ -27,6 +26,11 @@ TestView.prototype.printReport = function( run ) {
                 assertionNode.append( '<div style="overflow: hidden; width: 600px;">' + j + ' : ' + assertion.data[ j ] + '</div>' );
             }
         }
+    }
+    if ( run.exception ) {
+        var li = listNode.append( '<li><li>' );
+        li.append( '<div style="padding: 5px;">EXCEPTION: ' + run.exception + '<br />(see console for complete log)</div></div>' );
+        console.log( run.exception.stack ); // this provides a better view (links to the files, etc)
     }
     $( '#test' ).append( '</ul></li>' );
 };
