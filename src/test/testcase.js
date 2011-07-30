@@ -19,31 +19,7 @@ Testcase.prototype.equals = function( expected, actual ) {
     if ( typeof expected != typeof actual ) {
         return false;
     }
-    else if ( Array.isArray( expected ) || expected instanceof Float32Array ) {
-        if ( !Array.isArray( actual ) || !( actual instanceof Float32Array ) ) {
-            return false;
-        }
-        return this.arrayEquals( expected, actual );
-    }
-    else if ( typeof expected == "object" ) {
-        for ( var i in expected ) {
-            if ( !( i in actual ) ) {
-                return false;
-            }
-            if ( !this.equals( expected[ i ], actual[ i ] ) ) {
-                return false;
-            }
-        }
-        for ( i in actual ) {
-            if ( !( i in expected ) ) {
-                return false;
-            }
-        }
-        return true;
-    }
-    else {
-        return expected == actual;
-    }
+    return expected == actual;
 };
 
 Testcase.prototype._assert = function( result, description, label, data  ) {
@@ -132,6 +108,12 @@ Testcase.prototype.run = function() {
         if ( !this.hasOwnProperty( i ) || typeof this[ i ] != "function" ) {
             continue;
         }
-        this.runMethod( i );
+        try {
+            this.runMethod( i );
+        }
+        catch ( e ) {
+            this.reports[ this.currentMethod ].pass = false;
+            this.reports[ this.currentMethod ].exception = e;
+        }
     }
 };
