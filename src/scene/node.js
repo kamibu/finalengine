@@ -36,6 +36,10 @@ Node.prototype = {
         return this;
     },
     getAbsoluteOrientation: function( dest ) {
+        if ( !dest ) {
+            dest = Quaternion();
+        }
+        this.update();
         return this.worldTransform.getOrientation( dest );
     },
     setAbsoluteOrientation: function( orientation ) {
