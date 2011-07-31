@@ -57,6 +57,7 @@ Node.prototype = {
     appendChild: function( node ) {
         node.parent = this;
         this.children.push( node );
+        node.invalidate();
         return this;
     },
     removeChild: function( node ) {
@@ -64,7 +65,8 @@ Node.prototype = {
         var l = children.length;
         while ( l-- ) {
             if ( children[ l ] == node ) {
-                node.parent = null;
+                node.parent = Node.Origin;
+                node.invalidate();
                 children.splice( l, 1 );
                 return;
             }
