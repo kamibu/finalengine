@@ -83,6 +83,7 @@ Renderer.MAX_VERTEX_TEXTURE_UNITS = 2;
 Renderer.FLOAT_TEXTURE = 3;
     
 Renderer.prototype = {
+    constructor: Renderer,
     getParameter: function( query ) {
         switch ( query ) {
             case Renderer.MAX_FRAGMENT_TEXTURE_UNITS:

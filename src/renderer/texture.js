@@ -40,6 +40,7 @@ Texture.LOWER_LEFT_CORNER = 1;
 Texture.UPPER_LEFT_CORNER = 2;
 
 Texture.prototype = {
+    constructor: Texture,
     setName: function( name ) {
         this.name = name || 'Texture #' + this.uid;
     },

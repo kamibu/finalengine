@@ -7,6 +7,7 @@ function Transform() {
 }
 
 Transform.prototype = {
+    constructor: Transform,
     set: function( transform ) {
         this.position.set( transform.position );
         this.orientation.set( transform.orientation );

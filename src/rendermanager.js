@@ -1,7 +1,5 @@
 function RenderManager() {
     this.renderer = new Renderer();
-    this.textureManager = new TextureManager();
-    this.shaderManager = new ShaderManager();
     this.forcedMaterial = null;
     
     this.globalUniformCache = {
@@ -17,6 +15,7 @@ function RenderManager() {
 
 
 RenderManager.prototype = {
+    constructor: RenderManager,
     getParameter: function( name ) {
         var g = this.globalUniformCache;
         switch ( name ) {

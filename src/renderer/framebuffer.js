@@ -9,6 +9,7 @@ function FrameBuffer( width, height ) {
 Framebuffer.uid = 0;
 
 Framebuffer.prototype = {
+    constructor: FrameBuffer,
     setDimentions: function( width, height ) {
         this.width = width;
         this.height = height;

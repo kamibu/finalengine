@@ -15,6 +15,7 @@ function Material() {
 Material.uid = 0;
 
 Material.prototype = {
+    constructor: Material,
     define: function( name, value ) {
         if ( this.defines[ name ] != value ) {
             this.defines[ name ] = value;

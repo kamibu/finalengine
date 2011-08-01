@@ -17,6 +17,7 @@ Buffer.ELEMENT_BUFFER = 5;
 
 
 Buffer.prototype = {
+    constructor: Buffer,
     setData: function( data ) {
         /*DEBUG*/
             assertIn( data.constructor, Array, Float32Array, Uint16Array, 'Invalid type. data must be an Array, Float32Array or Uint16Array' );

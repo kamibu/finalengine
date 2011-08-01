@@ -8,6 +8,7 @@ function VertexBuffer( semantic ) {
 }
 
 VertexBuffer.prototype = {
+    constructor: VertexBuffer,
     getElement: function( n, dest ) {
         var s = this.size;
         if ( !dest ) {

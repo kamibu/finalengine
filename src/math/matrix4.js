@@ -8,6 +8,7 @@ function Matrix4( data ) {
 }
 
 Matrix4.prototype = {
+    constructor: Matrix4,
     set: function( data ) {
         this[ 0 ] = data[ 0 ];
         this[ 1 ] = data[ 1 ];

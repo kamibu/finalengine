@@ -6,6 +6,9 @@
 Object.defineProperty( Function.prototype, "extend", {
     value: function( parent ) {
         for ( var method in parent.prototype ) {
+            if ( method == 'constructor' ) {
+                continue;
+            }
             if ( this.prototype[ method ] ) {
                 this.prototype[ parent.name + '_' + method ] = parent.prototype[ method ];
             }

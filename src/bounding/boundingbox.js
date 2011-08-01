@@ -7,6 +7,7 @@ function BoundingBox() {
 }
 
 BoundingBox.prototype = {
+    constructor: BoundingBox,
     set: function( vertices ) {
         var l = vertices.length - 1;
         var min = vertices[ l ].clone();

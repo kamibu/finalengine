@@ -4,6 +4,7 @@ function TextureManager() {
 
 
 TextureManager.prototype = {
+    constructor: TextureManager,
     load: function ( url ) {
         if ( this.cache[ url ] )  {
             return this.cache[ url ];

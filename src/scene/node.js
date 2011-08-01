@@ -11,6 +11,7 @@ function Node() {
 }
 
 Node.prototype = {
+    constructor: Node,
     getAbsolutePosition: function( dest ) {
         if ( !dest ) {
             dest = Vector3();
@@ -112,7 +113,7 @@ Node.prototype = {
         while ( l-- ) {
             var child = this.children[ l ];
             ret.children.push( child.name );
-            exporter.alsoExport( child );
+            exporter.alsoSave( child );
         }
         return ret;
     },

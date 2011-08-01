@@ -13,6 +13,7 @@ function Shader() {
 Shader.uid = 0;
 
 Shader.prototype = {
+    constructor: Shader,
     setVertexSource: function( source ) {
         this.vertexSource = source;
         this.needsUpdate = true;

@@ -5,6 +5,7 @@ function BoundingSphere() {
 }
 
 BoundingSphere.prototype = {
+    constructor: BoundingSphere,
     set: function( vertices ) {
         TempVars.lock();
         var center = TempVars.getVector3();

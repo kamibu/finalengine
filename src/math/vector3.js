@@ -8,6 +8,7 @@ function Vector3( data ) {
 }
 
 Vector3.prototype = {
+    constructor: Vector3,
     set: function( data ) {
         this[ 0 ] = data[ 0 ];
         this[ 1 ] = data[ 1 ];

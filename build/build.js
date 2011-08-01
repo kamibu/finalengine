@@ -40,9 +40,11 @@ var files = [
     'geometry/cube.js',
 
     'texturemanager.js',
-    'shadermanager.js',
     'rendermanager.js',
     'application.js',
+
+    'exporter/exporter.js',
+    'exporter/importer.js',
 
     'test/testcase.js',
     'test/browser/testview.js'

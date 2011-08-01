@@ -2,6 +2,7 @@ function Mesh() {
     this.mode = Mesh.TRIANGLES;
     this.vertexAttributes = {};
 	this.indexBuffer = null;
+    this.isInterleaved = false;
 }
 
 
@@ -14,6 +15,7 @@ Mesh.TRIANGLE_STRIP = 6;
 Mesh.TRIANGLE_FAN = 7;
 
 Mesh.prototype = {
+    constructor: Mesh,
     setVertexAttribute: function( vertexBuffer ) {
         this.vertexAttributes[ vertexBuffer.semantic ] = vertexBuffer;
     },
@@ -53,6 +55,7 @@ Mesh.prototype = {
         for ( attribute in this.vertexAttributes ) {
             this.vertexAttributes[ attribute ].setBuffer( interleavedBuffer );
         }
+        this.isInterleaved = true;
     },
     setMode: function( mode ) {
         /*DEBUG*/

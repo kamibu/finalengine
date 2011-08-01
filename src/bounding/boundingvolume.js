@@ -3,6 +3,7 @@ function BoundingVolume( points ) {
 }
 
 BoundingVolume.prototype = {
+    constructor: BoundingVolume,
     set: function( points ) {
         //Abstract Method
     }

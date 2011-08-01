@@ -11,6 +11,7 @@ function Quaternion( data ) {
 }
 
 Quaternion.prototype = {
+    constructor: Quaternion,
     set: function( data ) {
         this[ 0 ] = data[ 0 ];
         this[ 1 ] = data[ 1 ];

@@ -17,6 +17,7 @@ function Camera() {
 }
  
 Camera.prototype = {
+    constructor: Camera,
     setPerspective: function () {
         this.projectionMatrix.perspective( this.FOV, this.w / this.h, this.zNear, this.zFar );
         this.ratio = this.w / this.h;
