@@ -18,6 +18,13 @@ Quaternion.prototype = {
         this[ 3 ] = data[ 3 ];
         return this;
     },
+    setTo: function( dest ) {
+        dest[ 0 ] = this[ 0 ];
+        dest[ 1 ] = this[ 1 ];
+        dest[ 2 ] = this[ 2 ];
+        dest[ 3 ] = this[ 3 ];
+        return dest;
+    },
     setEuler: function( yaw, pitch, roll ) {
         yaw *= 0.5;
         pitch *= 0.5;
@@ -125,11 +132,8 @@ Quaternion.prototype = {
 
         return dest;
     },
-    clone: function( dest ) {
-        if ( !dest ) {
-            dest = Quaternion();
-        }
-        return dest.set( this );
+    clone: function() {
+        return Quaternion( this );
     }
 };
 

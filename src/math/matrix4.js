@@ -8,6 +8,44 @@ function Matrix4( data ) {
 }
 
 Matrix4.prototype = {
+    set: function( data ) {
+        this[ 0 ] = data[ 0 ];
+        this[ 1 ] = data[ 1 ];
+        this[ 2 ] = data[ 2 ];
+        this[ 3 ] = data[ 3 ];
+        this[ 4 ] = data[ 4 ];
+        this[ 5 ] = data[ 5 ];
+        this[ 6 ] = data[ 6 ];
+        this[ 7 ] = data[ 7 ];
+        this[ 8 ] = data[ 8 ];
+        this[ 9 ] = data[ 9 ];
+        this[ 10 ] = data[ 10 ];
+        this[ 11 ] = data[ 11 ];
+        this[ 12 ] = data[ 12 ];
+        this[ 13 ] = data[ 13 ];
+        this[ 14 ] = data[ 14 ];
+        this[ 15 ] = data[ 15 ];
+        return this;
+    },
+    setTo: function( dest ) {
+        dest[ 0 ] = this[ 0 ];
+        dest[ 1 ] = this[ 1 ];
+        dest[ 2 ] = this[ 2 ];
+        dest[ 3 ] = this[ 3 ];
+        dest[ 4 ] = this[ 4 ];
+        dest[ 5 ] = this[ 5 ];
+        dest[ 6 ] = this[ 6 ];
+        dest[ 7 ] = this[ 7 ];
+        dest[ 8 ] = this[ 8 ];
+        dest[ 9 ] = this[ 9 ];
+        dest[ 10 ] = this[ 10 ];
+        dest[ 11 ] = this[ 11 ];
+        dest[ 12 ] = this[ 12 ];
+        dest[ 13 ] = this[ 13 ];
+        dest[ 14 ] = this[ 14 ];
+        dest[ 15 ] = this[ 15 ];
+        return dest;
+    },
     identity: function() {
         this[ 0 ] = 1;
         this[ 1 ] = 0;
@@ -28,25 +66,6 @@ Matrix4.prototype = {
         this[ 13 ] = 0;
         this[ 14 ] = 0;
         this[ 15 ] = 1;
-        return this;
-    },
-    set: function( data ) {
-        this[ 0 ] = data[ 0 ];
-        this[ 1 ] = data[ 1 ];
-        this[ 2 ] = data[ 2 ];
-        this[ 3 ] = data[ 3 ];
-        this[ 4 ] = data[ 4 ];
-        this[ 5 ] = data[ 5 ];
-        this[ 6 ] = data[ 6 ];
-        this[ 7 ] = data[ 7 ];
-        this[ 8 ] = data[ 8 ];
-        this[ 9 ] = data[ 9 ];
-        this[ 10 ] = data[ 10 ];
-        this[ 11 ] = data[ 11 ];
-        this[ 12 ] = data[ 12 ];
-        this[ 13 ] = data[ 13 ];
-        this[ 14 ] = data[ 14 ];
-        this[ 15 ] = data[ 15 ];
         return this;
     },
     transpose: function(){
@@ -223,11 +242,8 @@ Matrix4.prototype = {
         this[ 14 ] = -( far + near ) / fn;
         this[ 15 ] = 1;
     },
-    clone: function( dest ) {
-        if ( !dest ) {
-            dest = Matrix4();
-        }
-        return dest.set( this );
+    clone: function() {
+        return Matrix4( this );
     }
 };
 

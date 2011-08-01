@@ -1,6 +1,6 @@
 function Vector3( data ) {
     var ret = new Float32Array( 3 );
-    ret[ '__proto__' ]  = Vector3.prototype;
+    ret[ '__proto__' ] = Vector3.prototype;
     if ( data ) {
         ret.set( data );
     }
@@ -13,6 +13,12 @@ Vector3.prototype = {
         this[ 1 ] = data[ 1 ];
         this[ 2 ] = data[ 2 ];
         return this;
+    },
+    setTo: function( dest ) {
+        dest[ 0 ] = this[ 0 ];
+        dest[ 1 ] = this[ 1 ];
+        dest[ 2 ] = this[ 2 ];
+        return dest;
     },
     add: function( vector ) {
         this[ 0 ] += vector[ 0 ];
@@ -75,11 +81,8 @@ Vector3.prototype = {
     dot: function( vector ) {
         return this[ 0 ] * vector[ 0 ] + this[ 1 ] * vector[ 1 ] + this[ 2 ] * vector[ 2 ];
     },
-    clone: function( dest ) {
-        if ( !dest ) {
-            dest = Vector3();
-        }
-        return dest.set( this );
+    clone: function() {
+        return Vector3( this );
     }
 };
 
