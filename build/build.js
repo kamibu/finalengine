@@ -3,20 +3,21 @@ var root = '../src/';
 
 var files = [
     'debug/assert.js',
-    'utils/math.js',
-    'utils/request.js',
+    'utils/uuid.js',
+    'utils/extender.js',
 
-    'libs/uuid.js',
-    'libs/extender.js',
-    'libs/events.js',
+    'network/request.js',
 
+    'events/eventemitter.js',
+    'events/eventwaiter.js',
+
+    'math/number.js',
     'math/transform.js',
     'math/matrix4.js',
     'math/vector3.js',
     'math/quaternion.js',
 
     'utils/tempvars.js',
-    'utils/uidgenerator.js',
     'utils/bounds.js',
 
     'renderer/renderer.js',
@@ -40,7 +41,6 @@ var files = [
     'geometry/cube.js',
 
     'texturemanager.js',
-    'shadermanager.js',
     'rendermanager.js',
     'application.js',
 
