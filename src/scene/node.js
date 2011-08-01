@@ -50,12 +50,12 @@ Node.prototype = {
         return this;
     },
     getAbsoluteScale: function() {
+        this.update();
         return this.worldTransform.getScale();
     },
     setAbsoluteScale: function( scale ) {
         this.worldTransform.setScale( scale );
         this.scale = scale / this.parent.getAbsoluteScale();
-
         return this;
     },
     appendChild: function( node ) {

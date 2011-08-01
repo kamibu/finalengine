@@ -8,7 +8,7 @@ function Material() {
     this.fragmentShader = '';
     this.parameters = {};
     this.engineParamaters = {};
-    this.shaderCache = null;
+    this.cachedShader = null;
     this.validShader = false;
 }
 
@@ -46,14 +46,14 @@ Material.prototype = {
             vertexShader += this.vertexShader;
             fragmentShader += this.fragmentShader;
 
-            this.shaderCache = new Shader();
-            this.shaderCache.setVertexShader( vertexShader );
-            this.shaderCache.setFragmentShader( fragmentShader );
+            this.cachedShader = new Shader();
+            this.cachedShader.setVertexShader( vertexShader );
+            this.cachedShader.setFragmentShader( fragmentShader );
         }
         for ( parameterName in this.parameters ) {
-            this.shaderCache.uniforms[ parameterName ] = this.parameters;
+            this.cachedShader.uniforms[ parameterName ] = this.parameters;
         }
-        return this.shaderCache;
+        return this.cachedShader;
     },
     clone: function() {
         var ret = new Material(),
@@ -61,7 +61,7 @@ Material.prototype = {
             define,
             parameter;
 
-        ret.shaderCache = this.shaderCache;
+        ret.cachedShader = this.cachedShader;
         this.validShader = true;
         for ( define in this.defines ) {
             ret.defines[ define ] = this.defines[ define ];

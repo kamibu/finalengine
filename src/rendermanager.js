@@ -2,6 +2,7 @@ function RenderManager() {
     this.renderer = new Renderer();
     this.textureManager = new TextureManager();
     this.shaderManager = new ShaderManager();
+    this.forcedMaterial = null;
     
     this.globalUniformCache = {
         Time: Date.now(),

@@ -1,10 +1,7 @@
-var Joint = function( id ) {
-    this.id = id;
-    this.children = [];
-}.extend( Transformable );
+function Joint() {
+}
 
 Joint.prototype = {
-    appendChild: function( joint ) {
-        this.children.push( joint );
-    }
 };
+
+Joint.extend( Node );
