@@ -1,18 +1,26 @@
 Request = {
-    send: function( method, url, callback ) {
+    send: function( method, url, data, callback ) {
+        var formData = new FormData();
+        if ( data ) {
+            for ( var field in data ) {
+                formData.append( field, data[ field ] );
+            }
+        }
         var v = new XMLHttpRequest();
         v.open( method, url );
-        v.onreadystatechange = function() {
-            if ( v.readyState == 4 ) {
-                callback( v.responseText );
-            }
-        };
-        v.send();
+        if ( callback ) {
+            v.onreadystatechange = function() {
+                if ( v.readyState == 4 ) {
+                    callback( v.responseText );
+                }
+            };
+        }
+        v.send( formData );
     },
-    get: function( url, callback ) {
-        this.send( 'GET', url, callback );
+    get: function( url, data, callback ) {
+        this.send( 'GET', url, data, callback );
     },
-    post: function( url, callback ) {
-        this.send( 'GET', url, callback );
+    post: function( url, data, callback ) {
+        this.send( 'POST', url, data, callback );
     }
 };
