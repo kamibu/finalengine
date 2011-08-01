@@ -6,7 +6,7 @@ function Node() {
     this.worldTransform = new Transform();
     this.parent = Node.Origin;
     this.children = [];
-    this.name = '';
+    this.name = this.uuid;
     Transform.call( this );
 }
 
@@ -100,6 +100,30 @@ Node.prototype = {
             this.children[ l ].invalidate();
         }
         return this;
+    },
+    getExportData: function( exporter ) {
+        var ret = {};
+        ret.position = this.getPosition().setTo( [] );
+        ret.orientation = this.getOrientation().setTo( [] );
+        ret.scale = this.getScale();
+        ret.name = this.name;
+        ret.children = [];
+        var l = this.children.length;
+        while ( l-- ) {
+            var child = this.children[ l ];
+            ret.children.push( child.name );
+            exporter.alsoExport( child );
+        }
+        return ret;
+    },
+    setImportData: function( importer, data ) {
+        this.setPosition( data.position );
+        this.setOrientation( data.orientation );
+        this.setScale( data.scale );
+        var l = data.children.length;
+        while( l-- ) {
+            importer.alsoLoad( data.children[ l ], this.appendChild.bind( this ) );
+        }
     }
 };
 
