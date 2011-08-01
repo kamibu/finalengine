@@ -50,6 +50,7 @@ Node.prototype = {
         return this;
     },
     getAbsoluteScale: function() {
+        this.update();
         return this.worldTransform.getScale();
     },
     setAbsoluteScale: function( scale ) {
