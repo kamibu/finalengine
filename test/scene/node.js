@@ -129,4 +129,44 @@ testcase.setAbsoluteScale = function() {
 // finally test getAbsoluteMatrix after various calls
 
 testcase.getAbsoluteMatrix = function() {
+    var root = new Node();
+    
+    var p1 = new Node(); 
+    p1.setPosition( [ 2, -4, 1 ] );
+    var m1 = p1.getAbsoluteMatrix();
+    root.appendChild( p1 );
+    
+    this.assertArrayEquals( p1.getAbsoluteMatrix(), m1, 'combine position transformation with identity' );
+
+    var p2 = new Node();
+    p2.setPosition( [ -1.5, 5, -1 ] );
+    var m2 = p2.getMatrix();
+    p1.appendChild( p2 );
+
+    m2[ 12 ] = 0.5;
+    m2[ 13 ] = 1;
+    m2[ 14 ] = 0;
+
+    this.assertArrayEquals( p2.getAbsoluteMatrix(), m2, 'combine position transformations' );
+
+    var o1 = new Node();
+    o1.setOrientation( [ 0.5, 0.5, 0.5, 0.5 ] );
+    var m3 = o1.getMatrix();
+    root.appendChild( o1 );
+
+    this.assertArrayEquals( o1.getAbsoluteMatrix(), m3, 'combine orientation transformation with identity' );
+
+    root.setPosition( [ 1, 2, 3 ] );
+    m2[ 12 ] = 1.5;
+    m2[ 13 ] = 3;
+    m2[ 14 ] = 3;
+
+    this.assertArrayEquals( p2.getAbsoluteMatrix(), m2, 'getAbsoluteMatrix after setPosition on grandfather' );
+    this.assertArrayEquals( o1.getAbsoluteMatrix(),
+                            [ 0, 0, 1, 0,
+                              1, 0, 0, 0,
+                              0, 1, 0, 0,
+                              1, 2, 3, 1 ],
+                            'getAbsoluteMatrix on rotated after setPosition on father' );
+    o1.getAbsoluteMatrix();
 };
