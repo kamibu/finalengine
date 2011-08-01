@@ -82,7 +82,7 @@ Node.prototype = {
             dest = Matrix4();
         }
         this.update();
-        return dest.set( this.worldMatrix );
+        return dest.set( this.worldTransform.getMatrix() );
     },
     update: function() {
         if ( this.needsUpdate ) {
