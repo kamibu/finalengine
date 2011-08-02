@@ -1,6 +1,7 @@
 function Material() {
     this.uuid = UUID();
     this.uid = Material.uid++;
+    this.name = this.uuid;
 
     this.libraries = [];
     this.defines = {};
@@ -78,20 +79,62 @@ Material.prototype = {
         return ret;
     },
     getExportData: function( exporter ) {
-        var ret = {}, parameter;
+        var ret = {
+            defines: {},
+            parameters: {},
+            engineParameters: {}
+        }
+        ret.vertexShader = this.vertexShader;
+        ret.fragmentShader = this.fragmentShader;
 
-        ret.shader = this.shader.uuid;
-        ret.parameters = {};
-        for ( parameter in this.parameters ) {
-            switch( typeof this.parameters[ parameter ] ) {
+        for ( var define in this.defines ) {
+            ret.defines[ define ] = this.defines[ define ];
+        }
+        for ( var engineParameter in this.engineParameters ) {
+            ret.engineParameteres[ engineParameter ] = null;
+        }
+        for ( var parameter in this.parameters ) {
+            switch ( typeof this.parameters[ parameter ] ) {
                 case 'number':
-                    ret[ parameter ] = this.parameters[ parameter ];
+                    ret.parameters[ parameter ] = this.parameters[ parameter ];
                     break;
                 case 'object':
-                    ret[ parameter ] = '' ;
+                    ret.parameters[ parameter ] = this.parameters[ parameter ].setTo( [] );
+                    break;
+            }
+            ret.parameters[ parameter ] = this.parameters[ parameter ];
+        }
+        return ret;
+    },
+    setImportData: function( importer, data ) {
+        this.vertexShader = data.vertexShader;
+        this.fragmentShader = data.fragmentShader;
+        for ( var define in data.defines ) {
+            this.defines[ define ] = data.defines[ define ];
+        }
+        for ( var engineParameter in data.engineParameters ) {
+            this.engineParameteres[ engineParameter ] = null;
+        }
+        for ( var parameter in data.parameters ) {
+            switch ( typeof data.parameters[ parameter ] ) {
+                case 'number':
+                    this.parameters[ parameter ] = data.parameters[ parameter ];
+                    break;
+                case 'object':
+                    var p = data.parameters[ parameter ];
+                    switch ( p.type ) {
+                        case 'Vector3':
+                            this.parameters[ parameter ] = Vector3( p );
+                            break;
+                        case 'Quaternion':
+                            this.parameters[ parameter ] = Quaternion( p );
+                            break;
+                        case 'Matrix4':
+                            this.parameters[ parameter ] = Matrix4( p );
+                            break;
+                    }
+                    break;
             }
         }
-    },
-    setImportData: function( importer ) {
     }
 };
