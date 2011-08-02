@@ -48,6 +48,7 @@ RenderManager.prototype = {
         }
     },
     renderScene: function( scene, camera ) {
+        this.renderer.clear();
         var g = this.globalUniformCache;
         g.ProjectionMatrix.set( camera.projectionMatrix );
         camera.getInverseMatrix( g.ViewMatrix );

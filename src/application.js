@@ -9,6 +9,15 @@ function Application() {
 Application.prototype = {
     start: function() {
         var self = this;
+
+        document.body.appendChild( this.renderManager.renderer.canvas );
+
+        function snapToWindow() {
+            self.renderManager.renderer.setSize( window.innerWidth, window.innerHeight );
+        }
+        snapToWindow();
+        window.addEventListener( 'resize', snapToWindow, false );
+
         (function renderLoop() {
             self.renderManager.renderScene( self.scene, self.camera );
             window.requestAnimationFrame( renderLoop );

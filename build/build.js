@@ -19,6 +19,7 @@ var files = [
 
     'utils/tempvars.js',
     'utils/bounds.js',
+    'utils/RequestAnimationFrame.js',
 
     'renderer/renderer.js',
     'renderer/buffer.js',
