@@ -12,10 +12,10 @@ var files = [
     'events/eventwaiter.js',
 
     'math/number.js',
-    'math/transform.js',
     'math/matrix4.js',
     'math/vector3.js',
     'math/quaternion.js',
+    'math/transform.js',
 
     'utils/tempvars.js',
     'utils/bounds.js',
