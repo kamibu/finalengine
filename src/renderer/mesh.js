@@ -1,4 +1,7 @@
 function Mesh() {
+    this.uuid = UUID();
+    this.name = this.uuid;
+
     this.mode = Mesh.TRIANGLES;
     this.vertexAttributes = {};
 	this.indexBuffer = null;
@@ -62,5 +65,22 @@ Mesh.prototype = {
             assertIn( mode, Mesh.POINTS, Mesh.LINES, Mesh.LINE_LOOP, Mesh.LINE_STRIP, Mesh.TRIANGLES, Mesh.TRIANGLE_STRIP, Mesh.TRIANGLE_FAN, 'Illegal value.' );
         /*DEBUG_END*/
         this.mode = mode;
+    },
+    getExportdata: function( exporter ) {
+        var ret = {
+            mode: this.mode,
+            isInterleaved: this.isInterleaved,
+            indexBuffer: this.indexBuffer.name,
+            vertexAttributes: {}
+        };
+        exporter.alsoExport( this.indexBuffer );
+        for ( var vertexAttributeName in this.vertexAttributes ) {
+            ret.vertexAttributes[ vertexAttributeName ] = this.vertexAttributes[ vertexAttributeName ].name;
+            exporter.alsoExport( this.vertexAttributes[ vertexAttributeName ] );
+        }
+        return ret;
+    },
+    setImportData: function( importer, data ) {
+
     }
 };
