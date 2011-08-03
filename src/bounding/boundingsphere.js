@@ -9,7 +9,7 @@ BoundingSphere.prototype = {
     set: function( vertices ) {
         TempVars.lock();
         var center = TempVars.getVector3();
-        var temp = TempVars.getVector();
+        var temp = TempVars.getVector3();
 
 
         center.set( [ 0, 0, 0 ] );
