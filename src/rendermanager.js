@@ -4,12 +4,12 @@ function RenderManager() {
     
     this.globalUniformCache = {
         Time: Date.now(),
-        ProjectionMatrix: Matrix4(),
-        ViewMatrix: Matrix4(),
-        WorldMatrix: Matrix4(),
-        ViewProjectionMatrix: Matrix4(),
-        WorldViewMatrix: Matrix4(),
-        WorldViewProjectionMatrix: Matrix4()
+        ProjectionMatrix: new Matrix4(),
+        ViewMatrix: new Matrix4(),
+        WorldMatrix: new Matrix4(),
+        ViewProjectionMatrix: new Matrix4(),
+        WorldViewMatrix: new Matrix4(),
+        WorldViewProjectionMatrix: new Matrix4()
     };
 }
 

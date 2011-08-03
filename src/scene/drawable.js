@@ -11,13 +11,21 @@ Drawable.prototype = {
     getExportData: function( exporter ) {
         var ret = {};
         ret.parent = this.Node_getExportData( exporter );
-        ret.mesh = {
-            mode: this.mesh.mode
-        };
+        ret.mesh = this.mesh.name;
+        ret.material = this.material.name;
+        exporter.alsoSave( this.mesh );
+        exporter.alsoSave( this.material );
+        return ret;
     },
     setImportData: function( importer, data ) {
         this.Node_setImportData( importer, data.parent );
-
+        var self = this;
+        importer.alsoLoad( data.mesh, function( mesh ) {
+            self.mesh = mesh;  
+        } );
+        importer.alsoLoad( data.material, function( material ) {
+            self.material = material;
+        } );
     }
 };
 

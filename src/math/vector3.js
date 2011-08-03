@@ -1,10 +1,23 @@
+/*jshint sub:true */
 function Vector3( data ) {
-    var ret = new Float32Array( 3 );
-    ret[ '__proto__' ] = Vector3.prototype;
-    if ( data ) {
-        ret.set( data );
+    /* Float32Array does not implement call method in chrome.
+     * __proto__ hacking to the resque
+     */
+    if ( Float32Array.call ) {
+        Float32Array.call( this, 3 );
+        if ( data ) {
+            this.set( data );
+        }
     }
-    return ret;
+    else {
+        var ret = new Float32Array( 3 );
+
+        ret[ '__proto__' ]  = Vector3.prototype;
+        if ( data ) {
+            ret.set( data );
+        }
+        return ret;
+    }
 }
 
 Vector3.prototype = {
@@ -83,8 +96,9 @@ Vector3.prototype = {
         return this[ 0 ] * vector[ 0 ] + this[ 1 ] * vector[ 1 ] + this[ 2 ] * vector[ 2 ];
     },
     clone: function() {
-        return Vector3( this );
+        return new Vector3( this );
     }
 };
 
+//TODO This does not work in firefox. Maybe not nessesary.
 Vector3.prototype[ '__proto__' ] = Float32Array.prototype;

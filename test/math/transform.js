@@ -128,7 +128,7 @@ testcase.set = function() {
     var t2 = new Transform();
     t2.set( t1 );
 
-    this.assertArrayEquals( t2.getMatrix(), Matrix4().identity(), 'set transformation to an empty transformation' );
+    this.assertArrayEquals( t2.getMatrix(), new Matrix4().identity(), 'set transformation to an empty transformation' );
 };
 
 // check getMatrix after multiple setters
@@ -137,10 +137,10 @@ testcase.set = function() {
 testcase.getMatrix = function() {
     var transform = new Transform();
 
-    this.assertArrayEquals( transform.getMatrix(), Matrix4().identity(), 'getMatrix on new transformation' );
+    this.assertArrayEquals( transform.getMatrix(), new Matrix4().identity(), 'getMatrix on new transformation' );
 
     transform.setPosition( [ 10, -2, 3 ] );
-    var m = Matrix4().identity();
+    var m = new Matrix4().identity();
 
     m[ 12 ] = 10;
     m[ 13 ] = -2;
@@ -178,15 +178,15 @@ testcase.getMatrix = function() {
 
 testcase.getInverseMatrix = function() {
     var t = new Transform();
-    this.assertArrayEquals( t.getInverseMatrix(), Matrix4().identity(), 'getInverseMatrix on new transformation' );
+    this.assertArrayEquals( t.getInverseMatrix(), new Matrix4().identity(), 'getInverseMatrix on new transformation' );
 
     t.setIdentity();
-    this.assertArrayEquals( t.getInverseMatrix(), Matrix4().identity(), 'getInverseMatrix after setIdentity' );
+    this.assertArrayEquals( t.getInverseMatrix(), new Matrix4().identity(), 'getInverseMatrix after setIdentity' );
 
     t.setPosition( [ 0.5, 2, 1 ] );
     var m1 = t.getMatrix();
     var m2 = t.getInverseMatrix();
-    this.assertArrayEquals( m1.multiply( m2 ), Matrix4().identity(), 'getInverseMatrix after setting position' );
+    this.assertArrayEquals( m1.multiply( m2 ), new Matrix4().identity(), 'getInverseMatrix after setting position' );
 };
 
 

@@ -21,7 +21,7 @@ var TempVars = {
     getVector3: function() {
         var ret = this.vector3Stack[ this.vector3Counter++ ];
         if ( !ret ) {
-            ret = this.vector3Stack[ this.vector3Counter - 1 ] = Vector3();
+            ret = this.vector3Stack[ this.vector3Counter - 1 ] = new Vector3();
         }
         return ret;
     },
@@ -32,7 +32,7 @@ var TempVars = {
     getMatrix4: function() {
         var ret = this.matrix4Stack[ this.matrix4Counter++ ];
         if ( !ret ) {
-            ret = this.matrix4Stack[ this.matrix4Counter - 1 ] = Matrix4();
+            ret = this.matrix4Stack[ this.matrix4Counter - 1 ] = new Matrix4();
         }
         return ret;
     },
@@ -43,7 +43,7 @@ var TempVars = {
     getQuaternion: function() {
         var ret = this.quaternionStack[ this.quaternionCounter++ ];
         if ( !ret ) {
-            ret = this.quaternionStack[ this.quaternionCounter - 1 ] = Quaternion();
+            ret = this.quaternionStack[ this.quaternionCounter - 1 ] = new Quaternion();
         }
         return ret;
     }

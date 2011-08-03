@@ -83,7 +83,7 @@ Material.prototype = {
             defines: {},
             parameters: {},
             engineParameters: {}
-        }
+        };
         ret.vertexShader = this.vertexShader;
         ret.fragmentShader = this.fragmentShader;
 
@@ -124,13 +124,13 @@ Material.prototype = {
                     var p = data.parameters[ parameter ];
                     switch ( p.type ) {
                         case 'Vector3':
-                            this.parameters[ parameter ] = Vector3( p );
+                            this.parameters[ parameter ] = new Vector3( p );
                             break;
                         case 'Quaternion':
-                            this.parameters[ parameter ] = Quaternion( p );
+                            this.parameters[ parameter ] = new Quaternion( p );
                             break;
                         case 'Matrix4':
-                            this.parameters[ parameter ] = Matrix4( p );
+                            this.parameters[ parameter ] = new Matrix4( p );
                             break;
                     }
                     break;

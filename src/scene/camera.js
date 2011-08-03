@@ -13,7 +13,7 @@ function Camera() {
     this.horizontalTanFieldOfView = this.tanFieldOfView;
     this.horizontalCosFieldOfview = Math.cos( Math.atan( this.tanFieldOfView ) );
 
-    this.projectionMatrix = Matrix4();
+    this.projectionMatrix = new Matrix4();
 }
  
 Camera.prototype = {

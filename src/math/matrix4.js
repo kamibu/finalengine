@@ -1,10 +1,23 @@
+/*jshint sub:true */
 function Matrix4( data ) {
-    var ret = new Float32Array( 16 );
-    ret[ '__proto__' ]  = Matrix4.prototype;
-    if ( data ) {
-        ret.set( data );
+    /* Float32Array does not implement call method in chrome.
+     * __proto__ hacking to the resque
+     */
+    if ( Float32Array.call ) {
+        Float32Array.call( this, 16 );
+        if ( data ) {
+            this.set( data );
+        }
     }
-    return ret;
+    else {
+        var ret = new Float32Array( 16 );
+
+        ret[ '__proto__' ]  = Matrix4.prototype;
+        if ( data ) {
+            ret.set( data );
+        }
+        return ret;
+    }
 }
 
 Matrix4.prototype = {
@@ -244,8 +257,9 @@ Matrix4.prototype = {
         this[ 15 ] = 1;
     },
     clone: function() {
-        return Matrix4( this );
+        return new Matrix4( this );
     }
 };
 
+//TODO This does not work in firefox. Maybe not nessesary.
 Matrix4.prototype[ '__proto__' ] = Float32Array.prototype;

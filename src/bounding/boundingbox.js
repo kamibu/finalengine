@@ -1,8 +1,8 @@
 function BoundingBox() {
     BoundingVolume.call( this );
     this.points = [
-        Vector3(), Vector3(), Vector3(), Vector3(), 
-        Vector3(), Vector3(), Vector3(), Vector3()
+        new Vector3(), new Vector3(), new Vector3(), new Vector3(), 
+        new Vector3(), new Vector3(), new Vector3(), new Vector3()
     ];
 }
 

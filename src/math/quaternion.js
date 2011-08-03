@@ -1,13 +1,26 @@
 /*jshint sub:true */
 function Quaternion( data ) {
-    var ret = new Float32Array( 4 );
-    ret[ 3 ] = 1;
+    /* Float32Array does not implement call method in chrome.
+     * __proto__ hacking to the resque
+     */
+    if ( Float32Array.call ) {
+        Float32Array.call( this, 4 );
+        this[ 3 ] = 1;
 
-    ret[ '__proto__' ]  = Quaternion.prototype;
-    if ( data ) {
-        ret.set( data );
+        if ( data ) {
+            this.set( data );
+        }
     }
-    return ret;
+    else {
+        var ret = new Float32Array( 4 );
+        ret[ 3 ] = 1;
+
+        ret[ '__proto__' ]  = Quaternion.prototype;
+        if ( data ) {
+            ret.set( data );
+        }
+        return ret;
+    }
 }
 
 Quaternion.prototype = {
@@ -91,7 +104,7 @@ Quaternion.prototype = {
     },
     toMatrix4: function( dest ) {
         if ( !dest ) {
-            dest = Matrix4();
+            dest = new Matrix4();
         }
         var x = this[ 0 ], y = this[ 1 ], z = this[ 2 ], w = this[ 3 ];
 
@@ -134,9 +147,8 @@ Quaternion.prototype = {
         return dest;
     },
     clone: function() {
-        return Quaternion( this );
+        return new Quaternion( this );
     }
 };
-
+//TODO This does not work in firefox. Maybe not nessesary.
 Quaternion.prototype[ '__proto__' ] = Float32Array.prototype;
-

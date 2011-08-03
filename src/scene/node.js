@@ -14,7 +14,7 @@ Node.prototype = {
     constructor: Node,
     getAbsolutePosition: function( dest ) {
         if ( !dest ) {
-            dest = Vector3();
+            dest = new Vector3();
         }
         this.update();
         return dest.set( this.worldTransform.position );
@@ -38,7 +38,7 @@ Node.prototype = {
     },
     getAbsoluteOrientation: function( dest ) {
         if ( !dest ) {
-            dest = Quaternion();
+            dest = new Quaternion();
         }
         this.update();
         return this.worldTransform.getOrientation( dest );
@@ -80,7 +80,7 @@ Node.prototype = {
     },
     getAbsoluteMatrix: function( dest ) {
         if ( !dest ) {
-            dest = Matrix4();
+            dest = new Matrix4();
         }
         this.update();
         return dest.set( this.worldTransform.getMatrix() );

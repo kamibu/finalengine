@@ -1,9 +1,9 @@
 function Transform() {
-    this.position = Vector3();
-    this.orientation = Quaternion();
+    this.position = new Vector3();
+    this.orientation = new Quaternion();
     this.scale = 1;
     this.invalidate();
-    this.matrix = Matrix4();
+    this.matrix = new Matrix4();
 }
 
 Transform.prototype = {
@@ -32,13 +32,13 @@ Transform.prototype = {
     },
     getPosition: function( dest ) {
         if ( !dest ) {
-            dest = Vector3();
+            dest = new Vector3();
         }
         return dest.set( this.position );
     },
     getOrientation: function( dest ) {
         if ( !dest ) {
-            dest = Quaternion();
+            dest = new Quaternion();
         }
         return dest.set( this.orientation );
     },
@@ -67,7 +67,7 @@ Transform.prototype = {
     },
     getMatrix: function( dest ) {
         if ( !dest ) {
-            dest = Matrix4();
+            dest = new Matrix4();
         }
         if ( this.needsUpdate  ) {
             this.update();
@@ -76,7 +76,7 @@ Transform.prototype = {
     },
     getInverseMatrix: function( dest ) {
         if ( !dest ) {
-            dest = Matrix4();
+            dest = new Matrix4();
         }
         this.orientation.toMatrix4( dest ).transpose();
         //Translation part rotated by the transposed 3x3 matrix
