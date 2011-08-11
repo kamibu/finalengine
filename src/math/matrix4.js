@@ -257,9 +257,8 @@ Matrix4.prototype = {
         this[ 15 ] = 1;
     },
     clone: function() {
-        return new Matrix4( this );
+        return new this.constructor( this );
     }
 };
 
-//TODO This does not work in firefox. Maybe not nessesary.
-Matrix4.prototype[ '__proto__' ] = Float32Array.prototype;
+Matrix4.extend( Float32Array );

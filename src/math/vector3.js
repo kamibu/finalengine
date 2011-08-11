@@ -96,9 +96,8 @@ Vector3.prototype = {
         return this[ 0 ] * vector[ 0 ] + this[ 1 ] * vector[ 1 ] + this[ 2 ] * vector[ 2 ];
     },
     clone: function() {
-        return new Vector3( this );
+        return new this.constructor( this );
     }
 };
 
-//TODO This does not work in firefox. Maybe not nessesary.
-Vector3.prototype[ '__proto__' ] = Float32Array.prototype;
+Vector3.extend( Float32Array );

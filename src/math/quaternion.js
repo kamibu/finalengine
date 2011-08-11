@@ -147,8 +147,8 @@ Quaternion.prototype = {
         return dest;
     },
     clone: function() {
-        return new Quaternion( this );
+        return new this.constructor( this );
     }
 };
-//TODO This does not work in firefox. Maybe not nessesary.
-Quaternion.prototype[ '__proto__' ] = Float32Array.prototype;
+
+Quaternion.extend( Float32Array );
