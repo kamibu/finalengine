@@ -22,9 +22,11 @@ Material.prototype = {
             this.defines[ name ] = value;
             this.validShader = false;
         }
+        return this;
     },
     setParameter: function( name, value ) {
         this.parameters[ name ] = value;
+        return this;
     },
     getShader: function() {
         var vertexShader = '',
@@ -94,15 +96,18 @@ Material.prototype = {
             ret.engineParameteres[ engineParameter ] = null;
         }
         for ( var parameter in this.parameters ) {
-            switch ( typeof this.parameters[ parameter ] ) {
+            var p = this.parameters[ parameter ];
+            switch ( typeof p ) {
                 case 'number':
-                    ret.parameters[ parameter ] = this.parameters[ parameter ];
+                    ret.parameters[ parameter ] = p;
                     break;
                 case 'object':
-                    ret.parameters[ parameter ] = this.parameters[ parameter ].setTo( [] );
+                    ret.parameters[ parameter ] = {
+                        type: p.constructor.name,
+                        data: p.setTo( [] )
+                    };
                     break;
             }
-            ret.parameters[ parameter ] = this.parameters[ parameter ];
         }
         return ret;
     },
