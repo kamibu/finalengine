@@ -151,12 +151,12 @@ Matrix4.prototype = {
         this[ 7 ] = ( a20 * b05 - a22 * b02 + a23 * b01 ) * invDet;
         this[ 8 ] = ( a10 * b10 - a11 * b08 + a13 * b06 ) * invDet;
         this[ 9 ] = ( -a00 * b10 + a01 * b08 - a03 * b06 ) * invDet;
-        this[ 10] = ( a30 * b04 - a31 * b02 + a33 * b00 ) * invDet;
-        this[ 11] = ( -a20 * b04 + a21 * b02 - a23 * b00 ) * invDet;
-        this[ 12] = ( -a10 * b09 + a11 * b07 - a12 * b06 ) * invDet;
-        this[ 13] = ( a00 * b09 - a01 * b07 + a02 * b06 ) * invDet;
-        this[ 14] = ( -a30 * b03 + a31 * b01 - a32 * b00 ) * invDet;
-        this[ 15] = ( a20 * b03 - a21 * b01 + a22 * b00 ) * invDet;
+        this[ 10 ] = ( a30 * b04 - a31 * b02 + a33 * b00 ) * invDet;
+        this[ 11 ] = ( -a20 * b04 + a21 * b02 - a23 * b00 ) * invDet;
+        this[ 12 ] = ( -a10 * b09 + a11 * b07 - a12 * b06 ) * invDet;
+        this[ 13 ] = ( a00 * b09 - a01 * b07 + a02 * b06 ) * invDet;
+        this[ 14 ] = ( -a30 * b03 + a31 * b01 - a32 * b00 ) * invDet;
+        this[ 15 ] = ( a20 * b03 - a21 * b01 + a22 * b00 ) * invDet;
         return this;
     },
     multiply: function( matrix ) {
