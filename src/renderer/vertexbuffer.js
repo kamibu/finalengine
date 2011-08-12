@@ -1,4 +1,7 @@
 function VertexBuffer( semantic ) {
+    this.uuid = UUID();
+    this.name = this.uuid;
+
 	this.semantic = semantic || '';
 	this.stride = 0;
 	this.size = 3;
@@ -36,5 +39,21 @@ VertexBuffer.prototype = {
         ret.offset = this.offset;
         ret.buffer = this.buffer;
         return ret;
+    },
+    getExportData: function( exporter ) {
+        var ret = {
+            stride: this.stride,
+            size: this.size,
+            offset: this.offset,
+            buffer: this.buffer.name
+        };
+        exporter.alsoSave( this.buffer );
+        return ret;
+    },
+    setImportData: function( importer, data ) {
+        this.stride = data.stride;
+        this.size = data.size;
+        this.offset = data.offset;
+        importer.alsoLoad( data.buffer, this.setBuffer.bind( this ) );
     }
 };
