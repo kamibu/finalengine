@@ -1,3 +1,6 @@
+// extern
+var Matrix4, TempVars;
+
 function Quaternion( data ) {
     /* Float32Array does not implement call method in chrome.
      * prototype hacking to the resque

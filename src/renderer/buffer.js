@@ -1,3 +1,6 @@
+// extern
+var assertIn, UUID;
+
 function Buffer( type, usage ) {
     this.uuid = UUID();
     this.name = this.uuid;

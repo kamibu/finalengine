@@ -1,3 +1,6 @@
+// extern
+var Transform;
+
 function BoundingVolume( points ) {
     Transform.call( this );
 }

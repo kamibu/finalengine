@@ -1,3 +1,6 @@
+// extern
+var Matrix4, Quaternion, TempVars, Vector3;
+
 function Transform() {
     this.position = new Vector3();
     this.orientation = new Quaternion();

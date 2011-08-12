@@ -1,3 +1,6 @@
+// extern
+var Drawable;
+
 function Animable(){
     this.skeleton = null;
 

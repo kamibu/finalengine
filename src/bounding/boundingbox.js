@@ -1,3 +1,6 @@
+// extern
+var BoundingVolume, Rect, Vector3;
+
 function BoundingBox() {
     BoundingVolume.call( this );
     this.points = [

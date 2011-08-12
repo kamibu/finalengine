@@ -1,3 +1,6 @@
+// extern
+var Matrix4, Quaternion, Shader, UUID, Vector3;
+
 function Material() {
     this.uuid = UUID();
     this.uid = Material.uid++;

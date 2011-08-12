@@ -1,3 +1,6 @@
+// extern
+var Request;
+
 /*jshint evil: true */
 
 function Importer( resourcePath ) {

@@ -1,3 +1,6 @@
+// extern
+var Matrix4, Quaternion, Vector3;
+
 /*Allocate some typed arrays in order to be used
   for temporary results. Creating new typed arrays
   in Javascript is slow but using them is faster

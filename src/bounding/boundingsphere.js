@@ -1,3 +1,6 @@
+// extern
+var BoundingVolume, TempVars;
+
 function BoundingSphere() {
     BoundingVolume.call( this );
     this.radius = 0;

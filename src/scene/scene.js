@@ -1,3 +1,6 @@
+// extern
+var Node;
+
 function Scene() {
     this.root = new Node();
 }

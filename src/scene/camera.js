@@ -1,3 +1,6 @@
+// extern
+var Matrix4, Node;
+
 function Camera() {
     Node.call( this );
 

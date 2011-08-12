@@ -1,4 +1,4 @@
-Request = {
+var Request = {
     send: function( method, url, data, callback ) {
         var formData = new FormData();
         if ( data ) {

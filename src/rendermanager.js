@@ -1,3 +1,6 @@
+// extern
+var Matrix4, Renderer;
+
 function RenderManager() {
     this.renderer = new Renderer();
     this.forcedMaterial = null;

@@ -1,3 +1,6 @@
+// extern
+var assertIn;
+
 var Texture = function( type ) {
     /*DEBUG*/
         assertIn( type, Texture.IMAGE, Texture.CUBEMAP, 'Illegal value. type must be TEXTURE_2D or TEXTURE_CUBEMAP' );

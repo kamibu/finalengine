@@ -1,3 +1,6 @@
+// extern
+var Node;
+
 function Light(){
     Node.call( this );
 }

@@ -1,3 +1,6 @@
+// extern
+var Matrix4, Quaternion, TempVars, Transform, UUID, Vector3;
+
 /*
  * An abstract 3 dimentional object with a location in space
  */

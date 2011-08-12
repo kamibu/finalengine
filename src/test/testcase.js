@@ -1,3 +1,6 @@
+// extern
+var assert;
+
 function Testcase( name ) {
     this.name = name;
     this.reports = {};

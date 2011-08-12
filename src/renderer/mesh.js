@@ -1,3 +1,6 @@
+// extern
+var assert, assertIn, Buffer, UUID;
+
 function Mesh() {
     this.uuid = UUID();
     this.name = this.uuid;

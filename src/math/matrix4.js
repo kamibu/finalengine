@@ -1,3 +1,6 @@
+// extern
+var Matrix3, Vector3;
+
 function Matrix4( data ) {
     /* Float32Array does not implement call method in chrome.
      * prototype hacking to the resque

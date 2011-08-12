@@ -1,3 +1,6 @@
+// extern
+var Camera, RenderManager, Scene;
+
 function Application() {
     this.renderManager = new RenderManager();
     this.scene = new Scene();

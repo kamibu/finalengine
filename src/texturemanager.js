@@ -1,3 +1,6 @@
+// extern
+var Texture;
+
 function TextureManager() {
     this.cache = {};
 }

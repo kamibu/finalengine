@@ -1,3 +1,6 @@
+// extern
+var assert, Buffer, UUID;
+
 function VertexBuffer( semantic ) {
     this.uuid = UUID();
     this.name = this.uuid;

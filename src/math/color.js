@@ -1,3 +1,6 @@
+// extern
+var Vector3;
+
 function Color( data ) {
     Vector3.call( this, data );
 }

@@ -1,3 +1,6 @@
+// extern
+var Buffer, Drawable, Mesh, VertexBuffer;
+
 function Cube() {
     Drawable.call( this );
     var vertices = new Buffer( Buffer.DATA_BUFFER, Buffer.STATIC );

@@ -1,3 +1,6 @@
+// extern
+var EventEmitter;
+
 function EventWaiter() {
     this._waitingList = [];
 }

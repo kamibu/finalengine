@@ -1,3 +1,6 @@
+// extern
+var Request;
+
 function Exporter( resourcePath ) {
     if ( resourcePath[ resourcePath.length - 1 ] !== '/'  ){
         resourcePath += '/';

@@ -1,3 +1,6 @@
+// extern
+var Node;
+
 function Drawable() {
     Node.call( this );
     this.mesh = null;

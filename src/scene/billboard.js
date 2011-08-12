@@ -1,3 +1,6 @@
+// extern
+var Mesh;
+
 var Billboard = function() {
 };
 

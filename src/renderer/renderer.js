@@ -1,3 +1,6 @@
+// extern
+var assert, debug_log, Buffer, Mesh, Shader, Texture;
+
 /*
  * Renderer is the central point of the graphics library.
  * It abrstacts the underlying API in some simple methods.
