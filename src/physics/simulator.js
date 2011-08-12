@@ -7,7 +7,7 @@ function PhysicsSimulator( sceneGraph ) {
 
 PhysicsSimulator.prototype = {
     simulate : function( time ) {
-        //old code        
+        //old code
         /*
                 var speed = 1/60;
         universe._updateState( ( Date.now() - loop.lastCall ) * speed, scene.world );
@@ -15,6 +15,6 @@ PhysicsSimulator.prototype = {
         */
     },
     setCollisionBehaviour : function( type, callback ) {
-        this.collisionBehaviours[ type ] = callback;        
-    }    
+        this.collisionBehaviours[ type ] = callback;
+    }
 };

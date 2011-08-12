@@ -8,7 +8,7 @@
 
 var Renderer = function( canvas, width, height ) {
     /*
-        As the renderer is running, several objects are copyied to the 
+        As the renderer is running, several objects are copyied to the
         GPU memory for fast rendering. But, as there isn't a way to know
         when the client-side objects are garbage collected we specify a
         decay time. If an object isn't used for this amount of time then
@@ -41,14 +41,14 @@ var Renderer = function( canvas, width, height ) {
      *
      *  See http://www.khronos.org/opengles/sdk/2.0/docs/man/glUniform.xml
      */
-      
-    gl.mineUniformMatrix2fv = function( location, value ) { 
+
+    gl.mineUniformMatrix2fv = function( location, value ) {
         gl.uniformMatrix2fv( location, false, value );
     };
-    gl.mineUniformMatrix3fv = function( location, value ) { 
+    gl.mineUniformMatrix3fv = function( location, value ) {
         gl.uniformMatrix3fv( location, false, value );
     };
-    gl.mineUniformMatrix4fv = function( location, value ) { 
+    gl.mineUniformMatrix4fv = function( location, value ) {
         gl.uniformMatrix4fv.call( gl, location, false, value );
     };
 
@@ -81,7 +81,7 @@ var Renderer = function( canvas, width, height ) {
 Renderer.MAX_FRAGMENT_TEXTURE_UNITS = 1;
 Renderer.MAX_VERTEX_TEXTURE_UNITS = 2;
 Renderer.FLOAT_TEXTURE = 3;
-    
+
 Renderer.prototype = {
     constructor: Renderer,
     getParameter: function( query ) {
@@ -215,7 +215,7 @@ Renderer.prototype = {
 				type = this.gl.ELEMENT_ARRAY_BUFFER;
 				break;
 		}
-		
+
 		if ( !this.bufferObjects[ buffer.uid ] || buffer.needsUpdate ) {
 			this.updateBuffer( buffer );
             this.boundedBuffer = null;
@@ -247,7 +247,7 @@ Renderer.prototype = {
         var gl = this.gl;
         var target;
         var textureObject = gl.createTexture();
-        
+
         switch ( texture.origin ) {
             case texture.UPPER_LEFT_CORNER:
                 gl.pixelStorei( gl.UNPACK_FLIP_Y_WEBGL, true );
@@ -332,7 +332,7 @@ Renderer.prototype = {
                 break;
         }
         gl.bindTexture( target, null );
-        
+
         this.textureObjects[ texture.uid ] = textureObject;
     },
     updateTexture: function( texture ) {
@@ -356,7 +356,7 @@ Renderer.prototype = {
     },
     /*
      * This method binds a texture or a cubemap to the position specified.
-     * If the texture needs updateing then it is automatically updated. 
+     * If the texture needs updateing then it is automatically updated.
      * The position must be a number between 0 and the MAX_FRAGMENT_TEXTURE_UNITS.
      */
     bindTexture: function( texture, position ) {
@@ -446,7 +446,7 @@ Renderer.prototype = {
 //
 //        gl.bindRenderbuffer( gl.RENDERBUFFER, fb.depthAttachment );
 //        gl.renderbufferStorage( gl.RENDERBUFFER, gl.DEPTH_COMPONENT16, width, height );
-//        
+//
 //        gl.bindRenderbuffer( gl.RENDERBUFFER, null );
 //    },
     deleteShader: function( shader ) {
@@ -552,7 +552,7 @@ Renderer.prototype = {
                     program.uniforms[ info.name ].set = gl.mineUniformMatrix4fv;
             }
         }
-        
+
         attributeCount = gl.getProgramParameter( program, gl.ACTIVE_ATTRIBUTES );
         program.attributes = {};
         gl.useProgram( program );
@@ -636,7 +636,7 @@ Renderer.prototype = {
 		}
         var gl = this.gl;
 		var mode;
-		
+
         switch ( mesh.mode ) {
             case Mesh.POINTS:
                 mode = gl.POINTS;
@@ -660,12 +660,12 @@ Renderer.prototype = {
                 mode = gl.TRIANGLE_LOOP;
                 break;
         }
-		
+
         this.uploadShaderUniforms();
 		var shader = this.currentShader;
 
 		var program = this.programObjects[ shader.uid ];
-		
+
 		for ( var attribute in program.attributes ) {
 			var vertexAttribute = mesh.vertexAttributes[ attribute ];
 

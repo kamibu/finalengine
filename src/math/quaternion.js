@@ -78,12 +78,12 @@ Quaternion.prototype = {
     multiply: function( quaternion ) {
         var qax = this[ 0 ], qay = this[ 1 ], qaz = this[ 2 ], qaw = this[ 3 ];
         var qbx = quaternion[ 0 ], qby = quaternion[ 1 ], qbz = quaternion[ 2 ], qbw = quaternion[ 3 ];
-         
+
         this[ 0 ] = qax * qbw + qaw * qbx + qay * qbz - qaz * qby;
         this[ 1 ] = qay * qbw + qaw * qby + qaz * qbx - qax * qbz;
         this[ 2 ] = qaz * qbw + qaw * qbz + qax * qby - qay * qbx;
         this[ 3 ] = qaw * qbw - qax * qbx - qay * qby - qaz * qbz;
-        
+
         return this;
     },
     multiplyVector3: function( vector ) {
@@ -95,12 +95,12 @@ Quaternion.prototype = {
         var iy = qw * y + qz * x - qx * z;
         var iz = qw * z + qx * y - qy * x;
         var iw = -qx * x - qy * y - qz * z;
-        
+
         // calculate result * inverse this
         vector[ 0 ] = ix * qw + iw * -qx + iy * -qz - iz * -qy;
         vector[ 1 ] = iy * qw + iw * -qy + iz * -qx - ix * -qz;
         vector[ 2 ] = iz * qw + iw * -qz + ix * -qy - iy * -qx;
-        
+
         return vector;
     },
     toMatrix4: function( dest ) {

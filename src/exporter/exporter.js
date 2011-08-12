@@ -1,5 +1,5 @@
 function Exporter( resourcePath ) {
-    if ( resourcePath[ resourcePath.length - 1 ] !== '/'  ){ 
+    if ( resourcePath[ resourcePath.length - 1 ] !== '/'  ){
         resourcePath += '/';
     }
     this.resourcePath = resourcePath;

@@ -11,9 +11,9 @@ function assertIn( value ) {
         }
     }
     throw arguments[ arguments.length - 1 ];
-    
+
 }
 
 function debug_log( level, message ){
-    console.log( message );    
+    console.log( message );
 }

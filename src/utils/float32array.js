@@ -10,5 +10,5 @@ Object.defineProperty( Float32Array.prototype, "toArray", {
             ret[ l ] = this[ l ];
         }
         return ret;
-    } 
+    }
 } );

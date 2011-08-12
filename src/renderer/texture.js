@@ -46,13 +46,13 @@ Texture.prototype = {
     },
     setMinFilter: function( filter ) {
         /*DEBUG*/
-            assertIn( filter, Texture.NEAREST, 
-                              Texture.LINEAR, 
-                              Texture.NEAREST_MIPMAP_NEAREST, 
-                              Texture.NEAREST_MIPMAP_LINEAR, 
-                              Texture.LINEAR_MIPMAP_NEAREST, 
-                              Texture.LINEAR_MIPMAP_LINEAR, 
-                              'Unsupported minification filtering. ' + filter 
+            assertIn( filter, Texture.NEAREST,
+                              Texture.LINEAR,
+                              Texture.NEAREST_MIPMAP_NEAREST,
+                              Texture.NEAREST_MIPMAP_LINEAR,
+                              Texture.LINEAR_MIPMAP_NEAREST,
+                              Texture.LINEAR_MIPMAP_LINEAR,
+                              'Unsupported minification filtering. ' + filter
             );
         /*DEBUG_END*/
         this.minFilter = filter;

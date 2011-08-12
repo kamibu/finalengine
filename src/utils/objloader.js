@@ -4,28 +4,28 @@ define( function( require, exports, module ) {
         objCache: {},
         loadMtl: function( url, callback, renderer ) {
             var that = this;
-            
+
             if ( this.mtlCache[ url ] !== undefined ) {
                 // cache hit
                 callback( this.mtlCache[ url ] );
                 return;
             }
-            
+
             /*Find the base url in order to construct the path for the texture maps*/
             var baseUrl = url.substring( 0, url.lastIndexOf( '/' ) + 1 );
-            
+
             var matReq = new XMLHttpRequest();
             matReq.open( 'GET', url );
             matReq.onreadystatechange = function() {
                 if ( matReq.readyState == 4 ) {
                     //This map will hold an object for each material found in the mtl file
                     var materials = {};
-                    
+
                     /*Get the response and put each line in an array*/
                     var lines = matReq.responseText.split( '\n' );
-                    
+
                     var i, line, l = lines.length, currentMaterial;
-                    
+
                     /*Parse the file line by line*/
                     for ( i = 0; i < l; i++ ) {
                         /*Trim each line and split it in parts with whitespace as separator*/
@@ -64,7 +64,7 @@ define( function( require, exports, module ) {
                     //TODO: Fix this shit
                     var tex = renderer.createShader( 'textured' );
                     var solid = renderer.createShader( 'solid' );
-                    
+
                     for ( var material in materials ) {
                         if ( materials[ material ].diffuseTexture !== undefined ) {
                             var texture = materials[ material ].diffuseTexture;
@@ -84,13 +84,13 @@ define( function( require, exports, module ) {
         },
         loadOBJ: function( url, callback, renderer ) {
             var that = this;
-            
+
             if ( this.objCache[ url ] !== undefined ) {
                 // cache hit
                 callback( this.objCache[ url ] );
                 return;
             }
-            
+
             var baseUrl = url.substring( 0, url.lastIndexOf( '/' ) + 1 );
             var vReq = new XMLHttpRequest();
             vReq.open( 'GET', url );
@@ -99,11 +99,11 @@ define( function( require, exports, module ) {
                     var data = vReq.responseText;
                     var lines = data.split( "\n" );
                     var i, j, line, activeMaterial, indicesIndex;
-                    
+
                     var vList = [];
                     var nList = [];
                     var tList = [];
-                    
+
                     var ret = {};
                     var materialsLoaded = true;
                     var materialCallback = function( materials ) {
@@ -116,7 +116,7 @@ define( function( require, exports, module ) {
                         that.objCache[ url ] = ret; // memoize
                         callback( ret );
                     };
-                    
+
                     ret[ 'default' ] = {
                         vertices: [],
                         normals: [],
@@ -127,7 +127,7 @@ define( function( require, exports, module ) {
                     };
                     ret[ 'default' ].material.set( 'v4Color', [ 1, 1, 1, 1 ] );
                     activeMaterial = ret[ 'default' ];
-                    
+
                     var lineCount = lines.length;
                     for ( i = 0; i < lineCount; ++i ){
                         line = lines[ i ].trim().split( /\s+/ );
@@ -164,7 +164,7 @@ define( function( require, exports, module ) {
                                     vertexIndex = ( line[ j ].split( '/' )[ 0 ] - 1 ) * 3;
                                     uvIndex = ( line[ j ].split( '/' )[ 1 ] - 1 ) * 2;
                                     normalIndex = ( line[ j ].split( '/' )[ 2 ] - 1 ) * 3;
-                                    
+
                                     activeMaterial.vertices.push( vList[ vertexIndex ], vList[ vertexIndex  + 1 ], vList[ vertexIndex  + 2 ] );
                                     activeMaterial.uvcoords.push( tList[ uvIndex ], tList[ uvIndex  + 1 ] );
                                     activeMaterial.normals.push( nList[normalIndex ], nList[ normalIndex + 1 ], nList[ normalIndex + 2 ] );
@@ -174,25 +174,25 @@ define( function( require, exports, module ) {
                                     vertexIndex = ( line[ 3 ].split( '/' )[ 0 ] - 1 ) * 3;
                                     uvIndex = ( line[ 3 ].split( '/' )[ 1 ] - 1 ) * 2;
                                     normalIndex = ( line[ 3 ].split( '/' )[ 2 ] - 1 ) * 3;
-                                    
+
                                     activeMaterial.vertices.push( vList[ vertexIndex ], vList[ vertexIndex  + 1 ], vList[ vertexIndex  + 2 ] );
                                     activeMaterial.uvcoords.push( tList[ uvIndex ], tList[ uvIndex  + 1 ] );
                                     activeMaterial.normals.push( nList[normalIndex ], nList[ normalIndex + 1 ], nList[ normalIndex + 2 ] );
                                     activeMaterial.indices.push( activeMaterial.indexIndex++ );
-                                    
+
                                     vertexIndex = ( line[ 4 ].split( '/' )[ 0 ] - 1 ) * 3;
                                     uvIndex = ( line[ 4 ].split( '/' )[ 1 ] - 1 ) * 2;
                                     normalIndex = ( line[ 4 ].split( '/' )[ 2 ] - 1 ) * 3;
-                                    
+
                                     activeMaterial.vertices.push( vList[ vertexIndex ], vList[ vertexIndex  + 1 ], vList[ vertexIndex  + 2 ] );
                                     activeMaterial.uvcoords.push( tList[ uvIndex ], tList[ uvIndex  + 1 ] );
                                     activeMaterial.normals.push( nList[normalIndex ], nList[ normalIndex + 1 ], nList[ normalIndex + 2 ] );
                                     activeMaterial.indices.push( activeMaterial.indexIndex++ );
-                                    
+
                                     vertexIndex = ( line[ 1 ].split( '/' )[ 0 ] - 1 ) * 3;
                                     uvIndex = ( line[ 1 ].split( '/' )[ 1 ] - 1 ) * 2;
                                     normalIndex = ( line[ 1 ].split( '/' )[ 2 ] - 1 ) * 3;
-                                    
+
                                     activeMaterial.vertices.push( vList[ vertexIndex ], vList[ vertexIndex  + 1 ], vList[ vertexIndex  + 2 ] );
                                     activeMaterial.uvcoords.push( tList[ uvIndex ], tList[ uvIndex  + 1 ] );
                                     activeMaterial.normals.push( nList[normalIndex ], nList[ normalIndex + 1 ], nList[ normalIndex + 2 ] );

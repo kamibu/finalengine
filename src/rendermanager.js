@@ -1,7 +1,7 @@
 function RenderManager() {
     this.renderer = new Renderer();
     this.forcedMaterial = null;
-    
+
     this.globalUniformCache = {
         Time: Date.now(),
         ProjectionMatrix: new Matrix4(),
@@ -67,7 +67,7 @@ RenderManager.prototype = {
 
         //Sort drawables by material
         bucket.sort( function( a, b ) {
-            return a.material.uid - b.material.uid;    
+            return a.material.uid - b.material.uid;
         } );
 
         var l = bucket.length;
@@ -75,7 +75,7 @@ RenderManager.prototype = {
             var currentDrawable = bucket[ l ];
             currentDrawable.onBeforeRender( camera );
             currentDrawable.getMatrix( g.WorldMatrix );
-            
+
             var material = currentDrawable.material;
             for ( var engineParameter in material.engineParameters ) {
                 material.set( engineParameter, this.getParameter( engineParameter ) );

@@ -3,10 +3,10 @@ function Shader() {
 
     this.vertexSource = '';
     this.fragmentSource = '';
-	
+
     this.uniforms = {};
 	this.attributes = {};
-    
+
     this.needsUpdate = false;
 }
 

@@ -1,6 +1,6 @@
 testcase = new Testcase();
 
-// test that after appendChild and removeChild 
+// test that after appendChild and removeChild
 // parent-child relations are correct
 
 testcase.appendChild = function() {
@@ -105,7 +105,7 @@ testcase.getAbsoluteScale = function() {
 testcase.setAbsolutePosition = function() {
     var node = new Node();
 
-    node.setAbsolutePosition( [ 10, 0, 5 ] ); 
+    node.setAbsolutePosition( [ 10, 0, 5 ] );
     this.assertArrayEquals( node.getAbsolutePosition(), [ 10, 0, 5 ], 'basic setAbsolutePosition' );
 
     node.setAbsolutePosition( [ 0, 0, 0 ] );
@@ -130,12 +130,12 @@ testcase.setAbsoluteScale = function() {
 
 testcase.getAbsoluteMatrix = function() {
     var root = new Node();
-    
-    var p1 = new Node(); 
+
+    var p1 = new Node();
     p1.setPosition( [ 2, -4, 1 ] );
     var m1 = p1.getAbsoluteMatrix();
     root.appendChild( p1 );
-    
+
     this.assertArrayEquals( p1.getAbsoluteMatrix(), m1, 'combine position transformation with identity' );
 
     var p2 = new Node();

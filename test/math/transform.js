@@ -69,10 +69,10 @@ testcase.setOrientation = function() {
     var transform = new Transform();
 
     transform.setOrientation( [ 0.5, 0.5, 0.5, 0.5 ] );
-    this.assertArrayEquals( transform.getMatrix().subarray( 0, 12 ), 
-                            [ 0, 0, 1, 0, 
-                              1, 0, 0, 0, 
-                              0, 1, 0, 0 ], 
+    this.assertArrayEquals( transform.getMatrix().subarray( 0, 12 ),
+                            [ 0, 0, 1, 0,
+                              1, 0, 0, 0,
+                              0, 1, 0, 0 ],
                               'setOrientation' );
 
     transform.setOrientation( [ 0, 0, 0, 1 ] );
@@ -173,7 +173,7 @@ testcase.getMatrix = function() {
     m[ 4 ] = 2;
     m[ 9 ] = 2;
 
-    this.assertArrayEquals( transform.getMatrix(), m, 'getMatrix after having changed position, orientation and scale' ); 
+    this.assertArrayEquals( transform.getMatrix(), m, 'getMatrix after having changed position, orientation and scale' );
 };
 
 testcase.getInverseMatrix = function() {
@@ -194,12 +194,12 @@ testcase.getInverseMatrix = function() {
 testcase.combineWith = function() {
     var root = new Transform();
     root.setIdentity();
-    
-    var p1 = new Transform(); 
+
+    var p1 = new Transform();
     p1.setPosition( [ 2, -4, 1 ] );
     var m1 = p1.getMatrix();
     p1.combineWith( root );
-    
+
     this.assertArrayEquals( p1.getMatrix(), m1, 'combine position transformation with identity' );
 
     var p2 = new Transform();
@@ -224,7 +224,7 @@ testcase.combineWith = function() {
     o2.setOrientation( [ 0.5, 0.5, 0.5, 0.5 ] );
     o2.combineWith( o1 );
 
-    this.assertArrayEquals( o2.getMatrix(), 
+    this.assertArrayEquals( o2.getMatrix(),
                             [ 0, 1, 0, 0,
                               0, 0, 1, 0,
                               1, 0, 0, 0,
@@ -235,7 +235,7 @@ testcase.combineWith = function() {
     c1.set( o2 );
     c1.combineWith( p2 );
 
-    this.assertArrayEquals( c1.getMatrix(), 
+    this.assertArrayEquals( c1.getMatrix(),
                             [ 0, 1, 0, 0,
                               0, 0, 1, 0,
                               1, 0, 0, 0,
@@ -246,7 +246,7 @@ testcase.combineWith = function() {
     c2.setScale( 2 );
     c2.combineWith( c1 );
 
-    this.assertArrayEquals( c2.getMatrix(), 
+    this.assertArrayEquals( c2.getMatrix(),
                             [ 0, 2, 0, 0,
                               0, 0, 2, 0,
                               2, 0, 0, 0,

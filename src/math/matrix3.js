@@ -65,7 +65,7 @@ Matrix3.prototype = {
     toQuaternion: function() {
 //        var ret = new Quaternion();
 //        if ( this[ 0 ] > this[ 4 ] && this[ 0 ] > this[ 8 ] ) {
-//            var r = 
+//            var r =
 //
 //        }
 //        else if ( this[ 4 ] > this[ 0 ] && this[ 4 ] > this[ 8 ] ) {

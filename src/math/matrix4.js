@@ -110,13 +110,13 @@ Matrix4.prototype = {
         return dest;
     },
     transpose: function(){
-        var a01 = this[ 1 ], 
-            a02 = this[ 2 ], 
+        var a01 = this[ 1 ],
+            a02 = this[ 2 ],
             a03 = this[ 3 ],
-            a12 = this[ 6 ], 
+            a12 = this[ 6 ],
             a13 = this[ 7 ],
             a23 = this[ 11 ];
-        
+
         this[ 1 ] = this[ 4 ];
         this[ 2 ] = this[ 8 ];
         this[ 3 ] = this[ 12 ];
@@ -151,7 +151,7 @@ Matrix4.prototype = {
         var a10 = this[ 4 ], a11 = this[ 5 ], a12 = this[ 6 ], a13 = this[ 7 ];
         var a20 = this[ 8 ], a21 = this[ 9 ], a22 = this[ 10 ], a23 = this[ 11 ];
         var a30 = this[ 12 ], a31 = this[ 13 ], a32 = this[ 14 ], a33 = this[ 15 ];
-        
+
         var b00 = a00 * a11 - a01 * a10;
         var b01 = a00 * a12 - a02 * a10;
         var b02 = a00 * a13 - a03 * a10;
@@ -164,10 +164,10 @@ Matrix4.prototype = {
         var b09 = a21 * a32 - a22 * a31;
         var b10 = a21 * a33 - a23 * a31;
         var b11 = a22 * a33 - a23 * a32;
-        
+
         // Calculate the determinant (inlined to avoid double-caching)
         var invDet = 1 / ( b00 * b11 - b01 * b10 + b02 * b09 + b03 * b08 - b04 * b07 + b05 * b06 );
-        
+
         this[ 0 ] = ( a11 * b11 - a12 * b10 + a13 * b09 ) * invDet;
         this[ 1 ] = ( -a01 * b11 + a02 * b10 - a03 * b09 ) * invDet;
         this[ 2 ] = ( a31 * b05 - a32 * b04 + a33 * b03 ) * invDet;
@@ -192,12 +192,12 @@ Matrix4.prototype = {
         var a10 = this[ 4 ], a11 = this[ 5 ], a12 = this[ 6 ], a13 = this[ 7 ];
         var a20 = this[ 8 ], a21 = this[ 9 ], a22 = this[ 10 ], a23 = this[ 11 ];
         var a30 = this[ 12 ], a31 = this[ 13 ], a32 = this[ 14 ], a33 = this[ 15 ];
-        
+
         var b00 = matrix[ 0 ], b01 = matrix[ 1 ], b02 = matrix[ 2 ], b03 = matrix[ 3 ];
         var b10 = matrix[ 4 ], b11 = matrix[ 5 ], b12 = matrix[ 6 ], b13 = matrix[ 7 ];
         var b20 = matrix[ 8 ], b21 = matrix[ 9 ], b22 = matrix[ 10 ], b23 = matrix[ 11 ];
         var b30 = matrix[ 12 ], b31 = matrix[ 13 ], b32 = matrix[ 14 ], b33 = matrix[ 15 ];
-        
+
         this[ 0 ] = b00 * a00 + b01 * a10 + b02 * a20 + b03 * a30;
         this[ 1 ] = b00 * a01 + b01 * a11 + b02 * a21 + b03 * a31;
         this[ 2 ] = b00 * a02 + b01 * a12 + b02 * a22 + b03 * a32;
@@ -227,12 +227,12 @@ Matrix4.prototype = {
     },
     multiplyVector4: function( vector ) {
         var x = vector[ 0 ], y = vector[ 1 ], z = vector[ 2 ], w = vector[ 3 ];
-        
+
         vector[ 0 ] = this[ 0 ] * x + this[ 4 ] * y + this[ 8 ] * z + this[ 12 ] * w;
         vector[ 1 ] = this[ 1 ] * x + this[ 5 ] * y + this[ 9 ] * z + this[ 13 ] * w;
         vector[ 2 ] = this[ 2 ] * x + this[ 6 ] * y + this[ 10 ] * z + this[ 14 ] * w;
         vector[ 3 ] = this[ 3 ] * x + this[ 7 ] * y + this[ 11 ] * z + this[ 15 ] * w;
-        
+
         return vector;
     },
     frustrum: function( left, right, bottom, top, near, far ) {

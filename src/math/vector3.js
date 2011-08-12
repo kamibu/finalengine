@@ -62,14 +62,14 @@ Vector3.prototype = {
     normalize: function() {
         var x = this[ 0 ], y = this[ 1 ], z = this[ 2 ];
         var len = Math.sqrt( x * x + y * y + z * z);
-        
+
         if ( !len ) {
             this[ 0 ] = 0;
             this[ 1 ] = 0;
             this[ 2 ] = 0;
             return this;
         }
-        
+
         len = 1 / len;
         this[ 0 ] = x * len;
         this[ 1 ] = y * len;
@@ -79,7 +79,7 @@ Vector3.prototype = {
     cross: function( vector ) {
         var x = this[ 0 ], y = this[ 1 ], z = this[ 2 ];
         var x2 = vector[ 0 ], y2 = vector[ 1 ], z2 = vector[ 2 ];
-        
+
         this[ 0 ] = y * z2 - z * y2;
         this[ 1 ] = z * x2 - x * z2;
         this[ 2 ] = x * y2 - y * x2;

@@ -15,7 +15,7 @@ function Camera() {
 
     this.projectionMatrix = new Matrix4();
 }
- 
+
 Camera.prototype = {
     constructor: Camera,
     setPerspective: function () {

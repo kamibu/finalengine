@@ -1,7 +1,7 @@
 function BoundingBox() {
     BoundingVolume.call( this );
     this.points = [
-        new Vector3(), new Vector3(), new Vector3(), new Vector3(), 
+        new Vector3(), new Vector3(), new Vector3(), new Vector3(),
         new Vector3(), new Vector3(), new Vector3(), new Vector3()
     ];
 }
@@ -12,7 +12,7 @@ BoundingBox.prototype = {
         var l = vertices.length - 1;
         var min = vertices[ l ].clone();
         var max = vertices[ l ].clone();
-        
+
         while ( l-- ) {
             var point = vertices[ l ];
             var i = 3;
@@ -35,7 +35,7 @@ BoundingBox.prototype = {
         this.points[ 6 ].set( [ max[ 0 ], max[ 1 ], min[ 2 ] ] );
         this.points[ 7 ].set( [ max[ 0 ], max[ 1 ], max[ 2 ] ] );
         return this.points;
-    
+
     },
     getPoints: function() {
         var p = [];
@@ -57,7 +57,7 @@ BoundingBox.prototype = {
                 var res = ( new Rect() ).rectInterferenceArea( this.getPoints(), boundingVolume.getPoints() );
                 return res;
             }
-        }    
+        }
     }
 };
 

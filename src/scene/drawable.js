@@ -6,7 +6,7 @@ function Drawable() {
 Drawable.prototype = {
     constructor: Drawable,
     onBeforeRender: function( camera ) {
-        
+
     },
     getExportData: function( exporter ) {
         var ret = {};
@@ -21,7 +21,7 @@ Drawable.prototype = {
         this.Node_setImportData( importer, data.parent );
         var self = this;
         importer.alsoLoad( data.mesh, function( mesh ) {
-            self.mesh = mesh;  
+            self.mesh = mesh;
         } );
         importer.alsoLoad( data.material, function( material ) {
             self.material = material;

@@ -26,19 +26,19 @@ Object.defineProperty( Function.prototype, "extend", {
                 continue;
             }
             
-            /* If a parent method is overrided provide a way to call it by setting 
+            /* If a parent method is overrided provide a way to call it by setting
              * the ParentClass_overridedMethod method on child's prototype
              */
             if ( childPrototype[ method ] ) {
                 this.prototype[ parent.name + '_' + method ] = parent.prototype[ method ];
             }
             /* TODO Test if setting non-overrided parent methods on the child prototype is nessesary.
-             * Only reason is for performance in method name resolution, otherwise they are already 
+             * Only reason is for performance in method name resolution, otherwise they are already
              * available because child.prototype.__proto__ == parent.prototype
              */
             else {
                 this.prototype[ method ] = parent.prototype[ method ];
             }
         }
-    } 
+    }
 } );

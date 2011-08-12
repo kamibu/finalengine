@@ -10,20 +10,20 @@ define( function( require, exports, module ) {
                 p = arguments[ 1 ];
                 m = arguments[ 2 ];
             }
-        
+
             //p parallhloi, p > 1
             //m meshmbrinoi
-            
+
             if ( p < 2 ) {
                 return false;
             }
-            
+
             var model = {
                 vertices: [],
                 //normals: [],
                 indices: []
             };
-            
+
             var prev = function( x, m ) {
                 if ( x === 0 ) {
                     return ( m - 1 );
@@ -32,8 +32,8 @@ define( function( require, exports, module ) {
                     return ( x -1 );
                 }
             };
-            
-            var y, x, z, r,cnt = 0, cnt2 = 0;		
+
+            var y, x, z, r,cnt = 0, cnt2 = 0;
             for ( var i = 1; i < p-1; i++ ) { // end points are missing
                 y = R*Math.sin( -Math.PI/2 + i*Math.PI/( p - 1 ) );
                 r = R*Math.cos( -Math.PI/2 + i*Math.PI/( p - 1 ) );
@@ -41,31 +41,31 @@ define( function( require, exports, module ) {
                 for ( var k = 0; k < m; k++ ) {
                     x = r*Math.cos( 2*Math.PI*k/ m );
                     z = r*Math.sin( 2*Math.PI*k/ m );
-                    //console.log( x, z ); 
+                    //console.log( x, z );
                     model.vertices[ cnt ] = x;
                     model.vertices[ cnt+1 ] = y;
                     model.vertices[ cnt+2 ] = z;
                     cnt = cnt+3;
                 }
                 //make the triangle
-                
-                
+
+
                 if ( i > 1 ) {
                     var st = ( i - 2 )*m;
-                    for ( x = 0; x < m; x++ ) {					
+                    for ( x = 0; x < m; x++ ) {
                         model.indices[ cnt2 ] = st + x;
                         model.indices[ cnt2+1 ] = st + prev( x, m ) + m;
                         model.indices[ cnt2+2 ] = st + x + m;
                         cnt2  += 3;
-                        
+
                         model.indices[ cnt2 ] = st + x;
                         model.indices[ cnt2+1 ] = st + prev( x, m );
                         model.indices[ cnt2+2 ] = st + prev( x, m ) + m;
-                        cnt2 += 3;					
-                    }				
+                        cnt2 += 3;
+                    }
                 }
             }
-            
+
             model.vertices[ cnt ] = 0;
             model.vertices[ cnt+1 ] = -R;
             model.vertices[ cnt+2 ] = 0;
@@ -75,16 +75,16 @@ define( function( require, exports, module ) {
             model.vertices[ cnt+1 ] = R;
             model.vertices[ cnt+2 ] = 0;
             cnt += 3;
-            
+
             var top = down + 1;
             for ( x = 0; x < m; x++ ) {
                 model.indices[ cnt2 ] = down;
                 model.indices[ cnt2+1 ] = prev( x, m );
                 model.indices[ cnt2+2 ] = x;
                 cnt2 += 3;
-                
+
                 model.indices[ cnt2 ] = down - m + x;
-                model.indices[ cnt2+1 ] = down - m + prev( x, m );		
+                model.indices[ cnt2+1 ] = down - m + prev( x, m );
                 model.indices[ cnt2+2 ] = top;
                 cnt2 += 3;
             }
@@ -123,15 +123,15 @@ define( function( require, exports, module ) {
                 x1, y2, z1,
                 x2, y2, z2,
                 x2, y2, z1,
-                
+
                 x1, y2, z1,
                 x2, y1, z1,
                 x1, y1, z1,
-                
+
                 x1, y2, z1,
                 x2, y2, z1,
                 x2, y1, z1,
-                
+
                 x1, y1, z2,
                 x2, y1, z2,
                 x2, y2, z2,
@@ -141,7 +141,7 @@ define( function( require, exports, module ) {
                 x2, y2, z2
             ];
             var indices = [];
-            
+
             for ( var i = 0; i < vertices.length / 3; ++i ) {
                 indices.push( i );
             }
@@ -156,14 +156,14 @@ define( function( require, exports, module ) {
                 bx, by, bz,
                 cx, cy, cz,
                 AB, BC, N,
-                i, j, 
+                i, j,
                 normals = [];
 
             // default normal
             for ( i = 0; i < points.length / 3; ++i ) {
                 normals[ i ] = [];
             }
-            
+
             for ( var triangle = 0; triangle < indices.length / 3; ++triangle ) {
                 a = indices[ triangle * 3 + 0 ];
                 b = indices[ triangle * 3 + 1 ];
@@ -181,7 +181,7 @@ define( function( require, exports, module ) {
                 AB = vec3.create( [ bx - ax, by - ay, bz - az ] );
                 BC = vec3.create( [ cx - bx, cy - by, cz - bz ] );
                 N = vec3.normalize( vec3.cross( AB, BC ) );
-                
+
                 normals[ a ].push( N );
                 normals[ b ].push( N );
                 normals[ c ].push( N );
@@ -246,52 +246,52 @@ define( function( require, exports, module ) {
                 0.5, 0.5, 0.5,
                 -0.5, 0.5, 0.5,
                 -0.5, -0.5, 0.5,
-                
+
                 -0.5, -0.5, 0.5,
                 0.5, -0.5, 0.5,
                 0.5, 0.5, 0.5,
-                
+
                 // back
                 -0.5, -0.5, -0.5,
                 -0.5, 0.5, -0.5,
                 0.5, 0.5, -0.5,
-                
+
                 0.5, 0.5, -0.5,
                 0.5, -0.5, -0.5,
                 -0.5, -0.5, -0.5,
-                
+
                 // left
                 -0.5, 0.5, 0.5,
                 -0.5, 0.5, -0.5,
                 -0.5, -0.5, -0.5,
-                
+
                 -0.5, -0.5, -0.5,
                 -0.5, -0.5, 0.5,
                 -0.5, 0.5, 0.5,
-                
+
                 // right
                 0.5, -0.5, -0.5,
                 0.5, 0.5, -0.5,
                 0.5, 0.5, 0.5,
-                
+
                 0.5, 0.5, 0.5,
                 0.5, -0.5, 0.5,
                 0.5, -0.5, -0.5,
-                
+
                 // top
                 0.5, 0.5, -0.5,
                 -0.5, 0.5, -0.5,
                 -0.5, 0.5, 0.5,
-                
+
                 -0.5, 0.5, 0.5,
                 0.5, 0.5, 0.5,
                 0.5, 0.5, -0.5,
-                
+
                 // bottom
                 -0.5, -0.5, 0.5,
                 -0.5, -0.5, -0.5,
                 0.5, -0.5, -0.5,
-                
+
                 0.5, -0.5, -0.5,
                 0.5, -0.5, 0.5,
                 -0.5, -0.5, 0.5
@@ -301,62 +301,62 @@ define( function( require, exports, module ) {
                 1, 1,
                 0, 1,
                 0, 0,
-                
+
                 0, 0,
                 1, 0,
                 1, 1,
-                
+
                 // back
                 0, 0,
                 0, 1,
                 1, 1,
-                
+
                 1, 1,
                 1, 0,
                 0, 0,
-                
+
                 // left
                 1, 1,
                 0, 1,
                 0, 0,
-                
+
                 0, 0,
                 1, 0,
                 1, 1,
-                
+
                 // right
                 1, 0,
                 1, 1,
                 0, 1,
-                
+
                 0, 1,
                 0, 0,
                 1, 0,
-                
+
                 // top
                 1, 1,
                 0, 1,
                 0, 0,
-                
+
                 0, 0,
                 1, 0,
                 1, 1,
-                
+
                 // bottom
                 0, 0,
                 0, 1,
                 1, 1,
-                
+
                 1, 1,
                 1, 0,
                 0, 0
             ];
             var indices = [];
-            
+
             for ( var i = 0; i < vertices.length / 3; ++i ) {
                 indices.push( i );
             }
-            
+
             return {
                 vertices: vertices,
                 indices:  indices,
@@ -367,14 +367,14 @@ define( function( require, exports, module ) {
             var c = document.createElement( 'canvas' );
             c.width = 100;
             c.height = 100;
-            
+
             var s = c.getContext( '2d' );
-            
+
             s.fillStyle = 'white';
             s.fillRect( 0, 0, 100, 100 );
             s.strokeStyle = "black";
             s.strokeText( text, 0, 0 );
-            
+
             return c;
         },
         genSphericalUVCoords: function( vertices ) {
@@ -388,7 +388,7 @@ define( function( require, exports, module ) {
             center[ 0 ] /= vertexCount;
             center[ 1 ] /= vertexCount;
             center[ 2 ] /= vertexCount;
-            
+
             var temp = [ 0, 0, 0 ];
             var uvcoords = [];
             for( i = 0; i < vertexCount; ++i ) {

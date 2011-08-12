@@ -39,14 +39,14 @@ Color.prototype = {
     fromHSL: function( h, s, l ) {
         function hueToRgb( m1, m2, hue ) {
             var v;
-            
+
             if ( hue < 0 ) {
                 hue += 1;
             }
             else if ( hue > 1 ) {
                 hue -= 1;
             }
-            
+
             if ( 6 * hue < 1 ) {
                 v = m1 + (m2 - m1) * hue * 6;
             }
@@ -59,13 +59,13 @@ Color.prototype = {
             else {
                 v = m1;
             }
-            
+
             return v;
         }
-        
+
         var m1, m2, hue;
         var r, g, b;
-        
+
         if ( s === 0 ) {
             this[ 0 ] = this[ 1 ] = this[ 2 ] = l;
         }

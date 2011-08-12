@@ -25,10 +25,10 @@ var files = [
     'renderer/texture.js',
     'renderer/mesh.js',
     'renderer/shader.js',
-    
+
     'bounding/volume.js',
     'bounding/sphere.js',
-    'bounding/box.js',    
+    'bounding/box.js',
 
     'scene/scene.js',
     'scene/node.js',

@@ -2,7 +2,7 @@ var Billboard = function() {
 };
 
 var square = utils.makeSquare( 0, 0, 1, 1 );
-Billboard.mesh = new Mesh( square.vertices, square.indices ); 
+Billboard.mesh = new Mesh( square.vertices, square.indices );
 
 
 Billboard.prototype.setText = function( text ) {
@@ -15,7 +15,7 @@ Billboard.prototype.setText = function( text ) {
     sc.textBaseline = 'top';
     sc.font = 'bold ' + textHeight + 'px "Helvetica"';
     var textWidth = sc.measureText( text ).width;
-    
+
     var c2 = document.createElement( 'canvas' );
     c2.width = TEXTURE_WIDTH;
     c2.height = TEXTURE_WIDTH;
@@ -28,7 +28,7 @@ Billboard.prototype.setText = function( text ) {
     //background
     s.fillStyle = 'rgba( 1, 0, 0, 1 )';
     s.fillRect( 0, 0, c2.width, c2.height );
-    
+
     //text fill
     s.fillStyle = 'white';
     s.fillText( text, 3, 0 );

@@ -58,8 +58,8 @@ BoundingSphere.prototype = {
                 //sphere against rectangle
                 //TODO
             }
-        }    
-    }   
+        }
+    }
 };
 
 BoundingSphere.extend( BoundingVolume );

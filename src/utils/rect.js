@@ -3,7 +3,7 @@ function Rect() {
 
 Rect.prototype = {
     rectInterfere : function( rect1, rect2  ) {
-        return !( rect1[1] > rect2[3] || //1bottom > 2top 
+        return !( rect1[1] > rect2[3] || //1bottom > 2top
                   rect2[1] > rect1[3] || //2bottom > 1top
                   rect1[0] > rect2[2] || //1left > 2right
                   rect2[0] > rect1[2] ); // 2left > 1right
@@ -53,7 +53,7 @@ Rect.prototype = {
         return true;
     },
     parallepipedInterfereArea : function( box1, box2, pos1, pos2 ) {
-	    var i, p1 = [], p2 = [], 
+	    var i, p1 = [], p2 = [],
         ind = [ 0,1,2,
                 1,2,3,
                 0,1,4,
@@ -76,7 +76,7 @@ Rect.prototype = {
 		    for ( var u = 0; u < ind.length; u += 3 ) {
 			    if ( areTriesColliding( [ p1[ ind[i+0] ], p1[ ind[i+1] ], p1[ ind[i+2] ] ],
 								    [ p2[ ind[u+0] ], p2[ ind[u+1] ], p2[ ind[u+2] ] ] ) ) {
-				    return [ [ p1[ ind[i+0] ], p1[ ind[i+1] ], p1[ ind[i+2] ] ], 
+				    return [ [ p1[ ind[i+0] ], p1[ ind[i+1] ], p1[ ind[i+2] ] ],
 						     [ p2[ ind[u+0] ], p2[ ind[u+1] ], p2[ ind[u+2] ] ] ];
 			    }
 		    }
@@ -86,7 +86,7 @@ Rect.prototype = {
     areTriesColliding : function( tri1, tri2 ) {
 	    if ( tri1.length  != 3 || tri2.length != 3 ) {
 		    return false;
-	    }		
+	    }
 	    var allPoints = [];
 	    allPoints = tri1.concat( tri2 );
 	    for( var i = 0; i < 6; i++  ) {
@@ -94,7 +94,7 @@ Rect.prototype = {
 			    for ( var j = u+1; j < 6; j++ ) {
 				    if ( this.isSeperatingPlane( [ allPoints[ i ], allPoints[ u ], allPoints[ j ] ], tri1, tri2 ) ) {
 					    return false;
-				    }	
+				    }
 			    }
 		    }
 	    }
@@ -121,7 +121,7 @@ Rect.prototype = {
         }
         for ( i = 0; i < points2.length; i++ ) {
             temp = dian3.dot( normal, dian3.subtract( points2[i], tri[0] ) );
-            
+
             if ( temp === 0 ) {
                 temp = "und";
                 continue;

@@ -1,6 +1,6 @@
 function TestView( testcase ) {
     $( document.body ).append( '<div id="test"><span onclick="$( \"#test\" ).hide(); style="color: white; text-decoration: underline; font-weight: bold; position: absolute; right: 10%; "></span><ul class="runs"></ul></div>' );
-    
+
     for ( var i in testcase.reports ) {
         var run = testcase.reports[ i ];
         this.printReport( run );

@@ -8,17 +8,17 @@ function Skeleton() {
 Skeleton.prototype = {
     calculateMatrices: function() {
         var mats = [];
-        
+
         function traverseTree( root ) {
             mats[ root.id ] = calcNodeMatrix( mat4.identity( [] ), root.getPosition(), root.getOrientation() );
             traverseNode( root );
-            
+
             var l = mats.length;
             for( var i = 0; i < l; ++i ) {
                 mats.push.apply( mats, mats.shift() );
             }
         }
-        
+
         function calcNodeMatrix( parentMat, position, orientation ) {
             var T, R, result;
             T = [];
@@ -35,7 +35,7 @@ Skeleton.prototype = {
             mat4.multiply( parentMat, R, result );
             return result;
         }
-        
+
         function traverseNode( node ) {
             var id, i, T, R, result, l, pos, child;
             l = node.children.length;
@@ -43,11 +43,11 @@ Skeleton.prototype = {
                 child = node.children[ i ];
                 mats[ child.id ] = calcNodeMatrix( mats[ node.id ], child.getPosition(), child.getOrientation() );
                 traverseNode( child );
-            }            
+            }
         }
-        
+
         traverseTree( root );
-        
+
         return new Float32Array( mats );
     }
 };
