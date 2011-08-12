@@ -14,7 +14,6 @@ math/quaternion.js
 math/transform.js
 
 utils/tempvars.js
-utils/bounds.js
 utils/RequestAnimationFrame.js
 
 renderer/renderer.js

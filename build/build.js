@@ -1,11 +1,17 @@
 //JSHint Options
 var options = {
-    curly: true,
-    immed: true,
-    newcap: true,
-    undef: true,
-    browser: true,
-    jquery: true
+    browser    :  true,
+    curly      :  true,
+    devel      :  true,
+    immed      :  true,
+    jquery     :  true,
+    newcap     :  true,
+    noarg      :  true,
+    noempty    :  true,
+    proto      :  true,
+    regexdash  :  true,
+    trailing   :  true,
+    undef      :  true
 }
 
 var JSHINT = require( './jshint' ).JSHINT;
