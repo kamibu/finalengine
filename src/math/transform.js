@@ -12,23 +12,19 @@ Transform.prototype = {
         this.position.set( transform.position );
         this.orientation.set( transform.orientation );
         this.scale = transform.scale;
-        this.invalidate();
-        return this;
+        return this.invalidate();
     },
     setPosition: function( position ) {
         this.position.set( position );
-        this.invalidate();
-        return this;
+        return this.invalidate();
     },
     setOrientation: function( orientation ) {
         this.orientation.set( orientation );
-        this.invalidate();
-        return this;
+        return this.invalidate();
     },
     setScale: function( scale ) {
         this.scale = scale;
-        this.invalidate();
-        return this;
+        return this.invalidate();
     },
     getPosition: function( dest ) {
         if ( !dest ) {
@@ -49,8 +45,7 @@ Transform.prototype = {
         this.position.set( [ 0, 0, 0 ] );
         this.orientation.set( [ 0, 0, 0, 1 ] );
         this.scale = 1;
-        this.invalidate();
-        return this;
+        return this.invalidate();
     },
     combineWith: function( transform ) {
         TempVars.lock();
@@ -60,10 +55,9 @@ Transform.prototype = {
         p.scale( this.scale );
         this.position.add( p );
         this.orientation.multiply( transform.orientation );
-        this.invalidate();
-        
         TempVars.release();
-        return this;
+
+        return this.invalidate();
     },
     getMatrix: function( dest ) {
         if ( !dest ) {
@@ -73,6 +67,16 @@ Transform.prototype = {
             this.update();
         }
         return dest.set( this.matrix );
+    },
+    setMatrix: function( matrix ) {
+        TempVars.lock();
+        var mat = TempVars.getMatrix4().set( matrix );
+        this.setPosition( mat.getTranslation( TempVars.getVector3() ) );
+        var scale = mat.getScale;
+        this.setScale( scale );
+        this.setOrientation( mat.toMatrix3( TempVars.getMatrix3() ).toQuaternion( TempVars.getQuaternion() ) );
+        TempVars.release();
+        return this.invalidate();
     },
     getInverseMatrix: function( dest ) {
         if ( !dest ) {
@@ -108,8 +112,10 @@ Transform.prototype = {
         mat[ 13 ] = pos[ 1 ];
         mat[ 14 ] = pos[ 2 ];
         this.needsUpdate = false;
+        return this;
     },
     invalidate: function() {
         this.needsUpdate = true;
+        return this;
     }
 };

@@ -1,7 +1,6 @@
-/*jshint sub:true */
 function Matrix4( data ) {
     /* Float32Array does not implement call method in chrome.
-     * __proto__ hacking to the resque
+     * prototype hacking to the resque
      */
     if ( Float32Array.call ) {
         Float32Array.call( this, 16 );
@@ -10,9 +9,11 @@ function Matrix4( data ) {
         }
     }
     else {
+        var old = Float32Array.prototype;
+        Float32Array.prototype = Matrix4.prototype;
         var ret = new Float32Array( 16 );
+        Float32Array.prototype = old;
 
-        ret[ '__proto__' ]  = Matrix4.prototype;
         if ( data ) {
             ret.set( data );
         }
@@ -81,6 +82,32 @@ Matrix4.prototype = {
         this[ 14 ] = 0;
         this[ 15 ] = 1;
         return this;
+    },
+    getTranslation: function( dest ) {
+        if ( !dest ) {
+            dest = new Vector3();
+        }
+        dest[ 0 ] = this[ 12 ];
+        dest[ 1 ] = this[ 13 ];
+        dest[ 2 ] = this[ 14 ];
+        return dest;
+    },
+    getRotationMatrix: function( dest ) {
+        if ( !dest ) {
+            dest = new Matrix3();
+        }
+        dest[ 0 ] = this[ 0 ];
+        dest[ 1 ] = this[ 1 ];
+        dest[ 2 ] = this[ 2 ];
+
+        dest[ 3 ] = this[ 4 ];
+        dest[ 4 ] = this[ 5 ];
+        dest[ 5 ] = this[ 6 ];
+
+        dest[ 6 ] = this[ 8 ];
+        dest[ 7 ] = this[ 9 ];
+        dest[ 8 ] = this[ 10 ];
+        return dest;
     },
     transpose: function(){
         var a01 = this[ 1 ], 

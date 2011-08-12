@@ -1,7 +1,6 @@
-/*jshint sub:true */
 function Quaternion( data ) {
     /* Float32Array does not implement call method in chrome.
-     * __proto__ hacking to the resque
+     * prototype hacking to the resque
      */
     if ( Float32Array.call ) {
         Float32Array.call( this, 4 );
@@ -12,10 +11,12 @@ function Quaternion( data ) {
         }
     }
     else {
+        var old = Float32Array.prototype;
+        Float32Array.prototype = Quaternion.prototype;
         var ret = new Float32Array( 4 );
-        ret[ 3 ] = 1;
+        Float32Array.prototype = old;
 
-        ret[ '__proto__' ]  = Quaternion.prototype;
+        ret[ 3 ] = 1;
         if ( data ) {
             ret.set( data );
         }

@@ -1,7 +1,6 @@
-/*jshint sub:true */
 function Vector3( data ) {
     /* Float32Array does not implement call method in chrome.
-     * __proto__ hacking to the resque
+     * prototype hacking to the resque
      */
     if ( Float32Array.call ) {
         Float32Array.call( this, 3 );
@@ -10,9 +9,11 @@ function Vector3( data ) {
         }
     }
     else {
+        var old = Float32Array.prototype;
+        Float32Array.prototype = Vector3.prototype;
         var ret = new Float32Array( 3 );
+        Float32Array.prototype = old;
 
-        ret[ '__proto__' ]  = Vector3.prototype;
         if ( data ) {
             ret.set( data );
         }
