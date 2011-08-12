@@ -53,9 +53,9 @@ Importer.prototype = {
         }
         //Careful with eval statements..
         if ( /[a-zA-Z_$][0-9a-zA-Z_$]*/.test( object[ 'class' ] ) ) {
-            var objectClass = eval( object[ 'class' ] );
-            if ( typeof objectClass == 'function' ) {
-                var ret = new objectClass();
+            var ObjectClass = eval( object[ 'class' ] );
+            if ( typeof ObjectClass == 'function' ) {
+                var ret = new ObjectClass();
                 ret.setImportData( this, object.data );
                 return ret;
             }

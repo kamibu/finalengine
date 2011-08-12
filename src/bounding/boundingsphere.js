@@ -55,12 +55,13 @@ BoundingSphere.prototype = {
                 var distance = temp.set( this.position ).subtract( boundingVolume.position ).length();
                 var R = this.radius + boundingVolume.radius;
                 TempVars.release();
-                return dist <= R;
+
+                return distance <= R;
             }
-            else if ( boundingVolume.type == 2 ) {
+            // else if ( boundingVolume.type == 2 ) {
                 //sphere against rectangle
                 //TODO
-            }
+            // }
         }
     }
 };

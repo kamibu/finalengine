@@ -21,10 +21,13 @@ Application.prototype = {
         snapToWindow();
         window.addEventListener( 'resize', snapToWindow, false );
 
-        (function renderLoop() {
+        function renderLoop() {
             self.renderManager.renderScene( self.scene, self.camera );
             window.requestAnimationFrame( renderLoop );
-        } )();
+        }
+
+        renderLoop();
+
         return this;
     }
 };

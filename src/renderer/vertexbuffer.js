@@ -23,7 +23,7 @@ VertexBuffer.prototype = {
         var d = this.buffer.data;
         var stride = this.stride || this.size;
         for ( var i = 0; i < s; i++ ) {
-            dest[ i ] = d[ offset + n * stride + i ];
+            dest[ i ] = d[ this.offset + n * stride + i ];
         }
         return dest;
     },

@@ -58,7 +58,8 @@ Testcase.prototype.assertArrayEquals = function( got, expected, description ) {
     var arrayToString = function() {
         var s = "";
         var l = this.length;
-        for ( i = 0; i < l; ++i ) {
+
+        for ( var i = 0; i < l; ++i ) {
             s += this[ i ];
             if ( s != l - 1 ) {
                 s += ",";

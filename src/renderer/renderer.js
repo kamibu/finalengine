@@ -1,5 +1,5 @@
 // extern
-var assert, debug_log, Buffer, Mesh, Shader, Texture;
+var assert, Buffer, Mesh, Shader, Texture, debug;
 
 /*
  * Renderer is the central point of the graphics library.
@@ -242,8 +242,7 @@ Renderer.prototype = {
         /*DEBUG*/
             assert( texture.constructor == Texture, 'Invalid type. texture must be a Texture instance' );
             if ( !texture.width.isPowerOfTwo() || !texture.height.isPowerOfTwo() ) {
-                debug_log( DEBUG_WARNING, 'Creating a texture which has non power of two dimentions.' );
-                assert( generateMipmap, 'Cannot use mipmaps in a texture with non power of two dimentions.' );
+                debug.log( debug.WARNING, 'Creating a texture which has non power of two dimentions.' );
             }
         /*DEBUG_END*/
 
@@ -595,15 +594,17 @@ Renderer.prototype = {
         programObject.lastTimeUsed = Date.now();
     },
     uploadShaderUniforms: function() {
+        var shader = this.currentShader;
+
         /*DEBUG*/
-            assert( this.currentShader, 'No shader to upload uniforms. Call useShader() before rendering anything' );
+            assert( shader, 'No shader to upload uniforms. Call useShader() before rendering anything' );
         /*DEBUG_END*/
         var programObject = this.programObjects[ shader.uid ];
         for ( var uniform in programObject.uniforms ) {
             /*DEBUG*/
                 assert( typeof shader.uniforms[ uniform ] != 'undefined', 'Uniform "' + uniform + '" is undefined! You must set a value.' );
             /*DEBUG_END*/
-            u = programObject.uniforms[ uniform ];
+            var u = programObject.uniforms[ uniform ];
             u.set( u.location, shader.uniforms[ uniform ] );
         }
 
@@ -633,7 +634,7 @@ Renderer.prototype = {
     render: function( mesh ) {
 		if ( !this.currentShader ) {
 			/*DEBUG*/
-				debug_log( 'ERROR', 'Tried to render without a shader. Call useShader() before rendering.' );
+				debug.log( debug.ERROR, 'Tried to render without a shader. Call useShader() before rendering.' );
 			/*DEBUG_END*/
 			return;
 		}

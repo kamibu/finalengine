@@ -10,10 +10,14 @@ function assertIn( value ) {
             return;
         }
     }
-    throw arguments[ arguments.length - 1 ];
-
+    throw arguments.pop();
 }
 
-function debug_log( level, message ){
-    console.log( message );
-}
+var debug = {
+    TRACE: 0,
+    WARNING: 1,
+    ERROR: 2,
+    log: function( level, message ) {
+        console.log( message );
+    }
+};

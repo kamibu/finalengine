@@ -4,6 +4,7 @@ var Matrix4, Renderer;
 function RenderManager() {
     this.renderer = new Renderer();
     this.forcedMaterial = null;
+    this.camera = null;
 
     this.globalUniformCache = {
         Time: Date.now(),
@@ -35,7 +36,7 @@ RenderManager.prototype = {
                 return g.WorldMatrix;
             case 'ViewProjectionMatrix':
                 if ( !g.ViewProjectionMatrix ) {
-                    g.ViewProjectionMatrix.set( camera.projectionMatrix ).multiply( g.ViewMatrix );
+                    g.ViewProjectionMatrix.set( this.camera.projectionMatrix ).multiply( g.ViewMatrix );
                 }
                 return g.ViewProjectionMatrix;
             case 'WorldViewMatrix':
@@ -51,6 +52,7 @@ RenderManager.prototype = {
         }
     },
     renderScene: function( scene, camera ) {
+        this.camera = camera;
         this.renderer.clear();
         var g = this.globalUniformCache;
         g.ProjectionMatrix.set( camera.projectionMatrix );
