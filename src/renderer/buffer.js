@@ -1,4 +1,7 @@
 function Buffer( type, usage ) {
+    this.uuid = UUID();
+    this.name = this.uuid;
+
     this.uid = Buffer.uid++;
     this.data = null;
     this.length = 0;
@@ -54,5 +57,20 @@ Buffer.prototype = {
         this.needsUpdate = true;
         this.data = data;
         this.length = data.length;
+    },
+    getExportData: function( exporter ) {
+        var ret = {
+            name: this.name,
+            usage: this.usage,
+            type: this.type,
+            data: this.data.toArray()
+        };
+        return ret;
+    },
+    setImportData: function( importer, data ) {
+        this.name = data.name;
+        this.usage = data.usage;
+        this.type = data.type;
+        this.setData( data.data );
     }
 };
