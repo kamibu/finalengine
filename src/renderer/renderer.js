@@ -3,7 +3,7 @@ var assert, Buffer, Mesh, Shader, Texture, debug;
 
 /*
  * Renderer is the central point of the graphics library.
- * It abrstacts the underlying API in some simple methods.
+ * It abstracts the underlying API in some simple methods.
  * All the drawing should be made with calls to the renderer
  * and not directly. Also this is the only place that WebGL
  * calls should exist.
@@ -103,29 +103,21 @@ Renderer.prototype = {
                 return false;
         }
     },
-    decay: function() {
-        var now = Date.now();
-        var decayTime = this.decayTime;
+    decayArray: function ( array, deleteFunc ) {
         var gl = this.gl;
-        var object;
-        for ( object in this.bufferObjects ) {
-            if ( now - this.bufferObjects[ object ].lastTimeUsed > decayTime ) {
-                gl.deleteBuffer( this.bufferObjects[ object ] );
-                delete this.bufferObjects[ object ];
+        var now = Date.now();
+
+        for ( var object in array ) {
+            if ( now - array[ object ].lastTimeUsed > this.decayTime ) {
+                deleteFunc.call( gl, array[ object ] );
+                delete array[ object ];
             }
         }
-        for ( object in this.textureObjects ) {
-            if ( now - this.textureObjects[ object ].lastTimeUsed > decayTime ) {
-                gl.deleteTexture( this.textureObjects[ object ] );
-                delete this.textureObjects[ object ];
-            }
-        }
-        for ( object in this.programObjects ) {
-            if ( now - this.programObjects[ object ].lastTimeUsed > decayTime ) {
-                gl.deleteProgram( this.programObjects[ object ] );
-                delete this.programObjects[ object ];
-            }
-        }
+    },
+    decay: function() {
+        this.decayArray( this.bufferObjects, gl.deleteBuffer );
+        this.decayArray( this.textureObjects, gl.deleteTexture );
+        this.decayArray( this.programObjects, gl.deleteProgram );
     },
     /*
      * This method will create a GL buffer containing the data specified.
@@ -251,23 +243,23 @@ Renderer.prototype = {
         var textureObject = gl.createTexture();
 
         switch ( texture.origin ) {
-            case texture.UPPER_LEFT_CORNER:
+            case Texture.UPPER_LEFT_CORNER:
                 gl.pixelStorei( gl.UNPACK_FLIP_Y_WEBGL, true );
                 break;
-            case texture.LOWER_LEFT_CORNER:
+            case Texture.LOWER_LEFT_CORNER:
                 gl.pixelStorei( gl.UNPACK_FLIP_Y_WEBGL, false );
                 break;
         }
 
         switch ( texture.type ) {
-            case texture.TEXTURE2D:
+            case Texture.TEXTURE2D:
                 target = gl.TEXTURE_2D;
                 gl.bindTexture( target, textureObject );
                 if ( texture.source !== null ) {
                     gl.texImage2D( gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, texture.source );
                 }
                 break;
-            case texture.TEXTURE_CUBEMAP:
+            case Texture.TEXTURE_CUBEMAP:
                 target = gl.TEXTURE_CUBE_MAP;
                 gl.bindTexture( target, textureObject );
                 for( var i = 0; i < 6; ++i ) {
@@ -277,59 +269,59 @@ Renderer.prototype = {
         }
 
         switch ( texture.minFilter ) {
-            case texture.NEAREST:
+            case Texture.NEAREST:
                 gl.texParameteri( target, gl.TEXTURE_MIN_FILTER, gl.NEAREST );
                 break;
-            case texture.LINEAR:
+            case Texture.LINEAR:
                 gl.texParameteri( target, gl.TEXTURE_MIN_FILTER, gl.LINEAR );
                 break;
-            case texture.NEAREST_MIPMAP_NEAREST:
+            case Texture.NEAREST_MIPMAP_NEAREST:
                 gl.texParameteri( target, gl.TEXTURE_MIN_FILTER, gl.NEAREST_MIPMAP_NEAREST );
                 gl.generateMipmap( target );
                 break;
-            case texture.NEAREST_MIPMAP_LINEAR:
+            case Texture.NEAREST_MIPMAP_LINEAR:
                 gl.texParameteri( target, gl.TEXTURE_MIN_FILTER, gl.NEAREST_MIPMAP_LINEAR );
                 gl.generateMipmap( target );
                 break;
-            case texture.LINEAR_MIPMAP_NEAREST:
+            case Texture.LINEAR_MIPMAP_NEAREST:
                 gl.texParameteri( target, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_NEAREST );
                 gl.generateMipmap( target );
                 break;
-            case texture.LINEAR_MIPMAP_LINEAR:
+            case Texture.LINEAR_MIPMAP_LINEAR:
                 gl.texParameteri( target, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR );
                 gl.generateMipmap( target );
                 break;
         }
 
         switch ( texture.maxFilter ) {
-            case texture.NEAREST:
+            case Texture.NEAREST:
                 gl.texParameteri( target, gl.TEXTURE_MAG_FILTER, gl.NEAREST );
                 break;
-            case texture.LINEAR:
+            case Texture.LINEAR:
                 gl.texParameteri( target, gl.TEXTURE_MAG_FILTER, gl.LINEAR );
                 break;
         }
 
         switch ( texture.wrapS ) {
-            case texture.REPEAT:
+            case Texture.REPEAT:
                 gl.texParameteri( target, gl.TEXTURE_WRAP_S, gl.REPEAT );
                 break;
-            case texture.MIRROR_REPEAT:
+            case Texture.MIRROR_REPEAT:
                 gl.texParameteri( target, gl.TEXTURE_WRAP_S, gl.MIRROR_REPEAT );
                 break;
-            case texture.CLAMP:
+            case Texture.CLAMP:
                 gl.texParameteri( target, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE );
                 break;
         }
 
         switch ( texture.wrapT ) {
-            case texture.REPEAT:
+            case Texture.REPEAT:
                 gl.texParameteri( target, gl.TEXTURE_WRAP_T, gl.REPEAT );
                 break;
-            case texture.MIRROR_REPEAT:
+            case Texture.MIRROR_REPEAT:
                 gl.texParameteri( target, gl.TEXTURE_WRAP_T, gl.MIRROR_REPEAT );
                 break;
-            case texture.CLAMP:
+            case Texture.CLAMP:
                 gl.texParameteri( target, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE );
                 break;
         }

@@ -29,7 +29,7 @@ VertexBuffer.prototype = {
     },
     setBuffer: function ( buffer ) {
 		/*DEBUG*/
-			assert( buffer instanceof Buffer, 'Ivalid type. buffer must be an instance of Buffer' );
+			assert( buffer instanceof Buffer, 'Invalid type. buffer must be an instance of Buffer' );
 		/*DEBUG_END*/
 		this.buffer = buffer;
         this.length = this.buffer.length / this.stride;

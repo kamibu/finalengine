@@ -1,6 +1,9 @@
 // extern
 var Matrix4, Quaternion, TempVars, Vector3;
 
+/*
+ * Represents a transformation in 3d space (position, orientation, scale)
+ */
 function Transform() {
     this.position = new Vector3();
     this.orientation = new Quaternion();

@@ -14,6 +14,7 @@ function Material() {
     this.engineParameters = {};
     this.cachedShader = null;
     this.validShader = false;
+    this.transparent = false;
 }
 
 Material.uid = 0;
