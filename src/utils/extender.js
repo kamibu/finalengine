@@ -5,19 +5,17 @@
 */
 Object.defineProperty( Function.prototype, "extend", {
     value: function( parent ) {
-        // Use an empty function because firefox does not support setting the __proto__ value of any object
-        function Empty() {}
-        Empty.prototype = parent.prototype;
-
         //Save the child prototype because it will be overwritten by the Empty function's instance
         var childPrototype = this.prototype;
 
-        this.prototype = new Empty();
-
-        //Copy the values of the childPrototype back into this.prototype
-        for ( var method in childPrototype ) {
-            this.prototype[ method ] = childPrototype[ method ];
+        var propertiesObject = {};
+        for ( var method in this.prototype ) {
+            propertiesObject[ method ] = {
+                value: this.prototype[ method ],
+                enumerable: true
+            };
         }
+        this.prototype = Object.create( parent.prototype, propertiesObject );
 
         //Continue with the overriding handling
         for ( method in parent.prototype ) {
