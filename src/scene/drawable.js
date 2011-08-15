@@ -1,15 +1,23 @@
 // extern
-var Node;
+var Node, assert, Material;
 
 function Drawable() {
     Node.call( this );
     this.mesh = null;
+    this.material = null;
 }
 
 Drawable.prototype = {
     constructor: Drawable,
     onBeforeRender: function( camera ) {
 
+    },
+    setMaterial: function( material ) {
+        /*DEBUG*/
+            assert( Material.prototype.isPrototypeOf( material ), 'Tried to set a material which is not or does not inherit from Material' );
+        /*DEBUG_END*/
+        this.material = material;
+        return this;
     },
     getExportData: function( exporter ) {
         var ret = {};
