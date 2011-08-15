@@ -617,6 +617,7 @@ Renderer.prototype = {
     setSize: function( width, height ) {
         this.canvas.width = this.width = width;
         this.canvas.height = this.height = height;
+        this.gl.viewport( 0, 0, this.width, this.height );
     },
     /*
      * This method is responsible for initializing the rendering buffer with
