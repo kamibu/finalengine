@@ -1,19 +1,23 @@
 function EventEmitter() {
     this._events_ = [];
-    this.on = function( name, action ) {
+}
+
+EventEmitter.prototype = {
+    constructor: EventEmitter,
+    on: function( name, action ) {
         if ( !( name in this._events_ ) ) {
             this._events_[ name ] = [];
         }
         this._events_[ name ].push( action );
-    };
-    this.once = function( name, action ) {
+    },
+    once: function( name, action ) {
         action.once = true;
         this.on( name, action );
-    };
-    this.clearListeners = function( name ) {
+    },
+    clearListeners: function( name ) {
         this._events_[ name ] = [];
-    };
-    this.emit = function( name ) {
+    },
+    emit: function( name ) {
         var params = Array.prototype.slice.call( arguments, 1 );
         var events = this._events_[ name ];
         if ( !events ) {
@@ -33,8 +37,8 @@ function EventEmitter() {
                 --i;
             }
         }
-    };
-    this.removeListener = function( name, callback ) {
+    },
+    removeListener: function( name, callback ) {
         if ( !this._events_[ name ] ) {
             return false;
         }
@@ -46,5 +50,5 @@ function EventEmitter() {
             }
         }
         return false;
-    };
-}
+    }
+};
