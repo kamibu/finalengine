@@ -12,6 +12,7 @@ math/matrix4.js
 math/vector3.js
 math/quaternion.js
 math/transform.js
+math/color.js
 
 utils/tempvars.js
 utils/RequestAnimationFrame.js
