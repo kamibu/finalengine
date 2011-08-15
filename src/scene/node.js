@@ -62,6 +62,15 @@ Node.prototype = {
         this.scale = scale / this.parent.getAbsoluteScale();
         return this;
     },
+    rotate: function( axis, angle, node ) {
+        TempVars.lock();
+        this.orientation.multiply( TempVars.getQuaternion().setAxisAngle( axis, angle ) );
+        TempVars.release();
+        return this.invalidate();
+    },
+    move: function( v, node ) {
+
+    },
     appendChild: function( node ) {
         node.parent = this;
         this.children.push( node );
