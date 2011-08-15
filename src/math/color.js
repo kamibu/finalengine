@@ -2,7 +2,7 @@
 var Vector3;
 
 function Color( data ) {
-    Vector3.call( this, data );
+    return Vector3.call( this, data );
 }
 
 Color.prototype = {

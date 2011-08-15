@@ -1,31 +1,43 @@
 // extern
 var Matrix4, TempVars;
 
-function Quaternion( data ) {
-    /* Float32Array does not implement call method in chrome.
-     * prototype hacking to the resque
-     */
-    if ( Float32Array.call ) {
-        Float32Array.call( this, 4 );
-        this[ 3 ] = 1;
+/*jshint sub: true */
+var Quaternion = ( function () {
+    // check to see if we can modify the instance of a Float32Array
+    var testSubject = new Float32Array();
+    var a = {};
+    testSubject[ '__proto__' ] = a;
 
-        if ( data ) {
-            this.set( data );
-        }
+    if ( testSubject[ '__proto__' ] === a ) {
+        // instance __proto__ is configurable
+        // chrome
+        return function Quaternion( data ) {
+            var ret = new Float32Array( 4 );
+            ret[ '__proto__' ] = this.constructor.prototype;
+            ret.data = ret;
+            ret[ 3 ] = 1;
+            if ( data ) {
+                ret.set( data );
+            }
+            return ret;
+        };
     }
-    else {
-        var old = Float32Array.prototype;
-        Float32Array.prototype = Quaternion.prototype;
-        var ret = new Float32Array( 4 );
-        Float32Array.prototype = old;
+    // instance __proto__ is not configurable
+    // we'll have to hack it
+    return function Quaterinion( data ) {
+        var ret = new Array( 4 );
+        ret[ '__proto__' ] = this.constructor.prototype;
+        ret.data = ret;
 
-        ret[ 3 ] = 1;
         if ( data ) {
             ret.set( data );
         }
+        else {
+            ret.set( [ 0, 0, 0, 1 ] );
+        }
         return ret;
-    }
-}
+    };
+}() );
 
 Quaternion.prototype = {
     constructor: Quaternion,
@@ -155,4 +167,21 @@ Quaternion.prototype = {
     }
 };
 
-Quaternion.extend( Float32Array );
+( function () {
+    // check to see if we can modify the instance of a Float32Array
+    var testSubject = new Float32Array();
+    var a = {};
+    testSubject[ '__proto__' ] = a;
+    if ( testSubject[ '__proto__' ] === a ) {
+        // instance __proto__ is configurable
+        // chrome
+        Quaternion.extend( Float32Array );
+    }
+    else {
+        Quaternion.prototype.toString = function() {
+            return this.join( ',' );
+        };
+        Quaternion.prototype.subarray = Array.prototype.slice;
+        Quaternion.extend( Array );
+    }
+}() );

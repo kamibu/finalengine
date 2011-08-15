@@ -1,25 +1,39 @@
-function Vector3( data ) {
-    /* Float32Array does not implement call method in chrome.
-     * prototype hacking to the resque
-     */
-    if ( Float32Array.call ) {
-        Float32Array.call( this, 3 );
-        if ( data ) {
-            this.set( data );
-        }
+/*jshint sub: true */
+var Vector3 = ( function () {
+    // check to see if we can modify the instance of a Float32Array
+    var testSubject = new Float32Array();
+    var a = {};
+    testSubject[ '__proto__' ] = a;
+
+    if ( testSubject[ '__proto__' ] === a ) {
+        // instance __proto__ is configurable
+        // chrome
+        return function Vector3( data ) {
+            var ret = new Float32Array( 3 );
+            ret[ '__proto__' ] = this.constructor.prototype;
+            ret.data = ret;
+            if ( data ) {
+                ret.set( data );
+            }
+            return ret;
+        };
     }
-    else {
-        var old = Float32Array.prototype;
-        Float32Array.prototype = Vector3.prototype;
-        var ret = new Float32Array( 3 );
-        Float32Array.prototype = old;
+    // instance __proto__ is not configurable
+    // we'll have to hack it
+    return function Vector3( data ) {
+        var ret = new Array( 3 );
+        ret[ '__proto__' ] = this.constructor.prototype;
+        ret.data = ret;
 
         if ( data ) {
             ret.set( data );
         }
+        else {
+            ret.set( [ 0, 0, 0 ] );
+        }
         return ret;
-    }
-}
+    };
+}() );
 
 Vector3.prototype = {
     constructor: Vector3,
@@ -101,4 +115,21 @@ Vector3.prototype = {
     }
 };
 
-Vector3.extend( Float32Array );
+( function () {
+    // check to see if we can modify the instance of a Float32Array
+    var testSubject = new Float32Array();
+    var a = {};
+    testSubject[ '__proto__' ] = a;
+    if ( testSubject[ '__proto__' ] === a ) {
+        // instance __proto__ is configurable
+        // chrome
+        Vector3.extend( Float32Array );
+    }
+    else {
+        Vector3.prototype.toString = function() {
+            return this.join( ',' );
+        };
+        Vector3.prototype.subarray = Array.prototype.slice;
+        Vector3.extend( Array );
+    }
+}() );

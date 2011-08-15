@@ -1,28 +1,38 @@
 // extern
 var Matrix3, Vector3;
 
-function Matrix4( data ) {
-    /* Float32Array does not implement call method in chrome.
-     * prototype hacking to the resque
-     */
-    if ( Float32Array.call ) {
-        Float32Array.call( this, 16 );
-        if ( data ) {
-            this.set( data );
-        }
+/*jshint sub: true */
+var Matrix4 = ( function () {
+    // check to see if we can modify the instance of a Float32Array
+    var testSubject = new Float32Array();
+    var a = {};
+    testSubject[ '__proto__' ] = a;
+    if ( testSubject[ '__proto__' ] === a ) {
+        // instance __proto__ is configurable
+        // chrome
+        return function Matrix4( data ) {
+            var ret = new Float32Array( 16 );
+            ret[ '__proto__' ] = this.constructor.prototype;
+            ret.data = ret;
+            if ( data ) {
+                ret.set( data );
+            }
+            return ret;
+        };
     }
-    else {
-        var old = Float32Array.prototype;
-        Float32Array.prototype = Matrix4.prototype;
-        var ret = new Float32Array( 16 );
-        Float32Array.prototype = old;
-
+    // instance __proto__ is not configurable
+    // we'll have to hack it
+    return function Matrix4( data ) {
+        var ret = new Array( 16 );
+        ret[ '__proto__' ] = this.constructor.prototype;
+        ret.data = ret;
+        ret.identity();
         if ( data ) {
             ret.set( data );
         }
         return ret;
-    }
-}
+    };
+}() );
 
 Matrix4.prototype = {
     constructor: Matrix4,
@@ -263,7 +273,7 @@ Matrix4.prototype = {
     perspective: function( fovy, aspect, near, far ) {
         var top = near * Math.tan( fovy * Math.PI / 360.0 );
         var right = top * aspect;
-        return this.frustum( -right, right, -top, top, near, far );
+        return this.frustrum( -right, right, -top, top, near, far );
     },
     ortho: function( left, right, bottom, top, near, far ) {
         var rl = ( right - left );
@@ -291,4 +301,21 @@ Matrix4.prototype = {
     }
 };
 
-Matrix4.extend( Float32Array );
+( function () {
+    // check to see if we can modify the instance of a Float32Array
+    var testSubject = new Float32Array();
+    var a = {};
+    testSubject[ '__proto__' ] = a;
+    if ( testSubject[ '__proto__' ] === a ) {
+        // instance __proto__ is configurable
+        // chrome
+        Matrix4.extend( Float32Array );
+    }
+    else {
+        Matrix4.prototype.toString = function() {
+            return this.join( ',' );
+        };
+        Matrix4.prototype.subarray = Array.prototype.slice;
+        Matrix4.extend( Array );
+    }
+}() );
