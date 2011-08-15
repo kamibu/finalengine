@@ -9,6 +9,7 @@ events/eventwaiter.js
 
 math/number.js
 math/matrix4.js
+math/vector3base.js
 math/vector3.js
 math/quaternion.js
 math/transform.js
