@@ -1,47 +1,42 @@
 // extern
-var Request;
+var Request, EventWaiter;
 
 /*jshint evil: true */
-
 function Importer( resourcePath ) {
     if ( resourcePath[ resourcePath.length - 1 ] !== '/' ) {
         resourcePath += '/';
     }
     this.resourcePath = resourcePath;
     this.cache = {};
-    this.isAlreadyLoading = false;
-    this.pendingLoads = [];
+    this.waiter = new EventWaiter();
 }
 
 Importer.prototype = {
+    constructor: Importer,
     _load: function( asset, callback ) {
+        this.waiter.waitMore();
         if ( this.cache[ asset ] ) {
-            this.processData( this.cache[ asset ], callback );
-        }
-        else {
-            var self = this;
-            Request.get( this.resourcePath + asset, {}, function( data ) {
-                self.isAlreadyLoading = false;
-                self.processData( data, callback );
-                if ( self.isAlreadyLoading ) {
-                    return;
-                }
-                if ( self.pendingLoads.length ) {
-                    self.load.apply( self, this.pendingLoads.shift() );
-                }
-            });
-        }
-    },
-    load: function( asset, callback ) {
-        if ( this.isAlreadyLoading ) {
-            this.pendingLoads.push( arguments );
+            callback( this.cache[ asset ] );
+            this.waiter.waitLess();
             return;
         }
-        this.isAlreadyLoading = true;
-        this._load( asset, callback );
+        var self = this;
+        Request.get( this.resourcePath + asset + '.json', {}, function( data ) {
+            var object = self.processData( data );
+            self.cache[ asset ] = object;
+            callback( object );
+            self.waiter.waitLess();
+        } );
+    },
+    load: function( asset, callback ) {
+        var self = this;
+        this._load( asset, function(){} );
+
+        this.waiter.once( 'complete', function() {
+            callback( self.cache[ asset ] );
+        } );
     },
     alsoLoad: function( asset, callback ) {
-        console.log( 'here' );
         this._load( asset, callback );
     },
     processData: function( data ) {
