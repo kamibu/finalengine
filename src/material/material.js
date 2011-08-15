@@ -1,5 +1,5 @@
 // extern
-var Matrix4, Quaternion, Shader, UUID, Vector3;
+var Matrix4, Quaternion, Shader, UUID, Vector3, Color;
 
 function Material() {
     this.uuid = UUID();
@@ -11,7 +11,7 @@ function Material() {
     this.vertexShader = '';
     this.fragmentShader = '';
     this.parameters = {};
-    this.engineParamaters = {};
+    this.engineParameters = {};
     this.cachedShader = null;
     this.validShader = false;
 }
@@ -28,7 +28,14 @@ Material.prototype = {
         return this;
     },
     setParameter: function( name, value ) {
-        this.parameters[ name ] = value;
+        if ( typeof value !== 'object' ) {
+            this.parameters[ name ] = {
+                data: value
+            };
+        }
+        else {
+            this.parameters[ name ] = value;
+        }
         return this;
     },
     getShader: function() {
@@ -54,11 +61,11 @@ Material.prototype = {
             fragmentShader += this.fragmentShader;
 
             this.cachedShader = new Shader();
-            this.cachedShader.setVertexShader( vertexShader );
-            this.cachedShader.setFragmentShader( fragmentShader );
+            this.cachedShader.setVertexSource( vertexShader );
+            this.cachedShader.setFragmentSource( fragmentShader );
         }
         for ( parameterName in this.parameters ) {
-            this.cachedShader.uniforms[ parameterName ] = this.parameters;
+            this.cachedShader.uniforms[ parameterName ] = this.parameters[ parameterName ].data;
         }
         return this.cachedShader;
     },
@@ -96,7 +103,7 @@ Material.prototype = {
             ret.defines[ define ] = this.defines[ define ];
         }
         for ( var engineParameter in this.engineParameters ) {
-            ret.engineParameteres[ engineParameter ] = null;
+            ret.engineParameters[ engineParameter ] = null;
         }
         for ( var parameter in this.parameters ) {
             var p = this.parameters[ parameter ];
@@ -121,7 +128,7 @@ Material.prototype = {
             this.defines[ define ] = data.defines[ define ];
         }
         for ( var engineParameter in data.engineParameters ) {
-            this.engineParameteres[ engineParameter ] = null;
+            this.engineParameters[ engineParameter ] = null;
         }
         for ( var parameter in data.parameters ) {
             switch ( typeof data.parameters[ parameter ] ) {
@@ -132,13 +139,16 @@ Material.prototype = {
                     var p = data.parameters[ parameter ];
                     switch ( p.type ) {
                         case 'Vector3':
-                            this.parameters[ parameter ] = new Vector3( p );
+                            this.parameters[ parameter ] = new Vector3( p.data );
                             break;
                         case 'Quaternion':
-                            this.parameters[ parameter ] = new Quaternion( p );
+                            this.parameters[ parameter ] = new Quaternion( p.data );
                             break;
                         case 'Matrix4':
-                            this.parameters[ parameter ] = new Matrix4( p );
+                            this.parameters[ parameter ] = new Matrix4( p.data );
+                            break;
+                        case 'Color':
+                            this.parameters[ parameter ] = new Color( p.data );
                             break;
                     }
                     break;
