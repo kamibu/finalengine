@@ -41,6 +41,7 @@ RenderManager.prototype = {
         }
         fillDrawBucket( scene.root );
 
+        // TODO: Draw non-transparent materials first, then transparent materials
         //Sort drawables by material
         bucket.sort( function( a, b ) {
             return a.material.uid - b.material.uid;

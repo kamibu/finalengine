@@ -2,7 +2,7 @@
 var Matrix4, Quaternion, TempVars, Transform, UUID, Vector3;
 
 /*
- * An abstract 3 dimentional object with a location in space
+ * An abstract 3 dimensional object with a location in space and a tree-like structure
  */
 function Node() {
     this.uuid = UUID();
@@ -79,7 +79,11 @@ Node.prototype = {
         return this.invalidate();
     },
     move: function( v, node ) {
-
+        if ( typeof node != 'undefined' ) {
+            throw 'Not implemented';
+        }
+        this.position.add( v );
+        return this.invalidate();
     },
     appendChild: function( node ) {
         node.parent = this;
@@ -95,7 +99,7 @@ Node.prototype = {
                 node.parent = Node.Origin;
                 node.invalidate();
                 children.splice( l, 1 );
-                return;
+                return this;
             }
         }
         return this;
@@ -153,4 +157,4 @@ Node.prototype = {
 Node.extend( Transform );
 
 Node.Origin = new Node();
-Node.Origin.parent = Node.Origin;
+Node.Origin.parent = Node.Origin; // god
