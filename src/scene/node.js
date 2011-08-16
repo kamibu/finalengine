@@ -64,7 +64,17 @@ Node.prototype = {
     },
     rotate: function( axis, angle, node ) {
         TempVars.lock();
-        this.orientation.multiply( TempVars.getQuaternion().setAxisAngle( axis, angle ) );
+        var rot = TempVars.getQuaternion().setAxisAngle( axis, angle );
+        this.orientation.multiply( rot );
+        if ( node ) {
+            if ( node == Node.Origin ) {
+                var newPos = rot.multiplyVector3( this.getAbsolutePosition( TempVars.getVector3() ) );
+                this.setAbsolutePosition( newPos );
+            }
+            else{ 
+                throw 'Not yet implemented';
+            }
+        }
         TempVars.release();
         return this.invalidate();
     },
