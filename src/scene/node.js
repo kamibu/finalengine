@@ -35,9 +35,8 @@ Node.prototype = {
         if ( s != 1 ) {
             this.position.scale( 1 / s );
         }
-        this.invalidate();
         TempVars.release();
-        return this;
+        return this.invalidate();
     },
     getAbsoluteOrientation: function( dest ) {
         if ( !dest ) {
@@ -49,9 +48,9 @@ Node.prototype = {
     setAbsoluteOrientation: function( orientation ) {
         TempVars.lock();
         this.worldTransform.setOrientation( orientation );
-        this.orientation.set( this.parent.getAbsoluteOrientation( TempVars.getQuaternion() ).inverse().multiply( orientation ) );
+        this.orientation.set( this.parent.getAbsoluteOrientation( TempVars.getQuaternion() ).inverse().preMultiply( orientation ) );
         TempVars.release();
-        return this;
+        return this.invalidate();
     },
     getAbsoluteScale: function() {
         this.update();
@@ -60,29 +59,41 @@ Node.prototype = {
     setAbsoluteScale: function( scale ) {
         this.worldTransform.setScale( scale );
         this.scale = scale / this.parent.getAbsoluteScale();
-        return this;
+        return this.invalidate();
     },
     rotate: function( axis, angle, node ) {
         TempVars.lock();
         var rot = TempVars.getQuaternion().setAxisAngle( axis, angle );
-        this.orientation.multiply( rot );
         if ( node ) {
             if ( node == Node.Origin ) {
                 var newPos = rot.multiplyVector3( this.getAbsolutePosition( TempVars.getVector3() ) );
                 this.setAbsolutePosition( newPos );
             }
-            else{ 
+            else {
                 throw 'Not yet implemented';
             }
         }
+        this.orientation.preMultiply( rot );
         TempVars.release();
         return this.invalidate();
     },
-    move: function( v, node ) {
-        if ( typeof node != 'undefined' ) {
-            throw 'Not implemented';
+    move: function( vector, node ) {
+        if ( node ) {
+            if ( node == Node.Origin ) {
+                TempVars.lock();
+                var newPos = this.getAbsolutePosition( TempVars.getVector3() ).add( vector );
+                this.setAbsolutePosition( newPos );
+                TempVars.release();
+                //We don't have to invalidate again. setAbsolutePosition just did it.
+                return this;
+            }
+            else {
+                throw 'Not yet implemented';
+            }
         }
-        this.position.add( v );
+        else {
+            this.position.add( vector );
+        }
         return this.invalidate();
     },
     appendChild: function( node ) {
@@ -116,7 +127,7 @@ Node.prototype = {
             this.Transform_update();
             var parent = this.parent;
             parent.update();
-            this.worldTransform.set( parent.worldTransform ).combineWith( this );
+            this.worldTransform.set( this ).combineWith( parent.worldTransform );
         }
         return this;
     },
