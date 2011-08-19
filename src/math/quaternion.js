@@ -101,6 +101,17 @@ Quaternion.prototype = {
 
         return this;
     },
+    preMultiply: function( quaternion ) {
+        var qbx = this[ 0 ], qby = this[ 1 ], qbz = this[ 2 ], qbw = this[ 3 ];
+        var qax = quaternion[ 0 ], qay = quaternion[ 1 ], qaz = quaternion[ 2 ], qaw = quaternion[ 3 ];
+
+        this[ 0 ] = qax * qbw + qaw * qbx + qay * qbz - qaz * qby;
+        this[ 1 ] = qay * qbw + qaw * qby + qaz * qbx - qax * qbz;
+        this[ 2 ] = qaz * qbw + qaw * qbz + qax * qby - qay * qbx;
+        this[ 3 ] = qaw * qbw - qax * qbx - qay * qby - qaz * qbz;
+
+        return this;
+    },
     multiplyVector3: function( vector ) {
         var x = vector[ 0 ], y = vector[ 1 ], z = vector[ 2 ];
         var qx = this[ 0 ], qy = this[ 1 ], qz = this[ 2 ], qw = this[ 3 ];
@@ -141,17 +152,17 @@ Quaternion.prototype = {
         var wz = w * z2;
 
         dest[ 0 ] = 1 - ( yy + zz );
-        dest[ 1 ] = xy - wz;
-        dest[ 2 ] = xz + wy;
+        dest[ 1 ] = xy + wz;
+        dest[ 2 ] = xz - wy;
         dest[ 3 ] = 0;
 
-        dest[ 4 ] = xy + wz;
+        dest[ 4 ] = xy - wz;
         dest[ 5 ] = 1 - ( xx + zz );
-        dest[ 6 ] = yz - wx;
+        dest[ 6 ] = yz + wx;
         dest[ 7 ] = 0;
 
-        dest[ 8 ] = xz - wy;
-        dest[ 9 ] = yz + wx;
+        dest[ 8 ] = xz + wy;
+        dest[ 9 ] = yz - wx;
         dest[ 10 ] = 1 - ( xx + yy );
         dest[ 11 ] = 0;
 
