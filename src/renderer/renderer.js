@@ -115,6 +115,7 @@ Renderer.prototype = {
         }
     },
     decay: function() {
+        var gl = this.gl;
         this.decayArray( this.bufferObjects, gl.deleteBuffer );
         this.decayArray( this.textureObjects, gl.deleteTexture );
         this.decayArray( this.programObjects, gl.deleteProgram );
@@ -124,6 +125,9 @@ Renderer.prototype = {
      * If no type is specified the buffer will be of type ARRAY_BUFFER.
      */
     createBuffer: function( buffer ) {
+        /*DEBUG*/
+            assert( buffer instanceof Buffer, 'Illegal type. buffer must be a Buffer object.' );
+        /*DEBUG_END*/
         var type, usage;
         switch ( buffer.type ) {
             case Buffer.ELEMENT_BUFFER:
@@ -167,8 +171,8 @@ Renderer.prototype = {
         delete this.bufferObjects[ buffer.uid ];
     },
 	updateBuffer: function( buffer ) {
-		/*DEBUG*/
-            assert( this.gl.isBuffer( this.bufferObjects[ buffer ] ), 'Illegal type. buffer must be a GL Buffer object.' );
+        /*DEBUG*/
+            assert( buffer instanceof Buffer, 'Illegal type. buffer must be a Buffer object.' );
         /*DEBUG_END*/
 		var bufferObject = this.bufferObjects[ buffer.uid ];
 		if ( typeof bufferObject == 'undefined' ) {
@@ -194,9 +198,19 @@ Renderer.prototype = {
         }
         buffer.needsUpdate = false;
 	},
+    /*DEBUG*/
+    isBuffer: function( buffer ) {
+        try {
+            return this.gl.isBuffer( buffer );
+        }
+        catch ( e ) {
+            return false;
+        }
+    },
+    /*DEBUG_END*/
 	bindBuffer: function( buffer ) {
         /*DEBUG*/
-            assert( this.gl.isBuffer( buffer ), 'Illegal type. buffer must be a GL Buffer object.' );
+            assert( buffer instanceof Buffer, 'Illegal type. buffer must be a Buffer object.' );
         /*DEBUG_END*/
         if ( buffer.data === null ) {
             return;
@@ -665,6 +679,9 @@ Renderer.prototype = {
 
 		for ( var attribute in program.attributes ) {
 			var vertexAttribute = mesh.vertexAttributes[ attribute ];
+            /*DEBUG*/
+                assert( typeof vertexAttribute != 'undefined', 'VertexAttribute "' + attribute + '" is missing from the mesh.' );
+            /*DEBUG_END*/
 
 			this.bindBuffer( vertexAttribute.buffer );
 			gl.vertexAttribPointer( program.attributes[ attribute ].location, vertexAttribute.size, gl.FLOAT, false, vertexAttribute.stride, vertexAttribute.offset );
