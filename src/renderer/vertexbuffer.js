@@ -32,7 +32,12 @@ VertexBuffer.prototype = {
 			assert( buffer instanceof Buffer, 'Invalid type. buffer must be an instance of Buffer' );
 		/*DEBUG_END*/
 		this.buffer = buffer;
-        this.length = this.buffer.length / this.stride;
+        if ( this.stride === 0 ) {
+            this.length = ( this.buffer.length - this.offset ) / this.size;
+        }
+        else {
+            this.length = ( this.buffer.length - this.offset ) / this.stride;
+        }
         return this;
 	},
     clone: function() {
