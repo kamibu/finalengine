@@ -72,17 +72,21 @@ Material.prototype = {
     },
     clone: function() {
         var ret = new Material(),
-            l = this.libaries.length,
+            l = this.libraries.length,
             define,
             parameter;
 
         ret.cachedShader = this.cachedShader;
-        this.validShader = true;
+        ret.cachedShader = this.validShader;
+        ret.transparent = this.transparent;
         for ( define in this.defines ) {
             ret.defines[ define ] = this.defines[ define ];
         }
         for ( parameter in this.parameters ) {
             ret.parameters[ parameter ] = this.parameters[ parameter ];
+        }
+        for ( var engineParameter in this.engineParameters ) {
+            ret.engineParameters[ engineParameter ] = null;
         }
         while ( l-- ) {
             ret.libraries[ l ] = this.libraries[ l ];
@@ -99,6 +103,7 @@ Material.prototype = {
         };
         ret.vertexShader = this.vertexShader;
         ret.fragmentShader = this.fragmentShader;
+//        ret.transparent = this.transparent;
 
         for ( var define in this.defines ) {
             ret.defines[ define ] = this.defines[ define ];
@@ -125,6 +130,7 @@ Material.prototype = {
     setImportData: function( importer, data ) {
         this.vertexShader = data.vertexShader;
         this.fragmentShader = data.fragmentShader;
+//        this.transparent = data.transparent;
         for ( var define in data.defines ) {
             this.defines[ define ] = data.defines[ define ];
         }
