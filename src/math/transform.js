@@ -56,11 +56,8 @@ Transform.prototype = {
     combineWith: function( transform ) {
         TempVars.lock();
         this.scale *= transform.scale;
-
-        var p = this.orientation.multiplyVector3( transform.getPosition( TempVars.getVector3() ) );
-        p.scale( this.scale );
-        this.position.add( p );
-        this.orientation.multiply( transform.orientation );
+        transform.orientation.multiplyVector3( this.position ).scale( transform.scale ).add( transform.position );
+        this.orientation.preMultiply( transform.orientation );
         TempVars.release();
 
         return this.invalidate();
