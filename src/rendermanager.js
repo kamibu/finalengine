@@ -51,7 +51,7 @@ RenderManager.prototype = {
         while ( l-- ) {
             var currentDrawable = bucket[ l ];
             currentDrawable.onBeforeRender( camera );
-            currentDrawable.getMatrix( g.WorldMatrix );
+            currentDrawable.getAbsoluteMatrix( g.WorldMatrix );
             g.WorldViewMatrix.set( g.ViewMatrix ).multiply( g.WorldMatrix );
             g.WorldViewProjectionMatrix.set( g.ViewProjectionMatrix ).multiply( g.WorldMatrix );
 
