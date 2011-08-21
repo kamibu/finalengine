@@ -46,14 +46,71 @@ var Renderer = function( canvas, width, height ) {
      */
 
     gl.mineUniformMatrix2fv = function( location, value ) {
-        gl.uniformMatrix2fv( location, false, value );
-    };
+        this.uniformMatrix2fv( location, false, value );
+    }.bind( gl );
+
     gl.mineUniformMatrix3fv = function( location, value ) {
-        gl.uniformMatrix3fv( location, false, value );
-    };
+        this.uniformMatrix3fv( location, false, value );
+    }.bind( gl );
+
     gl.mineUniformMatrix4fv = function( location, value ) {
-        gl.uniformMatrix4fv.call( gl, location, false, value );
-    };
+        this.uniformMatrix4fv( location, false, value );
+    }.bind( gl );
+
+    /*
+     * Define two custom functions that upload a Texture object to the current shader.
+     * These are defined to be consistent to all uniform types, as Textures also need
+     * to be bound before their sampler ID is set to the shader uniform.
+     */
+    gl.mineUniformSampler2D = function( renderer, location, value ) {
+        /*DEBUG*/
+            assert( value instanceof Texture, 'Tried to set a non-Texture object to a sampler2D uniform' );
+            assert( value.type === Texture.IMAGE, 'The Texture object is not of type IMAGE' );
+        /*DEBUG_END*/
+        this.uniform1i( location, renderer.bindTexture( value ) );
+    }.bind( gl, this );
+
+    gl.mineUniformSamplerCube = function( renderer, location, value ) {
+        /*DEBUG*/
+            assert( value instanceof Texture, 'Tried to set a non-Texture object to a samplerCube uniform' );
+            assert( value.type === Texture.CUBEMAP, 'The Texture object is not of type CUBEMAP' );
+        /*DEBUG_END*/
+        this.uniform1i( location, renderer.bindTexture( value ) );
+    }.bind( gl, this );
+
+    /*
+     * The two arrays defined bellow will hold the texture positions that are used
+     * from the most recently used one the oldest.
+     */
+    var maxTextures = this.getParameter( Renderer.MAX_FRAGMENT_TEXTURE_UNITS );
+
+    function makeLinkedList( size ) {
+        var ret = [];
+        for ( var i = 0; i < size; i++ ) {
+            ret[ i ] = {
+                previous: null,
+                next: null,
+                index: i,
+                texture: {}
+            };
+        }
+        for ( i = 0; i < size; i++ ) {
+            ret[ i ].previous = ret[ i - 1 ] || null;
+            ret[ i ].next = ret[ i + 1 ] || null;
+        }
+        return {
+            head: ret[ 0 ],
+            tail: ret[ size - 1 ]
+        };
+    }
+
+    var a = makeLinkedList( maxTextures );
+    this.firstTexture2DPosition = a.head;
+    this.lastTexture2DPosition = a.tail;
+
+    a = makeLinkedList( maxTextures );
+    this.firstTextureCubePosition = a.head;
+    this.lastTextureCubePosition = a.tail;
 
     /*These objects will hold references to the underlying API*/
     this.bufferObjects = {};
@@ -246,15 +303,21 @@ Renderer.prototype = {
      */
     createTexture: function( texture ) {
         /*DEBUG*/
-            assert( texture.constructor == Texture, 'Invalid type. texture must be a Texture instance' );
+            assert( texture instanceof Texture, 'Invalid type. texture must be a Texture instance' );
             if ( !texture.width.isPowerOfTwo() || !texture.height.isPowerOfTwo() ) {
-                debug.log( debug.WARNING, 'Creating a texture which has non power of two dimentions.' );
+                assert( texture.minFilter !== Texture.NEAREST_MIPMAP_NEAREST, 'Cannot use mipmapping with non power of two dimentions texture' );
+                assert( texture.minFilter !== Texture.NEAREST_MIPMAP_LINEAR, 'Cannot use mipmapping with non power of two dimentions texture' );
+                assert( texture.minFilter !== Texture.LINEAR_MIPMAP_NEAREST, 'Cannot use mipmapping with non power of two dimentions texture' );
+                assert( texture.minFilter !== Texture.LINEAR_MIPMAP_LINEAR, 'Cannot use mipmapping with non power of two dimentions texture' );
             }
         /*DEBUG_END*/
 
         var gl = this.gl;
         var target;
         var textureObject = gl.createTexture();
+        textureObject.bindPosition = null;
+        textureObject.width = texture.width;
+        textureObject.height = texture.height;
 
         switch ( texture.origin ) {
             case Texture.UPPER_LEFT_CORNER:
@@ -266,7 +329,7 @@ Renderer.prototype = {
         }
 
         switch ( texture.type ) {
-            case Texture.TEXTURE2D:
+            case Texture.IMAGE:
                 target = gl.TEXTURE_2D;
                 gl.bindTexture( target, textureObject );
                 if ( texture.source !== null ) {
@@ -342,58 +405,118 @@ Renderer.prototype = {
         gl.bindTexture( target, null );
 
         this.textureObjects[ texture.uid ] = textureObject;
+        texture.needsUpdate = false;
     },
     updateTexture: function( texture ) {
         /*DEBUG*/
-            assert( texture.constructor == Texture, 'Invalid type. texture must be a Texture instance' );
+            assert( texture instanceof Texture, 'Invalid type. texture must be a Texture instance' );
         /*DEBUG_END*/
-        if ( typeof this.textureObjects[ texture.uid ] == 'undefined' ) {
+        if ( typeof this.textureObjects[ texture.uid ] === 'undefined' ) {
             this.createTexture( texture );
+            return;
         }
-        else if ( texture.flags & texture.DIMENTIONS ) {
+
+        var textureObject = this.textureObjects[ texture.uid ];
+
+        if ( texture.width !== textureObject.width || texture.height !== textureObject.height ) {
             this.deleteTexture( texture );
             this.createTexture( texture );
-        }
-        else if ( texture.flags & texture.IMAGE ) {
-            var textureObject = this.textureObjects[ texture.uid ];
-            var gl = this.gl;
-            gl.texSubImage2D( gl.TEXTURE_2D, 0, 0, 0, texture.width, texture.height, gl.RGB, gl.UNSIGNED_BYTE, texture.source );
-        }
-        texture.ready = true;
-        texture.flags = 0x0;
-    },
-    /*
-     * This method binds a texture or a cubemap to the position specified.
-     * If the texture needs updateing then it is automatically updated.
-     * The position must be a number between 0 and the MAX_FRAGMENT_TEXTURE_UNITS.
-     */
-    bindTexture: function( texture, position ) {
-        /*DEBUG*/
-            assert( texture.constructor == Texture, 'Invalid type. texture must be a Texture instance' );
-            assert( position < 0 || position > this.getParameter( Renderer.MAX_FRAGMENT_TEXTURE_UNITS ), 'Texture bind position is out of bounds' );
-        /*DEBUG_END*/
-        if ( !this.textureObjects[ texture.uid ] || texture.needsUpdate ) {
-            this.updateTexture( texture );
-        }
-        var type, textureObject, gl;
-        gl = this.gl;
-        switch ( texture.type ) {
-            case Texture.IMAGE:
-                type = gl.TEXTURE_2D;
-                break;
-            case Texture.CUBEMAP:
-                type = gl.TEXTURE_CUBEMAP;
-                break;
+            return;
         }
 
         textureObject = this.textureObjects[ texture.uid ];
+        var gl = this.gl;
+        gl.texSubImage2D( gl.TEXTURE_2D, 0, 0, 0, texture.width, texture.height, gl.RGB, gl.UNSIGNED_BYTE, texture.source );
+        texture.needsUpdate = false;
+    },
+    /*
+     * This method binds a Texture object to a position determined by an internal algorithm
+     * and the position choosed is returned. If the texture needs
+     * updating then it is automatically updated.
+     */
+    bindTexture: function( texture ) {
+        /*DEBUG*/
+            assert( texture instanceof Texture, 'Invalid type. texture must be a Texture instance' );
+        /*DEBUG_END*/
+        var type, textureObject, gl, position, firstPosition, lastPosition;
+
+        if ( texture.needsUpdate ) {
+            this.updateTexture( texture );
+        }
+
+        gl = this.gl;
+        textureObject = this.textureObjects[ texture.uid ];
         textureObject.lastTimeUsed = Date.now();
-        gl.activeTexture( this.gl.TEXTURE0 + position );
-        gl.bindTexture( type, textureObject );
+        position = textureObject.bindPosition;
+
+        switch ( texture.type ) {
+            case Texture.IMAGE:
+                firstPosition = this.firstTexture2DPosition;
+
+                if ( !position ) {
+                    position = this.lastTexture2DPosition;
+                    position.texture.bindPosition = null;
+                    position.texture = textureObject;
+                    textureObject.bindPosition = position;
+
+                    gl.activeTexture( gl.TEXTURE0 + position.index );
+                    gl.bindTexture( gl.TEXTURE_2D, textureObject );
+                }
+                if ( position.previous ) {
+                    if ( position.next ) {
+                        position.next.previous = position.previous;
+                    }
+                    else {
+                        this.lastTexture2DPosition = position.previous;
+                    }
+
+                    position.previous.next = position.next;
+
+                    position.previous = null;
+                    position.next = firstPosition;
+                    
+                    firstPosition.previous = position;
+                    this.firstTexture2DPosition = position;
+                }
+                break;
+            case Texture.CUBEMAP:
+                firstPosition = this.firstTextureCubePosition;
+
+                if ( !position ) {
+                    position = this.lastTextureCubePosition;
+                    position.texture.bindPosition = null;
+                    position.texture = textureObject;
+                    textureObject.bindPosition = position;
+
+                    gl.activeTexture( gl.TEXTURE0 + position.index );
+                    gl.bindTexture( gl.TEXTURE_CUBEMAP, textureObject );
+                }
+                if ( position.previous ) {
+                    if ( position.next ) {
+                        position.next.previous = position.previous;
+                    }
+                    else {
+                        this.lastTexture2DPosition = position.previous;
+                    }
+
+                    position.previous.next = position.next;
+
+                    position.previous = null;
+                    position.next = firstPosition;
+                    
+                    firstPosition.previous = position;
+                    this.firstTexture2DPosition = position;
+                }
+                break;
+        }
+        return position.index;
     },
     deleteTexture: function( texture ) {
+        /*DEBUG*/
+            assert( texture instanceof Texture, 'Invalid type. texture must be a Texture instance' );
+        /*DEBUG_END*/
         var textureObject = this.textureObjects[ texture.uid ];
-        if ( typeof textureObject != 'undefined' ) {
+        if ( textureObject ) {
             this.gl.deleteTexture( textureObject );
             delete this.textureObjects[ texture.uid ];
         }
@@ -534,8 +657,6 @@ Renderer.prototype = {
                     break;
                 case gl.INT:
                 case gl.BOOL:
-                case gl.SAMPLER_2D:
-                case gl.SAMPLER_CUBE:
                     program.uniforms[ info.name ].set = gl.uniform1i.bind( gl );
                     break;
                 case gl.INT_VEC2:
@@ -558,6 +679,13 @@ Renderer.prototype = {
                     break;
                 case gl.FLOAT_MAT4:
                     program.uniforms[ info.name ].set = gl.mineUniformMatrix4fv;
+                    break;
+                case gl.SAMPLER_2D:
+                    program.uniforms[ info.name ].set = gl.mineUniformSampler2D;
+                    break;
+                case gl.SAMPLER_CUBE:
+                    program.uniforms[ info.name ].set = gl.mineUniformSampleCube;
+                    break;
             }
         }
 

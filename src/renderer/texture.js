@@ -11,6 +11,7 @@ var Texture = function( type ) {
     this.height = 1;
     this.minFilter = Texture.LINEAR_MIPMAP_LINEAR;
     this.maxFilter = Texture.LINEAR;
+    this.type = type;
 
     this.wrapS = Texture.REPEAT;
     this.wrapT = Texture.REPEAT;
@@ -46,6 +47,7 @@ Texture.prototype = {
     constructor: Texture,
     setName: function( name ) {
         this.name = name || 'Texture #' + this.uid;
+        return this;
     },
     setMinFilter: function( filter ) {
         /*DEBUG*/
@@ -59,12 +61,14 @@ Texture.prototype = {
             );
         /*DEBUG_END*/
         this.minFilter = filter;
+        return this;
     },
     setMaxFilter: function( filter ) {
         /*DEBUG*/
             assertIn( filter, Texture.NEAREST, Texture.LINEAR, 'Unsupported minification filtering. ' + filter  );
         /*DEBUG_END*/
         this.magFilter = filter;
+        return this;
     },
     setImage: function( source ) {
         /*DEBUG*/
@@ -76,16 +80,18 @@ Texture.prototype = {
         */
         if ( ( source.constructor == HTMLImageElement || source.constructor == Image ) && !source.complete ) {
             source.onload = this.setImage.bind( this, source );
-            return;
+            return this;
         }
         this.source = source;
         this.setDimentions( this.source.width, this.source.height );
         this.needsUpdate = true;
+        return this;
     },
     setDimentions: function( width, height ) {
         if ( this.width != width || this.height != height ) {
             this.width = width;
             this.height = height;
         }
+        return this;
     }
 };

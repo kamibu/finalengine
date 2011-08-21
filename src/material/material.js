@@ -1,5 +1,5 @@
 // extern
-var Matrix4, Quaternion, Shader, UUID, Vector3, Color;
+var Matrix4, Quaternion, Shader, UUID, Vector3, Color, Texture;
 
 function Material() {
     this.uuid = UUID();
@@ -29,7 +29,12 @@ Material.prototype = {
         return this;
     },
     setParameter: function( name, value ) {
-        if ( typeof value !== 'object' ) {
+        if ( value instanceof Texture ) {
+            this.parameters[ name ] = {
+                data: value
+            };
+        }
+        else if ( typeof value !== 'object' ) {
             this.parameters[ name ] = {
                 data: value
             };
