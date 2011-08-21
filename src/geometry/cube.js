@@ -129,6 +129,7 @@ function Cube() {
     normalsVB.setBuffer( normals );
 
     var uvcoordsVB = new VertexBuffer( 'UVCoord' );
+    uvcoordsVB.size = 2;
     uvcoordsVB.setBuffer( uvcoords );
 
     var tangentsVB = new VertexBuffer( 'Tangent' );
