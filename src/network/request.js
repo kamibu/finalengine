@@ -1,5 +1,9 @@
 var Request = {
     send: function( method, url, data, callback ) {
+        if ( typeof data === 'function' ) {
+            callback = data;
+            data = null;
+        }
         var formData = new FormData();
         if ( data ) {
             for ( var field in data ) {

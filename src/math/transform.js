@@ -74,7 +74,7 @@ Transform.prototype = {
     setMatrix: function( matrix ) {
         TempVars.lock();
         var mat = TempVars.getMatrix4().set( matrix );
-        this.setPosition( mat.getTranslation( TempVars.getVector3() ) );
+        mat.getTranslation( this.position );
         var scale = mat.getScale;
         this.setScale( scale );
         this.setOrientation( mat.toMatrix3( TempVars.getMatrix3() ).toQuaternion( TempVars.getQuaternion() ) );

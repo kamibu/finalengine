@@ -75,5 +75,6 @@ Buffer.prototype = {
         this.usage = data.usage;
         this.type = data.type;
         this.setData( data.data );
+        return this;
     }
 };

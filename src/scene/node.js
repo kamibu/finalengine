@@ -155,6 +155,7 @@ Node.prototype = {
         return ret;
     },
     setImportData: function( importer, data ) {
+        this.name = data.name;
         this.setPosition( data.position );
         this.setOrientation( data.orientation );
         this.setScale( data.scale );

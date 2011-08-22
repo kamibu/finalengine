@@ -131,8 +131,8 @@ var Renderer = function( canvas, width, height ) {
     gl.enable( gl.CULL_FACE );
     gl.enable( gl.DEPTH_TEST );
     gl.depthFunc( gl.LEQUAL );
-    gl.enable( gl.BLEND );
-    gl.blendFunc( gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA );
+    gl.disable( gl.BLEND );
+    //gl.blendFunc( gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA );
     gl.clear( gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT );
 };
 
@@ -313,11 +313,12 @@ Renderer.prototype = {
         /*DEBUG_END*/
 
         var gl = this.gl;
-        var target;
+        var target, previousTexture;
         var textureObject = gl.createTexture();
         textureObject.bindPosition = null;
         textureObject.width = texture.width;
         textureObject.height = texture.height;
+        textureObject.foo = texture.source !== null ? texture.source.src : null;
 
         switch ( texture.origin ) {
             case Texture.UPPER_LEFT_CORNER:
@@ -331,6 +332,7 @@ Renderer.prototype = {
         switch ( texture.type ) {
             case Texture.IMAGE:
                 target = gl.TEXTURE_2D;
+                previousTexture = gl.getParameter( gl.TEXTURE_BINDING_2D );
                 gl.bindTexture( target, textureObject );
                 if ( texture.source !== null ) {
                     gl.texImage2D( gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, texture.source );
@@ -338,6 +340,7 @@ Renderer.prototype = {
                 break;
             case Texture.TEXTURE_CUBEMAP:
                 target = gl.TEXTURE_CUBE_MAP;
+                previousTexture = gl.getParameter( gl.TEXTURE_BINDING_CUBE_MAP );
                 gl.bindTexture( target, textureObject );
                 for( var i = 0; i < 6; ++i ) {
                     gl.texImage2D( gl.TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, texture.source[ i ] );
@@ -402,7 +405,7 @@ Renderer.prototype = {
                 gl.texParameteri( target, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE );
                 break;
         }
-        gl.bindTexture( target, null );
+        gl.bindTexture( target, previousTexture );
 
         this.textureObjects[ texture.uid ] = textureObject;
         texture.needsUpdate = false;
@@ -417,6 +420,10 @@ Renderer.prototype = {
         }
 
         var textureObject = this.textureObjects[ texture.uid ];
+        if ( textureObject.bindPosition ) {
+            textureObject.bindPosition.texture = {};
+            textureObject.bindPosition = null;
+        }
 
         if ( texture.width !== textureObject.width || texture.height !== textureObject.height ) {
             this.deleteTexture( texture );
@@ -426,7 +433,17 @@ Renderer.prototype = {
 
         textureObject = this.textureObjects[ texture.uid ];
         var gl = this.gl;
-        gl.texSubImage2D( gl.TEXTURE_2D, 0, 0, 0, texture.width, texture.height, gl.RGB, gl.UNSIGNED_BYTE, texture.source );
+        var previousTexture;
+        switch ( texture.type ) {
+            case Texture.IMAGE:
+                previousTexture = gl.getParameter( gl.TEXTURE_BINDING_2D );
+                gl.bindTexture( gl.TEXTURE_2D, textureObject );
+                gl.texSubImage2D( gl.TEXTURE_2D, 0, 0, 0, gl.RGB, gl.UNSIGNED_BYTE, texture.source );
+                gl.bindTexture( gl.TEXTURE_2D, previousTexture );
+                break;
+            case Texture.CUBEMAP:
+                throw 'Not implemented';
+        }
         texture.needsUpdate = false;
     },
     /*
@@ -440,7 +457,7 @@ Renderer.prototype = {
         /*DEBUG_END*/
         var type, textureObject, gl, position, firstPosition, lastPosition;
 
-        if ( texture.needsUpdate ) {
+        if ( texture.needsUpdate || typeof this.textureObjects[ texture.uid ] === 'undefined' ) {
             this.updateTexture( texture );
         }
 
@@ -696,6 +713,9 @@ Renderer.prototype = {
             gl.enableVertexAttribArray( attributeCount );
             info = gl.getActiveAttrib( program, attributeCount );
             program.attributes[ info.name ] = {
+                /*DEBUG*/
+                    type: info.type,
+                /*DEBUG_END*/
                 location: gl.getAttribLocation( program, info.name )
             };
         }
@@ -809,6 +829,20 @@ Renderer.prototype = {
 			var vertexAttribute = mesh.vertexAttributes[ attribute ];
             /*DEBUG*/
                 assert( typeof vertexAttribute != 'undefined', 'VertexAttribute "' + attribute + '" is missing from the mesh.' );
+                switch ( program.attributes[ attribute ].type ) {
+                    case gl.FLOAT:
+                        assert( vertexAttribute.size === 1, 'VertexAttribute "' + attribute + '" needs a VertexBuffer of size = 1.' );
+                        break;
+                    case gl.FLOAT_VEC2:
+                        assert( vertexAttribute.size === 2, 'VertexAttribute "' + attribute + '" needs a VertexBuffer of size = 2.' );
+                        break;
+                    case gl.FLOAT_VEC3:
+                        assert( vertexAttribute.size === 3, 'VertexAttribute "' + attribute + '" needs a VertexBuffer of size = 3.' );
+                        break;
+                    case gl.FLOAT_VEC4:
+                        assert( vertexAttribute.size === 4, 'VertexAttribute "' + attribute + '" needs a VertexBuffer of size = 4.' );
+                        break;
+                }
             /*DEBUG_END*/
 
 			this.bindBuffer( vertexAttribute.buffer );

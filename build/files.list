@@ -17,6 +17,8 @@ math/color.js
 
 utils/tempvars.js
 utils/RequestAnimationFrame.js
+utils/typedarrays.js
+utils/objloader.js
 
 renderer/renderer.js
 renderer/buffer.js

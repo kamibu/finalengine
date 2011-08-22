@@ -15,6 +15,8 @@ function Material() {
     this.cachedShader = null;
     this.validShader = false;
     this.transparent = false;
+
+    this.copyOnWrite = null;
 }
 
 Material.uid = 0;
@@ -25,6 +27,7 @@ Material.prototype = {
         if ( this.defines[ name ] != value ) {
             this.defines[ name ] = value;
             this.validShader = false;
+            this.copyOnWrite = null;
         }
         return this;
     },
@@ -45,6 +48,11 @@ Material.prototype = {
         return this;
     },
     getShader: function() {
+        if ( this.copyOnWrite ) {
+            this.cachedShader = this.copyOnWrite.getShader();
+            this.validShader = true;
+            this.copyOnWrite = null;
+        }
         var vertexShader = '',
             fragmentShader = '',
             i, l = this.libraries.length,
@@ -80,9 +88,13 @@ Material.prototype = {
             l = this.libraries.length,
             define,
             parameter;
-
-        ret.cachedShader = this.cachedShader;
-        ret.cachedShader = this.validShader;
+        if ( this.validShader ) {
+            ret.cachedShader = this.cachedShader;
+            ret.validShader = true;
+        }
+        else {
+            ret.copyOnWrite = this;
+        }
         ret.transparent = this.transparent;
         for ( define in this.defines ) {
             ret.defines[ define ] = this.defines[ define ];
@@ -104,8 +116,13 @@ Material.prototype = {
         var ret = {
             defines: {},
             parameters: {},
-            engineParameters: {}
+            engineParameters: {},
+            shader: this.cachedShader.name,
+            name: this.name
         };
+
+        exporter.alsoSave( this.cachedShader );
+
         ret.vertexShader = this.vertexShader;
         ret.fragmentShader = this.fragmentShader;
 //        ret.transparent = this.transparent;
@@ -123,16 +140,31 @@ Material.prototype = {
                     ret.parameters[ parameter ] = p;
                     break;
                 case 'object':
-                    ret.parameters[ parameter ] = {
-                        type: p.constructor.name,
-                        data: p.setTo( [] )
-                    };
+                    if ( p.data instanceof Texture ) {
+                        ret.parameters[ parameter ] = {
+                            type: p.data.constructor.name,
+                            data: p.data.getExportData( exporter )
+                        };
+                    }
+                    else {
+                        ret.parameters[ parameter ] = {
+                            type: p.constructor.name,
+                            data: p.setTo( [] )
+                        };
+                    }
                     break;
             }
         }
         return ret;
     },
     setImportData: function( importer, data ) {
+        this.name = data.name;
+        var self = this;
+        importer.alsoLoad( data.shader, function( shader ) {
+            self.cachedShader = shader;
+            self.validShader = true;
+        } );
+
         this.vertexShader = data.vertexShader;
         this.fragmentShader = data.fragmentShader;
 //        this.transparent = data.transparent;
@@ -162,9 +194,14 @@ Material.prototype = {
                         case 'Color':
                             this.parameters[ parameter ] = new Color( p.data );
                             break;
+                        case 'Texture':
+                            this.parameters[ parameter ] = {
+                                data: new Texture().setImportData( importer, p.data )
+                            };
+                            break;
                     }
-                    break;
             }
         }
+        return this;
     }
 };

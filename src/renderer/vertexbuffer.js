@@ -53,15 +53,17 @@ VertexBuffer.prototype = {
             stride: this.stride,
             size: this.size,
             offset: this.offset,
-            buffer: this.buffer.name
+            semantic: this.semantic,
+            buffer: this.buffer.getExportData( exporter )
         };
-        exporter.alsoSave( this.buffer );
         return ret;
     },
     setImportData: function( importer, data ) {
+        this.semantic = data.semantic;
         this.stride = data.stride;
         this.size = data.size;
         this.offset = data.offset;
-        importer.alsoLoad( data.buffer, this.setBuffer.bind( this ) );
+        this.setBuffer( new Buffer().setImportData( importer, data.buffer ) );
+        return this;
     }
 };

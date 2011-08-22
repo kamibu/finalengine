@@ -1,17 +1,16 @@
 // extern
-var assertIn;
+var assertIn, UUID;
 
-var Texture = function( type ) {
-    /*DEBUG*/
-        assertIn( type, Texture.IMAGE, Texture.CUBEMAP, 'Illegal value. type must be TEXTURE_2D or TEXTURE_CUBEMAP' );
-    /*DEBUG_END*/
+function Texture( type ) {
     this.uid = Texture.uid++;
-    this.name = 'Texture #' + this.uid;
+    this.uuid = UUID();
+    this.name = this.uuid;
+
     this.width = 1;
     this.height = 1;
     this.minFilter = Texture.LINEAR_MIPMAP_LINEAR;
     this.maxFilter = Texture.LINEAR;
-    this.type = type;
+    this.type = type || Texture.IMAGE;
 
     this.wrapS = Texture.REPEAT;
     this.wrapT = Texture.REPEAT;
@@ -21,7 +20,7 @@ var Texture = function( type ) {
     this.source = null;
 
     this.needsUpdate = true;
-};
+}
 
 Texture.uid = 0;
 Texture.IMAGE = 1;
@@ -92,6 +91,35 @@ Texture.prototype = {
             this.width = width;
             this.height = height;
         }
+        return this;
+    },
+    getExportData: function( exporter ) {
+        return {
+            width: this.width,
+            height: this.height,
+            minFilter: this.minFilter,
+            maxFilter: this.maxFilter,
+            type: this.type,
+            wrapS: this.wrapS,
+            wrapT: this.wrapT,
+            origin: this.origin,
+            source: this.source !== null ? this.source.src : null
+        };
+    },
+    setImportData: function( importer, data ) {
+        this.width = data.width;
+        this.height = data.height;
+        this.minFilter = data.minFilter;
+        this.maxFilter = data.maxFilter;
+        this.type = data.type;
+        this.wrapS = data.wrapS;
+        this.wrapT = data.wrapT;
+        this.origin = data.origin;
+
+        var img = new Image();
+        img.src = data.source;
+        this.setImage( img );
+
         return this;
     }
 };
