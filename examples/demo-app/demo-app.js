@@ -2,16 +2,12 @@ function DemoApp() {
     Application.call( this );
     var self = this;
 
-    /*
-     * This block of code loads a json and renders it
-     *
-    this.importer.load( 'woman high detail', function( woman ) {
+    this.importer.load( 'woman_Low', function( woman ) {
         self.scene.add( woman );
         setInterval( function() {
             woman.rotate( [ 0, 1, 0 ], 0.01 );
         }, 17 );
     } );
-     */
 
     /*
      * This block of code loads an OBJ and renders it.
