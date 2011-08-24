@@ -1,7 +1,7 @@
 // extern
 var assert, Buffer, UUID;
 
-function VertexBuffer( semantic ) {
+function VertexBuffer( semantic, buffer ) {
     this.uuid = UUID();
     this.name = this.uuid;
 
@@ -26,6 +26,18 @@ VertexBuffer.prototype = {
             dest[ i ] = d[ this.offset + n * stride + i ];
         }
         return dest;
+    },
+    setSize: function( size ) {
+        this.size = size | 0;
+        return this;
+    },
+    setOffset: function( offset ) {
+        this.offset = offset | 0;
+        return this;
+    },
+    setStride: function( stride ) {
+        this.stride = stride | 0;
+        return this;
     },
     setBuffer: function ( buffer ) {
 		/*DEBUG*/
@@ -54,11 +66,13 @@ VertexBuffer.prototype = {
             size: this.size,
             offset: this.offset,
             semantic: this.semantic,
+            name: this.name,
             buffer: this.buffer.getExportData( exporter )
         };
         return ret;
     },
     setImportData: function( importer, data ) {
+        this.name = data.name;
         this.semantic = data.semantic;
         this.stride = data.stride;
         this.size = data.size;
