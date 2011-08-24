@@ -162,12 +162,14 @@ Renderer.prototype = {
     },
     decayArray: function ( array, deleteFunc ) {
         var gl = this.gl;
-        var now = Date.now();
-
-        for ( var object in array ) {
-            if ( now - array[ object ].lastTimeUsed > this.decayTime ) {
-                deleteFunc.call( gl, array[ object ] );
-                delete array[ object ];
+        for ( var objectName in array ) {
+            var object = array[ objectName ];
+            if ( !object.used ) {
+                deleteFunc.call( gl, object );
+                delete array[ objectName ];
+            }
+            else {
+                object.used = false;
             }
         }
     },
@@ -293,7 +295,7 @@ Renderer.prototype = {
         this.boundedBuffer = buffer;
         bufferObject = this.bufferObjects[ buffer.uid ];
         this.gl.bindBuffer( type, bufferObject );
-        bufferObject.lastTimeUsed = Date.now();
+        bufferObject.used = true;
     },
     /*
      * This method  will create a texture object with the data passed to it.
@@ -463,7 +465,7 @@ Renderer.prototype = {
 
         gl = this.gl;
         textureObject = this.textureObjects[ texture.uid ];
-        textureObject.lastTimeUsed = Date.now();
+        textureObject.used = true;
         position = textureObject.bindPosition;
 
         switch ( texture.type ) {
@@ -721,7 +723,7 @@ Renderer.prototype = {
         }
         gl.useProgram( null );
 
-        program.lastTimeUsed = Date.now();
+        program.used = true;
         this.programObjects[ shader.uid ] = program;
         shader.needsUpdate = false;
     },
@@ -745,7 +747,7 @@ Renderer.prototype = {
             this.currentShader = shader;
         }
 
-        programObject.lastTimeUsed = Date.now();
+        programObject.used = true;
     },
     uploadShaderUniforms: function() {
         var shader = this.currentShader;
@@ -762,7 +764,7 @@ Renderer.prototype = {
             u.set( u.location, shader.uniforms[ uniform ] );
         }
 
-        programObject.lastTimeUsed = Date.now();
+        programObject.used = true;
     },
     /*
      * This method will resize the default framebuffer to the size specified.
