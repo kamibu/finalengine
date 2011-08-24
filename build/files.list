@@ -1,6 +1,9 @@
 debug/assert.js
+js/object.js
+js/requestAnimationFrame.js
+
 utils/uuid.js
-utils/extender.js
+utils/tempvars.js
 
 network/request.js
 
@@ -14,11 +17,6 @@ math/vector3.js
 math/quaternion.js
 math/transform.js
 math/color.js
-
-utils/tempvars.js
-utils/RequestAnimationFrame.js
-utils/typedarrays.js
-utils/objloader.js
 
 renderer/renderer.js
 renderer/buffer.js
@@ -46,6 +44,7 @@ application.js
 
 exporter/exporter.js
 exporter/importer.js
+exporter/objloader.js
 
 test/testcase.js
 test/browser/testview.js
