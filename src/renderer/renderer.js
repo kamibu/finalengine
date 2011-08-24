@@ -320,7 +320,6 @@ Renderer.prototype = {
         textureObject.bindPosition = null;
         textureObject.width = texture.width;
         textureObject.height = texture.height;
-        textureObject.foo = texture.source !== null ? texture.source.src : null;
 
         switch ( texture.origin ) {
             case Texture.UPPER_LEFT_CORNER:
@@ -433,7 +432,6 @@ Renderer.prototype = {
             return;
         }
 
-        textureObject = this.textureObjects[ texture.uid ];
         var gl = this.gl;
         var previousTexture;
         switch ( texture.type ) {

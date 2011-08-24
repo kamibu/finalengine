@@ -84,19 +84,29 @@ OBJLoader.prototype = {
                             break;
                     }
                 }
-                
+                var textureCache = {};
+
                 for ( var material in materials ) {
                     if ( materials[ material ].diffuseTexture !== undefined ) {
                         var texture = materials[ material ].diffuseTexture;
                         materials[ material ] = that.texturedMaterial.clone();
+                        materials[ material ].name = material;
+                        
+                        var tex;
+                        if ( textureCache[ texture ] ) {
+                            tex = textureCache[ texture ];
+                        }
+                        else {
+                            var img = new Image();
+                            img.src = texture;
+                            tex = textureCache[ texture ] = new Texture().setImage( img );
+                        }
 
-                        var img = new Image();
-                        img.src = texture;
-
-                        materials[ material ].setParameter( 'texture', new Texture().setImage( img ) );
+                        materials[ material ].setParameter( 'texture', tex );
                     }
                     else {
                         materials[ material ] = that.texturedMaterial.clone();
+                        materials[ material ].name = material;
                         materials[ material ].setParameter( 'texture', new Texture() );
                     }
                 }
@@ -149,6 +159,8 @@ OBJLoader.prototype = {
 
                     d.mesh = m;
                     d.setMaterial( obj.material );
+                    m.name = material + '_mesh';
+                    d.name = material + '_drawable';
                     node.appendChild( d );
                 }
                 myCallback( node );
@@ -198,7 +210,7 @@ OBJLoader.prototype = {
                 };
                 activeMaterial = ret[ 'default' ];
                 
-                var lineCount = lines.length;
+                var lineCount = lines.length, hit;
                 for ( i = 0; i < lineCount; ++i ){
                     line = lines[ i ].trim().split( /\s+/ );
                     switch ( line[ 0 ] ) {
@@ -214,6 +226,7 @@ OBJLoader.prototype = {
                                     normals: [],
                                     uvcoords:[],
                                     indices: [],
+                                    uberObject: {},
                                     indexIndex: 0 //lol
                                 };
                             }
@@ -229,44 +242,78 @@ OBJLoader.prototype = {
                             tList.push( line[ 1 ], line[ 2 ] );
                             break;
                         case 'f': //Face definition
-                            var vertexIndex, uvIndex, normalIndex;
+                            var vertexIndex, uvIndex, normalIndex, words;
                             for ( j = 1; j <= 3; ++j ) {
-                                vertexIndex = ( line[ j ].split( '/' )[ 0 ] - 1 ) * 3;
-                                uvIndex = ( line[ j ].split( '/' )[ 1 ] - 1 ) * 2;
-                                normalIndex = ( line[ j ].split( '/' )[ 2 ] - 1 ) * 3;
+                                words = line[ j ].split( '/' );
+                                vertexIndex = ( words[ 0 ] - 1 ) * 3;
+                                uvIndex = ( words[ 1 ] - 1 ) * 2;
+                                normalIndex = ( words[ 2 ] - 1 ) * 3;
                                 
-                                activeMaterial.vertices.push( vList[ vertexIndex ], vList[ vertexIndex  + 1 ], vList[ vertexIndex  + 2 ] );
-                                activeMaterial.uvcoords.push( tList[ uvIndex ], tList[ uvIndex  + 1 ] );
-                                activeMaterial.normals.push( nList[normalIndex ], nList[ normalIndex + 1 ], nList[ normalIndex + 2 ] );
-                                activeMaterial.indices.push( activeMaterial.indexIndex++ );
+                                hit = activeMaterial.uberObject[ line[ j ] ];
+                                if ( hit ) {
+                                    activeMaterial.indices.push( hit );
+                                }
+                                else {
+                                    activeMaterial.vertices.push( vList[ vertexIndex ], vList[ vertexIndex  + 1 ], vList[ vertexIndex  + 2 ] );
+                                    activeMaterial.uvcoords.push( tList[ uvIndex ], tList[ uvIndex  + 1 ] );
+                                    activeMaterial.normals.push( nList[ normalIndex ], nList[ normalIndex + 1 ], nList[ normalIndex + 2 ] );
+                                    activeMaterial.indices.push( activeMaterial.indexIndex );
+
+                                    activeMaterial.uberObject[ line[ j ] ] = activeMaterial.indexIndex++;
+                                }
+                                
                             }
                             if ( line[ 4 ] !== undefined ) {
                                 vertexIndex = ( line[ 3 ].split( '/' )[ 0 ] - 1 ) * 3;
                                 uvIndex = ( line[ 3 ].split( '/' )[ 1 ] - 1 ) * 2;
                                 normalIndex = ( line[ 3 ].split( '/' )[ 2 ] - 1 ) * 3;
-                                
-                                activeMaterial.vertices.push( vList[ vertexIndex ], vList[ vertexIndex  + 1 ], vList[ vertexIndex  + 2 ] );
-                                activeMaterial.uvcoords.push( tList[ uvIndex ], tList[ uvIndex  + 1 ] );
-                                activeMaterial.normals.push( nList[normalIndex ], nList[ normalIndex + 1 ], nList[ normalIndex + 2 ] );
-                                activeMaterial.indices.push( activeMaterial.indexIndex++ );
+
+                                hit = activeMaterial.uberObject[ line[ 3 ] ];
+                                if ( hit ) {
+                                    activeMaterial.indices.push( hit );
+                                }
+                                else {
+                                    activeMaterial.vertices.push( vList[ vertexIndex ], vList[ vertexIndex  + 1 ], vList[ vertexIndex  + 2 ] );
+                                    activeMaterial.uvcoords.push( tList[ uvIndex ], tList[ uvIndex  + 1 ] );
+                                    activeMaterial.normals.push( nList[ normalIndex ], nList[ normalIndex + 1 ], nList[ normalIndex + 2 ] );
+                                    activeMaterial.indices.push( activeMaterial.indexIndex );
+
+                                    activeMaterial.uberObject[ line[ j ] ] = activeMaterial.indexIndex++;
+                                }
                                 
                                 vertexIndex = ( line[ 4 ].split( '/' )[ 0 ] - 1 ) * 3;
                                 uvIndex = ( line[ 4 ].split( '/' )[ 1 ] - 1 ) * 2;
                                 normalIndex = ( line[ 4 ].split( '/' )[ 2 ] - 1 ) * 3;
-                                
-                                activeMaterial.vertices.push( vList[ vertexIndex ], vList[ vertexIndex  + 1 ], vList[ vertexIndex  + 2 ] );
-                                activeMaterial.uvcoords.push( tList[ uvIndex ], tList[ uvIndex  + 1 ] );
-                                activeMaterial.normals.push( nList[normalIndex ], nList[ normalIndex + 1 ], nList[ normalIndex + 2 ] );
-                                activeMaterial.indices.push( activeMaterial.indexIndex++ );
+
+                                hit = activeMaterial.uberObject[ line[ 4 ] ];
+                                if ( hit ) {
+                                    activeMaterial.indices.push( hit );
+                                }
+                                else {
+                                    activeMaterial.vertices.push( vList[ vertexIndex ], vList[ vertexIndex  + 1 ], vList[ vertexIndex  + 2 ] );
+                                    activeMaterial.uvcoords.push( tList[ uvIndex ], tList[ uvIndex  + 1 ] );
+                                    activeMaterial.normals.push( nList[ normalIndex ], nList[ normalIndex + 1 ], nList[ normalIndex + 2 ] );
+                                    activeMaterial.indices.push( activeMaterial.indexIndex );
+
+                                    activeMaterial.uberObject[ line[ j ] ] = activeMaterial.indexIndex++;
+                                }
                                 
                                 vertexIndex = ( line[ 1 ].split( '/' )[ 0 ] - 1 ) * 3;
                                 uvIndex = ( line[ 1 ].split( '/' )[ 1 ] - 1 ) * 2;
                                 normalIndex = ( line[ 1 ].split( '/' )[ 2 ] - 1 ) * 3;
-                                
-                                activeMaterial.vertices.push( vList[ vertexIndex ], vList[ vertexIndex  + 1 ], vList[ vertexIndex  + 2 ] );
-                                activeMaterial.uvcoords.push( tList[ uvIndex ], tList[ uvIndex  + 1 ] );
-                                activeMaterial.normals.push( nList[normalIndex ], nList[ normalIndex + 1 ], nList[ normalIndex + 2 ] );
-                                activeMaterial.indices.push( activeMaterial.indexIndex++ );
+
+                                hit = activeMaterial.uberObject[ line[ 1 ] ];
+                                if ( hit ) {
+                                    activeMaterial.indices.push( hit );
+                                }
+                                else {
+                                    activeMaterial.vertices.push( vList[ vertexIndex ], vList[ vertexIndex  + 1 ], vList[ vertexIndex  + 2 ] );
+                                    activeMaterial.uvcoords.push( tList[ uvIndex ], tList[ uvIndex  + 1 ] );
+                                    activeMaterial.normals.push( nList[ normalIndex ], nList[ normalIndex + 1 ], nList[ normalIndex + 2 ] );
+                                    activeMaterial.indices.push( activeMaterial.indexIndex );
+
+                                    activeMaterial.uberObject[ line[ j ] ] = activeMaterial.indexIndex++;
+                                }
                             }
                     }
                 }

@@ -8,7 +8,7 @@ function Texture( type ) {
 
     this.width = 1;
     this.height = 1;
-    this.minFilter = Texture.LINEAR_MIPMAP_LINEAR;
+    this.minFilter = Texture.LINEAR;
     this.maxFilter = Texture.LINEAR;
     this.type = type || Texture.IMAGE;
 
