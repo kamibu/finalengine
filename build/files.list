@@ -1,6 +1,7 @@
 debug/assert.js
 js/object.js
 js/requestAnimationFrame.js
+js/typedarrays.js
 
 utils/uuid.js
 utils/tempvars.js
