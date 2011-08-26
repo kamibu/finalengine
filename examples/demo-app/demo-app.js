@@ -30,9 +30,9 @@ function DemoApp() {
         window.node = node;
         node.name = 'woman_Low';
         self.scene.add( node.setScale( 0.2 ) );
-//        setInterval( function() {
-//            node.rotate( [ 0, 1, 0 ], 0.01 );
-//        }, 17 );
+        setInterval( function() {
+            node.rotate( [ 0, 1, 0 ], 0.01 );
+        }, 17 );
     } );
     this.camera.setPosition( [ 0, 2, 4 ] );
 
