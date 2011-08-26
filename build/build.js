@@ -40,6 +40,7 @@ files.forEach( function( file ) {
         lintFree = false;
     }
 } );
+res = "'use strict';\n" + res;
 
 if ( lintFree ) {
     console.log( 'Lint Free!' );
