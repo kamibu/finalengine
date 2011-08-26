@@ -11,12 +11,13 @@ function Application() {
 
     this.scene.root.appendChild( this.camera );
 
-    this.setupCanvas( this.renderManager.renderer.canvas );
+    var canvas = this.renderManager.renderer.canvas;
+    this.setupCanvas( canvas );
 
-    this.handleResize();
-    window.addEventListener( 'resize', this.handleResize.bind( this ), false );
-    
+    this.resize( window.innerWidth, window.innerHeight );
+
     var self = this;
+    
     ( function renderLoop() {
         self.renderManager.renderScene( self.scene, self.camera );
         window.requestAnimationFrame( renderLoop );
@@ -26,17 +27,18 @@ function Application() {
 Application.prototype = {
     constructor: Application,
     setupCanvas: function( canvas ) {
+        var self = this;
+        window.addEventListener( 'resize', function() {
+            self.resize( window.innerWidth, window.innerHeight );
+        }, false );
         document.body.appendChild( canvas );
         return this;
     },
-    handleResize: function() {
-        var w = window.innerWidth;
-        var h = window.innerHeight;
-        this.renderManager.renderer.setSize( w, h );
-
+    resize: function( width, height ) {
+        this.renderManager.resize( width, height );
         var camera = this.camera;
-        camera.width = w;
-        camera.height = h;
+        camera.width = width;
+        camera.height = height;
         camera.setPerspective();
         return this;
     }

@@ -9,7 +9,7 @@ function Texture( type ) {
     this.width = 1;
     this.height = 1;
     this.minFilter = Texture.LINEAR;
-    this.maxFilter = Texture.LINEAR;
+    this.magFilter = Texture.LINEAR;
     this.type = type || Texture.IMAGE;
 
     this.wrapS = Texture.REPEAT;
@@ -62,11 +62,26 @@ Texture.prototype = {
         this.minFilter = filter;
         return this;
     },
-    setMaxFilter: function( filter ) {
+    setMagFilter: function( filter ) {
         /*DEBUG*/
             assertIn( filter, Texture.NEAREST, Texture.LINEAR, 'Unsupported minification filtering. ' + filter  );
         /*DEBUG_END*/
         this.magFilter = filter;
+        return this;
+    },
+    setWrapS: function( wrap ) {
+        /*DEBUG*/
+            assertIn( wrap, Texture.REPEAT, Texture.MIRROR_REPEAT, Texture.CLAMP_TO_EDGE, 'Unsupported wrapping. ' + wrap );
+        /*DEBUG_END*/
+        this.wrapS = wrap;
+        return this;
+            
+    },
+    setWrapT: function( wrap ) {
+        /*DEBUG*/
+            assertIn( wrap, Texture.REPEAT, Texture.MIRROR_REPEAT, Texture.CLAMP_TO_EDGE, 'Unsupported wrapping. ' + wrap  );
+        /*DEBUG_END*/
+        this.wrapT = wrap;
         return this;
     },
     setImage: function( source ) {
@@ -78,7 +93,7 @@ Texture.prototype = {
                valid.
         */
         if ( ( source.constructor == HTMLImageElement || source.constructor == Image ) && !source.complete ) {
-            source.onload = this.setImage.bind( this, source );
+            source.addEventListener( 'load',this.setImage.bind( this, source ) );
             return this;
         }
         this.source = source;
@@ -87,10 +102,8 @@ Texture.prototype = {
         return this;
     },
     setDimentions: function( width, height ) {
-        if ( this.width != width || this.height != height ) {
-            this.width = width;
-            this.height = height;
-        }
+        this.width = width;
+        this.height = height;
         return this;
     },
     getExportData: function( exporter ) {
@@ -103,7 +116,7 @@ Texture.prototype = {
             wrapS: this.wrapS,
             wrapT: this.wrapT,
             origin: this.origin,
-            source: this.source !== null ? this.source.src : null
+            source: this.source !== null ? this.source.getAttribute( 'src' ) : null
         };
     },
     setImportData: function( importer, data ) {

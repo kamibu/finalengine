@@ -1,9 +1,17 @@
 // extern
-var Matrix4, Renderer, Drawable;
+var Matrix4, Renderer, Drawable, Framebuffer, Mesh, Buffer, VertexBuffer, Light;
 
 function RenderManager() {
     this.renderer = new Renderer();
     this.forcedMaterial = null;
+
+    this.postProcess = false;
+    this.framebuffer = new Framebuffer( this.renderer.width, this.renderer.height );
+    this.postProcessEffects = [];
+
+    this.quad = new Mesh();
+    this.quad.setVertexAttribute( new VertexBuffer( 'UVCoord' ).setBuffer( new Buffer().setData( [ -1, -1, 1, 1, -1, 1, 1, -1 ] ) ).setSize( 2 ) );
+    this.quad.setIndexBuffer( new Buffer( Buffer.ELEMENT_BUFFER ).setData( [ 0, 1, 2, 0, 3, 1 ] ) );
 
     this.globalUniformCache = {
         Time: Date.now(),
@@ -19,37 +27,74 @@ function RenderManager() {
 
 RenderManager.prototype = {
     constructor: RenderManager,
+    addPostProcessEffect: function( material ) {
+        this.postProcess = true;
+        this.postProcessEffects.push( material );
+        return this;
+    },
+    applyPostProcessEffects: function() {
+        var i, l, effect,
+            effects = this.postProcessEffects,
+            quad = this.quad,
+            renderer = this.renderer,
+            colorTexture = this.framebuffer.colorTexture;
+
+        l = effects.length;
+
+        renderer.bindFramebuffer( null );
+        renderer.clear();
+        for ( i = 0; i < l; ++i ) {
+            effect = effects[ i ];
+            effect.setParameter( 'ColorTexture', colorTexture );
+            renderer.useShader( effect.getShader() );
+            renderer.render( quad );
+        }
+        return this;
+    },
+    resize: function( width, height ) {
+        this.renderer.setSize( width, height );
+        this.framebuffer.setDimentions( width, height );
+        return this;
+    },
     renderScene: function( scene, camera ) {
+        if ( this.postProcess ) {
+            this.renderer.bindFramebuffer( this.framebuffer );
+        }
+
         this.renderer.clear();
         var g = this.globalUniformCache;
         camera.projectionMatrix.setTo( g.ProjectionMatrix );
         camera.getInverseMatrix( g.ViewMatrix );
         g.ViewProjectionMatrix.set( g.ProjectionMatrix ).multiply( g.ViewMatrix );
 
-        var bucket = [];
-        function fillDrawBucket( node ) {
-            if ( Drawable.prototype.isPrototypeOf( node ) ) {
-                bucket.push( node );
+        var drawableBucket = [];
+        var lightBucket = [];
+        function fillBuckets( node ) {
+            if ( node instanceof Drawable ) {
+                drawableBucket.push( node );
+            }
+            if ( node instanceof Light ) {
+                lightBucket.push( node );
             }
             var children = node.children;
             var l = children.length;
             while ( l-- ) {
-                fillDrawBucket( children[ l ] );
+                fillBuckets( children[ l ] );
             }
             //I have a dream. Where array.forEach is faster than looping
             //node.children.forEach( fillDrawBucket );
         }
-        fillDrawBucket( scene.root );
+        fillBuckets( scene.root );
 
         // TODO: Draw non-transparent materials first, then transparent materials
         //Sort drawables by material
-        bucket.sort( function( a, b ) {
+        drawableBucket.sort( function( a, b ) {
             return a.material.uid - b.material.uid;
         } );
         var currentMaterial = -1;
-        var l = bucket.length;
+        var l = drawableBucket.length;
         while ( l-- ) {
-            var currentDrawable = bucket[ l ];
+            var currentDrawable = drawableBucket[ l ];
             currentDrawable.onBeforeRender( camera );
             currentDrawable.getAbsoluteMatrix( g.WorldMatrix );
             g.WorldViewMatrix.set( g.ViewMatrix ).multiply( g.WorldMatrix );
@@ -62,6 +107,10 @@ RenderManager.prototype = {
 
             this.renderer.useShader( material.getShader() );
             this.renderer.render( currentDrawable.mesh );
+        }
+        
+        if ( this.postProcess ) {
+            this.applyPostProcessEffects();
         }
     }
 };

@@ -1,5 +1,5 @@
 // extern
-var assert, Buffer, Mesh, Shader, Texture, debug;
+var assert, Framebuffer, Buffer, Mesh, Shader, Texture, debug;
 
 /*
  * Renderer is the central point of the graphics library.
@@ -117,10 +117,10 @@ var Renderer = function( canvas, width, height ) {
     this.textureObjects = {};
     this.programObjects = {};
     this.framebufferObjects = {};
-    this.renderbufferObjects = {};
 
     this.currentShader = null;
 	this.boundedBuffer = null;
+    this.boundedFrameBuffer = null;
 
     /*
      * This is the default Render state.
@@ -335,7 +335,10 @@ Renderer.prototype = {
                 target = gl.TEXTURE_2D;
                 previousTexture = gl.getParameter( gl.TEXTURE_BINDING_2D );
                 gl.bindTexture( target, textureObject );
-                if ( texture.source !== null ) {
+                if ( texture.source === null ) {
+                    gl.texImage2D( gl.TEXTURE_2D, 0, gl.RGB, texture.width, texture.height, 0, gl.RGB, gl.UNSIGNED_BYTE, null );
+                }
+                else {
                     gl.texImage2D( gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, texture.source );
                 }
                 break;
@@ -343,7 +346,7 @@ Renderer.prototype = {
                 target = gl.TEXTURE_CUBE_MAP;
                 previousTexture = gl.getParameter( gl.TEXTURE_BINDING_CUBE_MAP );
                 gl.bindTexture( target, textureObject );
-                for( var i = 0; i < 6; ++i ) {
+                for ( var i = 0; i < 6; ++i ) {
                     gl.texImage2D( gl.TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, texture.source[ i ] );
                 }
                 break;
@@ -374,7 +377,7 @@ Renderer.prototype = {
                 break;
         }
 
-        switch ( texture.maxFilter ) {
+        switch ( texture.magFilter ) {
             case Texture.NEAREST:
                 gl.texParameteri( target, gl.TEXTURE_MAG_FILTER, gl.NEAREST );
                 break;
@@ -390,7 +393,7 @@ Renderer.prototype = {
             case Texture.MIRROR_REPEAT:
                 gl.texParameteri( target, gl.TEXTURE_WRAP_S, gl.MIRROR_REPEAT );
                 break;
-            case Texture.CLAMP:
+            case Texture.CLAMP_TO_EDGE:
                 gl.texParameteri( target, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE );
                 break;
         }
@@ -402,7 +405,7 @@ Renderer.prototype = {
             case Texture.MIRROR_REPEAT:
                 gl.texParameteri( target, gl.TEXTURE_WRAP_T, gl.MIRROR_REPEAT );
                 break;
-            case Texture.CLAMP:
+            case Texture.CLAMP_TO_EDGE:
                 gl.texParameteri( target, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE );
                 break;
         }
@@ -438,7 +441,12 @@ Renderer.prototype = {
             case Texture.IMAGE:
                 previousTexture = gl.getParameter( gl.TEXTURE_BINDING_2D );
                 gl.bindTexture( gl.TEXTURE_2D, textureObject );
-                gl.texSubImage2D( gl.TEXTURE_2D, 0, 0, 0, gl.RGB, gl.UNSIGNED_BYTE, texture.source );
+                if ( texture.source === null ) {
+                    gl.texImage2D( gl.TEXTURE_2D, 0, gl.RGB, texture.width, texture.height, 0, gl.RGB, gl.UNSIGNED_BYTE, null );
+                }
+                else {
+                    gl.texSubImage2D( gl.TEXTURE_2D, 0, 0, 0, gl.RGB, gl.UNSIGNED_BYTE, texture.source );
+                }
                 gl.bindTexture( gl.TEXTURE_2D, previousTexture );
                 break;
             case Texture.CUBEMAP:
@@ -538,65 +546,97 @@ Renderer.prototype = {
             delete this.textureObjects[ texture.uid ];
         }
     },
-//    /*
-//     * This method creates a framebuffer object with the specified
-//     * dimentions. The color attachment of the framebuffer created
-//     * is a texture and can be used as input to a shader. Also, the
-//     * framebuffer created has a 16bit depth buffer.
-//     */
-//    createFramebuffer: function( width, height ) {
-//        var gl = this.gl;
-//        var fb = gl.createFramebuffer();
-//        gl.bindFramebuffer( gl.FRAMEBUFFER, fb );
-//
-//        var colorTex = gl.createTexture();
-//        gl.activeTexture( gl.TEXTURE0 );
-//        gl.bindTexture( gl.TEXTURE_2D, colorTex );
-//        gl.texParameteri( gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST );
-//        gl.texParameteri( gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST );
-//        gl.texImage2D( gl.TEXTURE_2D, 0, gl.RGBA, width, height, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
-//        gl.framebufferTexture2D( gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, colorTex, 0 );
-//
-//        var depthRB = gl.createRenderbuffer();
-//        gl.bindRenderbuffer( gl.RENDERBUFFER, depthRB );
-//        gl.renderbufferStorage( gl.RENDERBUFFER, gl.DEPTH_COMPONENT16, width, height );
-//        gl.framebufferRenderbuffer( gl.FRAMEBUFFER, gl.DEPTH_ATTACHMENT, gl.RENDERBUFFER, depthRB );
-//
-//        gl.bindRenderbuffer( gl.RENDERBUFFER, null );
-//
-//        fb.colorAttachment = colorTex;
-//        fb.depthAttachment = depthRB;
-//        gl.bindFramebuffer( gl.FRAMEBUFFER, null );
-//        fb.uid = this.uid.get();
-//        return fb;
-//    },
-//    /*
-//     * This method binds the passed framebuffer so that it becomes active.
-//     * Any drawing calls following a framebuffer bind will cause the result
-//     * of the calls being writted in the framebuffer. To return to the normal
-//     * renderering to the screen bindFramebuffer must be called with null as
-//     * its parameter.
-//     */
-//    bindFramebuffer: function( fb ) {
-//        var gl = this.gl;
-//        gl.bindFramebuffer( gl.FRAMEBUFFER, fb );
-//    },
-//    /*
-//     * This method updated the dimentions of an already created framebuffer.
-//     * The contents of the framebuffer immediatelly after this call are
-//     * undefined.
-//     */
-//    updateFramebuffer: function( fb, width, height ) {
-//        var gl = this.gl;
-//        gl.activeTexture( gl.TEXTURE0 );
-//        gl.bindTexture( gl.TEXTURE_2D, fb.colorAttachment );
-//        gl.texImage2D( gl.TEXTURE_2D, 0, gl.RGBA, width, height, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
-//
-//        gl.bindRenderbuffer( gl.RENDERBUFFER, fb.depthAttachment );
-//        gl.renderbufferStorage( gl.RENDERBUFFER, gl.DEPTH_COMPONENT16, width, height );
-//
-//        gl.bindRenderbuffer( gl.RENDERBUFFER, null );
-//    },
+    deleteFramebuffer: function( framebuffer ) {
+        /*DEBUG*/
+            assert( framebuffer instanceof Framebuffer, 'Invalid type. framebuffer must be a Framebuffer instance' );
+        /*DEBUG_END*/
+        var gl = this.gl;
+        this.deleteTexture( framebuffer.colorTexture );
+
+        var framebufferObject = this.framebufferObjects[ framebuffer.uid ];
+        if ( framebufferObject ) {
+            gl.deleteRenderbuffer( framebufferObject.renderbuffer );
+            gl.deleteFramebuffer( framebufferObject );
+        }
+    },
+    /*
+     * This method creates a framebuffer object with the specified
+     * dimentions. The color attachment of the framebuffer created
+     * is a texture and can be used as input to a shader. Also, the
+     * framebuffer created has a 16bit depth buffer.
+     */
+    createFramebuffer: function( framebuffer ) {
+        /*DEBUG*/
+            assert( framebuffer instanceof Framebuffer, 'Tried to update a non-framebuffer object' );
+        /*DEBUG_END*/
+        var gl = this.gl;
+
+        var framebufferObject = this.framebufferObjects[ framebuffer.uid ] = gl.createFramebuffer();
+        gl.bindFramebuffer( gl.FRAMEBUFFER, framebufferObject );
+
+        this.bindTexture( framebuffer.colorTexture );
+        framebufferObject.colorTexture = this.textureObjects[ framebuffer.colorTexture.uid ];
+        gl.framebufferTexture2D( gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, framebufferObject.colorTexture, 0 );
+        
+        var renderbufferObject = framebufferObject.renderbuffer = gl.createRenderbuffer();
+        gl.bindRenderbuffer( gl.RENDERBUFFER, renderbufferObject );
+        gl.renderbufferStorage( gl.RENDERBUFFER, gl.DEPTH_COMPONENT16, framebuffer.width, framebuffer.height );
+        gl.framebufferRenderbuffer( gl.FRAMEBUFFER, gl.DEPTH_ATTACHMENT, gl.RENDERBUFFER, renderbufferObject );
+        gl.bindRenderbuffer( gl.RENDERBUFFER, null );
+        
+        /*DEBUG*/
+            assert( gl.checkFramebufferStatus( gl.FRAMEBUFFER ) === gl.FRAMEBUFFER_COMPLETE, 'Framebuffer was not constructed correctly' );
+        /*DEBUG_END*/
+        gl.bindFramebuffer( gl.FRAMEBUFFER, null );
+    },
+    /*
+     * This method updated the dimentions of an already created framebuffer.
+     * The contents of the framebuffer immediatelly after this call are
+     * undefined.
+     */
+    updateFramebuffer: function( framebuffer ) {
+        /*DEBUG*/
+            assert( framebuffer instanceof Framebuffer, 'Tried to update a non-framebuffer object' );
+        /*DEBUG_END*/
+        if ( this.framebufferObjects[ framebuffer.uid ] ) {
+            this.deleteFramebuffer( framebuffer );
+        }
+        this.createFramebuffer( framebuffer );
+
+        framebuffer.needsUpdate = false;
+    },
+    /*
+     * This method binds the passed framebuffer so that it becomes active.
+     * Any drawing calls following a framebuffer bind will cause the result
+     * of the calls being writted in the framebuffer. To return to the normal
+     * renderering to the screen bindFramebuffer must be called with null as
+     * its parameter.
+     */
+    bindFramebuffer: function( framebuffer ) {
+        /*DEBUG*/
+            assert( framebuffer instanceof Framebuffer || framebuffer === null, 'Tried to bind a non-framebuffer object' );
+        /*DEBUG_END*/
+        var gl = this.gl,
+            framebufferObject;
+
+        if ( framebuffer !== null ) {
+            framebufferObject = this.framebufferObjects[ framebuffer.uid ];
+
+            if ( framebuffer.needsUpdate || !framebufferObject ) {
+                this.updateFramebuffer( framebuffer );
+                framebufferObject = this.framebufferObjects[ framebuffer.uid ];
+            }
+            framebufferObject.colorTexture.used = true;
+        }
+        else {
+            framebufferObject = null;
+        }
+
+        if ( this.boundedFramebuffer != framebuffer ) {
+            gl.bindFramebuffer( gl.FRAMEBUFFER, framebufferObject );
+            this.boundedFramebuffer = framebuffer;
+        }
+    },
     deleteShader: function( shader ) {
         var programObject, gl;
         gl = this.gl;

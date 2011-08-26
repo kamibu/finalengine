@@ -1,7 +1,7 @@
 // extern
 var assert, Buffer, UUID;
 
-function VertexBuffer( semantic, buffer ) {
+function VertexBuffer( semantic ) {
     this.uuid = UUID();
     this.name = this.uuid;
 
@@ -29,21 +29,24 @@ VertexBuffer.prototype = {
     },
     setSize: function( size ) {
         this.size = size | 0;
-        return this;
+        return this.updateLength();
     },
     setOffset: function( offset ) {
         this.offset = offset | 0;
-        return this;
+        return this.updateLength();
     },
     setStride: function( stride ) {
         this.stride = stride | 0;
-        return this;
+        return this.updateLength();
     },
     setBuffer: function ( buffer ) {
 		/*DEBUG*/
 			assert( buffer instanceof Buffer, 'Invalid type. buffer must be an instance of Buffer' );
 		/*DEBUG_END*/
 		this.buffer = buffer;
+        return this.updateLength();
+	},
+    updateLength: function() {
         if ( this.stride === 0 ) {
             this.length = ( this.buffer.length - this.offset ) / this.size;
         }
@@ -51,7 +54,7 @@ VertexBuffer.prototype = {
             this.length = ( this.buffer.length - this.offset ) / this.stride;
         }
         return this;
-	},
+    },
     clone: function() {
         var ret = new VertexBuffer( this.semantic );
         ret.stride = this.stride;

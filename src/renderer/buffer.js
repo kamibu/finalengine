@@ -60,6 +60,7 @@ Buffer.prototype = {
         this.needsUpdate = true;
         this.data = data;
         this.length = data.length;
+        return this;
     },
     FloatToUtf8: function( a ) {
         var u = new Uint16Array( a.buffer ),
