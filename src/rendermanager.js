@@ -46,6 +46,8 @@ RenderManager.prototype = {
         for ( i = 0; i < l; ++i ) {
             effect = effects[ i ];
             effect.setParameter( 'ColorTexture', colorTexture );
+            effect.setParameter( 'FramebufferWidth', this.framebuffer.width );
+            effect.setParameter( 'FramebufferHeight', this.framebuffer.height );
             renderer.useShader( effect.getShader() );
             renderer.render( quad );
         }

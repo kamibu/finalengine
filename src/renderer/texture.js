@@ -15,6 +15,8 @@ function Texture( type ) {
     this.wrapS = Texture.REPEAT;
     this.wrapT = Texture.REPEAT;
 
+    this.format = Texture.RGB;
+
     this.origin = Texture.UPPER_LEFT_CORNER;
 
     this.source = null;
@@ -41,6 +43,9 @@ Texture.CLAMP_TO_EDGE = 3;
 
 Texture.LOWER_LEFT_CORNER = 1;
 Texture.UPPER_LEFT_CORNER = 2;
+
+Texture.RGB = 1;
+Texture.RGBA = 2;
 
 Texture.prototype = {
     constructor: Texture,
@@ -82,6 +87,13 @@ Texture.prototype = {
             assertIn( wrap, Texture.REPEAT, Texture.MIRROR_REPEAT, Texture.CLAMP_TO_EDGE, 'Unsupported wrapping. ' + wrap  );
         /*DEBUG_END*/
         this.wrapT = wrap;
+        return this;
+    },
+    setFormat: function( format ) {
+        /*DEBUG*/
+            assertIn( format, Texture.RGB, Texture.RGBA, 'Unsupported format. ' + format );
+        /*DEBUG_END*/
+        this.format = format;
         return this;
     },
     setImage: function( source ) {

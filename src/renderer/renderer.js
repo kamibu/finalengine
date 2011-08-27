@@ -315,7 +315,7 @@ Renderer.prototype = {
         /*DEBUG_END*/
 
         var gl = this.gl;
-        var target, previousTexture;
+        var target, format, previousTexture;
         var textureObject = gl.createTexture();
         textureObject.bindPosition = null;
         textureObject.width = texture.width;
@@ -329,6 +329,15 @@ Renderer.prototype = {
                 gl.pixelStorei( gl.UNPACK_FLIP_Y_WEBGL, false );
                 break;
         }
+    
+        switch ( texture.format ) {
+                case Texture.RGB:
+                    format = gl.RGB;
+                    break;
+                case Texture.RGBA:
+                    format = gl.RGBA;
+                    break;
+        }
 
         switch ( texture.type ) {
             case Texture.IMAGE:
@@ -336,10 +345,10 @@ Renderer.prototype = {
                 previousTexture = gl.getParameter( gl.TEXTURE_BINDING_2D );
                 gl.bindTexture( target, textureObject );
                 if ( texture.source === null ) {
-                    gl.texImage2D( gl.TEXTURE_2D, 0, gl.RGB, texture.width, texture.height, 0, gl.RGB, gl.UNSIGNED_BYTE, null );
+                    gl.texImage2D( gl.TEXTURE_2D, 0, format, texture.width, texture.height, 0, format, gl.UNSIGNED_BYTE, null );
                 }
                 else {
-                    gl.texImage2D( gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, texture.source );
+                    gl.texImage2D( gl.TEXTURE_2D, 0, format, format, gl.UNSIGNED_BYTE, texture.source );
                 }
                 break;
             case Texture.TEXTURE_CUBEMAP:
@@ -347,7 +356,7 @@ Renderer.prototype = {
                 previousTexture = gl.getParameter( gl.TEXTURE_BINDING_CUBE_MAP );
                 gl.bindTexture( target, textureObject );
                 for ( var i = 0; i < 6; ++i ) {
-                    gl.texImage2D( gl.TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, texture.source[ i ] );
+                    gl.texImage2D( gl.TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, format, format, gl.UNSIGNED_BYTE, texture.source[ i ] );
                 }
                 break;
         }
@@ -622,7 +631,7 @@ Renderer.prototype = {
         if ( framebuffer !== null ) {
             framebufferObject = this.framebufferObjects[ framebuffer.uid ];
 
-            if ( framebuffer.needsUpdate || !framebufferObject ) {
+            if ( framebuffer.needsUpdate || !framebufferObject || !this.textureObjects[ framebuffer.colorTexture.uid ] ) {
                 this.updateFramebuffer( framebuffer );
                 framebufferObject = this.framebufferObjects[ framebuffer.uid ];
             }

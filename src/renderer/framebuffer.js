@@ -6,7 +6,7 @@ function Framebuffer( width, height ) {
 
     this.width = width || 256;
     this.height = height || 256;
-    this.colorTexture = new Texture().setMinFilter( Texture.LINEAR ).setMagFilter( Texture.NEAREST ).setWrapS( Texture.CLAMP_TO_EDGE ).setWrapT( Texture.CLAMP_TO_EDGE );
+    this.colorTexture = new Texture().setWrapS( Texture.CLAMP_TO_EDGE ).setWrapT( Texture.CLAMP_TO_EDGE ).setFormat( Texture.RGBA );
     this.needsUpdate = true;
 }
 
