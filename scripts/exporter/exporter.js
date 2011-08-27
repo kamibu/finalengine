@@ -1,40 +1,33 @@
-var http = require( 'http' ),
-    fs = require( 'fs' ),
-    querystring = require( 'querystring' );
+var http = require( 'http' );
 
-// use final engine extender
-require( '../../src/js/object' );
+http.createServer( function( req, res ) {
+    console.log( 'Request' );
 
-function ExportServer() {
-    http.Server.call( this );
-
-    this.on( 'request', this.handleRequest.bind( this ) );
-}
-
-ExportServer.prototype.handleRequest = function( request, response ) {
-    var self = this;
-
-    response.writeHeader( { 'Content-type': 'text/plain' } );
-    response.write( 'Hello' );
-    response.end();
-
-    var body = "";
-    request.on( 'data', function( chunk ) {
-        body += chunk;
+    res.writeHead( 200, { 
+        'Content-Type': 'text/plain; charset=utf-8',
+        'Access-Control-Allow-Origin': '*'
     } );
-
-    request.on( 'end', function() {
-        var postVars = querystring.parse( body );
-        self.save( postVars[ 'data' ] );
+    var data = '';
+    req.on( 'data', function( chunk ) {
+        data += chunk;
+    } ).on( 'end', function() {
+        data = unescape( data );
+        var json = JSON.parse( data.substring( data.indexOf( '{' ), data.lastIndexOf( '}' ) + 1 ) );
+        var fs = require( 'fs' );
+        
+        for ( var objectName in json.library ) {
+            var object = json.library[ objectName ];
+            var file = {
+                library: {},
+                object: objectName
+            }
+            file.library[ objectName ] = object;
+            fs.writeFileSync( objectName + '.json', JSON.stringify( file ) );
+        }
+        res.end();
     } );
-};
+} ).listen( 5000, "127.0.0.1" );
 
-ExportServer.prototype.save = function( data ) {
-    var json = JSON.parse( data );
-    fs.writeFile( json.object + '.json', data );
-};
+console.log('Server running at http://127.0.0.1:5000/');
 
-ExportServer.extend( http.Server );
 
-var server = new ExportServer();
-server.listen( 1337, 'localhost' );

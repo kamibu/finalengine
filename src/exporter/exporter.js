@@ -22,9 +22,9 @@ Exporter.prototype = {
         };
         //console.log( object.name );
         var self = this;
-        var payload = JSON.stringify( data );
+        var payload = window.escape( JSON.stringify( data ) );
         console.log( 'Sending ' + payload.length / 1024 / 1024 + 'MB' );
-        Request.post( this.resourcePath + 'exporter.php', { data: payload }, function() {
+        Request.post( 'http://localhost:5000/', { data: payload }, function() {
             if ( self.pending.length > 0 ) {
                 self.save( self.pending.shift(), callback );
             }
