@@ -85,6 +85,9 @@ Transform.prototype = {
         if ( !dest ) {
             dest = new Matrix4();
         }
+        if ( this.needsUpdate  ) {
+            this.update();
+        }
         this.orientation.toMatrix4( dest ).transpose();
         //Translation part rotated by the transposed 3x3 matrix
         var x = -this.position[ 0 ];
