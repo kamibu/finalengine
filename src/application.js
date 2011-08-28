@@ -18,9 +18,13 @@ function Application() {
 
     var self = this;
     
+    this._nextFrame = null;
+    this.capFPS( 60 );
+
     ( function renderLoop() {
         self.renderManager.renderScene( self.scene, self.camera );
-        window.requestAnimationFrame( renderLoop );
+        // console.log( self._nextFrame );
+        self._nextFrame( renderLoop );
     }() );
 }
 
@@ -41,5 +45,16 @@ Application.prototype = {
         camera.height = height;
         camera.setPerspective();
         return this;
+    },
+    capFPS: function( fps ) {
+        if ( fps >= 60 ) {
+            fps = 60;
+            this._nextFrame = window.requestAnimationFrame.bind( window );
+        }
+        else {
+            this._nextFrame = function( renderLoop ) {
+                setTimeout( renderLoop, 1000 / fps );
+            };
+        }
     }
 };
