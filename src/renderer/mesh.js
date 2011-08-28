@@ -31,7 +31,7 @@ Mesh.prototype = {
     interleave: function() {
         /*DEBUG*/
             assert( !this.isInterleaved, 'Tried to interleave an already interleaved Mesh' );
-        /*DEBUG*/
+        /*DEBUG_END*/
         var interleavedBuffer, data, stride, attribute, buffer, attr, i, j;
 
         interleavedBuffer = new Buffer( Buffer.DATA_BUFFER, Buffer.STATIC );
