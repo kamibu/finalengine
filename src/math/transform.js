@@ -66,7 +66,7 @@ Transform.prototype = {
         if ( !dest ) {
             dest = new Matrix4();
         }
-        if ( this.needsUpdate  ) {
+        if ( this.needsUpdate ) {
             this.update();
         }
         return dest.set( this.matrix );
