@@ -2,6 +2,8 @@
 var Camera, RenderManager, Scene, Importer, Exporter;
 
 function Application() {
+    var t = new Date() - 0;
+
     this.renderManager = new RenderManager();
     this.scene = new Scene();
     this.camera = new Camera().setPosition( [ 0, 0, 10 ] );
@@ -21,11 +23,21 @@ function Application() {
     this._nextFrame = null;
     this.capFPS( 60 );
 
-    ( function renderLoop() {
+    function renderLoop() {
+        var dt = ( new Date() - 0 ) - t;
+        self.onBeforeRender( dt );
         self.renderManager.renderScene( self.scene, self.camera );
         // console.log( self._nextFrame );
         self._nextFrame( renderLoop );
-    }() );
+        t = ( new Date() - 0 );
+    }
+
+    // it is necessary to call this asynchronously because the inheriting
+    // developer may override the constructor and will call the parent constructor
+    // initially; the rest of the inheriting constructor will initilize some objects
+    // which may be required by the renderLoop; therefore run it after the inheriting
+    // constructor has finished initializations
+    setTimeout( renderLoop, 1 );
 }
 
 Application.prototype = {
@@ -45,6 +57,9 @@ Application.prototype = {
         camera.height = height;
         camera.setPerspective();
         return this;
+    },
+    onBeforeRender: function ( elapsed ) {
+        // overwrite me
     },
     capFPS: function( fps ) {
         if ( fps >= 60 ) {
