@@ -49,5 +49,9 @@ exporter/exporter.js
 exporter/importer.js
 exporter/objloader.js
 
+input/inputhandler.js
+input/keyboarddevice.js
+input/inputaction.js
+
 test/testcase.js
 test/browser/testview.js

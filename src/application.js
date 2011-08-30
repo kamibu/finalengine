@@ -1,5 +1,5 @@
 // extern
-var Camera, RenderManager, Scene, Importer, Exporter;
+var Camera, RenderManager, Scene, Importer, Exporter, InputHandler;
 
 function Application() {
     this.renderManager = new RenderManager();
@@ -8,6 +8,8 @@ function Application() {
 
     this.importer = new Importer( 'resources' );
     this.exporter = new Exporter( 'resources' );
+
+    this.input = new InputHandler();
 
     this.scene.root.appendChild( this.camera );
 
