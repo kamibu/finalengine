@@ -100,7 +100,14 @@ Node.prototype = {
         node.parent = this;
         this.children.push( node );
         node.invalidate();
+
+        this.onChildAdded( this, node );
         return this;
+    },
+    onChildAdded: function( node, nodeAdded ) {
+        if ( this !== Node.Origin ) {
+            this.parent.onChildAdded( node, nodeAdded );
+        }
     },
     removeChild: function( node ) {
         var children = this.children;
@@ -110,10 +117,16 @@ Node.prototype = {
                 node.parent = Node.Origin;
                 node.invalidate();
                 children.splice( l, 1 );
+                this.onChildRemoved( this, node );
                 return this;
             }
         }
         return this;
+    },
+    onChildRemoved: function( node, nodeRemoved ) {
+        if ( this !== Node.Origin ) {
+            this.parent.onChildRemoved( node, nodeRemoved );
+        }
     },
     getAbsoluteMatrix: function( dest ) {
         if ( !dest ) {

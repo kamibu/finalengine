@@ -1,5 +1,5 @@
 // extern
-var Matrix4, Renderer, Drawable, Framebuffer, Mesh, Buffer, VertexBuffer, Light;
+var Matrix4, Renderer, Drawable, Framebuffer, Mesh, Buffer, VertexAttribute, Light;
 
 function RenderManager() {
     this.renderer = new Renderer();
@@ -10,7 +10,7 @@ function RenderManager() {
     this.postProcessEffects = [];
 
     this.quad = new Mesh();
-    this.quad.setVertexAttribute( new VertexBuffer( 'UVCoord' ).setBuffer( new Buffer().setData( [ -1, -1, 1, 1, -1, 1, 1, -1 ] ) ).setSize( 2 ) );
+    this.quad.setVertexAttribute( new VertexAttribute( 'UVCoord' ).setBuffer( new Buffer().setData( [ -1, -1, 1, 1, -1, 1, 1, -1 ] ) ).setSize( 2 ) );
     this.quad.setIndexBuffer( new Buffer( Buffer.ELEMENT_BUFFER ).setData( [ 0, 1, 2, 0, 3, 1 ] ) );
 
     this.globalUniformCache = {
@@ -69,34 +69,19 @@ RenderManager.prototype = {
         camera.getInverseMatrix( g.ViewMatrix );
         g.ViewProjectionMatrix.set( g.ProjectionMatrix ).multiply( g.ViewMatrix );
 
-        var drawableBucket = [];
-        var lightBucket = [];
-        function fillBuckets( node ) {
-            if ( node instanceof Drawable ) {
-                drawableBucket.push( node );
-            }
-            if ( node instanceof Light ) {
-                lightBucket.push( node );
-            }
-            var children = node.children;
-            var l = children.length;
-            while ( l-- ) {
-                fillBuckets( children[ l ] );
-            }
-            //I have a dream. Where array.forEach is faster than looping
-            //node.children.forEach( fillDrawBucket );
-        }
-        fillBuckets( scene.root );
-
         // TODO: Draw non-transparent materials first, then transparent materials
         //Sort drawables by material
-        drawableBucket.sort( function( a, b ) {
+
+        var drawableList = scene.drawableList;
+
+        drawableList.sort( function( a, b ) {
             return a.material.uid - b.material.uid;
         } );
+
         var currentMaterial = -1;
-        var l = drawableBucket.length;
+        var l = drawableList.length;
         while ( l-- ) {
-            var currentDrawable = drawableBucket[ l ];
+            var currentDrawable = drawableList[ l ];
             currentDrawable.onBeforeRender( camera );
             currentDrawable.getAbsoluteMatrix( g.WorldMatrix );
             g.WorldViewMatrix.set( g.ViewMatrix ).multiply( g.WorldMatrix );

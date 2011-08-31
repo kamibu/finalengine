@@ -9,15 +9,12 @@ function Application() {
     this.importer = new Importer( 'resources' );
     this.exporter = new Exporter( 'resources' );
 
-    this.scene.root.appendChild( this.camera );
+    this.scene.appendChild( this.camera );
 
     var canvas = this.renderManager.renderer.canvas;
     this.setupCanvas( canvas );
 
-    this.resize( window.innerWidth, window.innerHeight );
-
     var self = this;
-    
     this._nextFrame = null;
     this.capFPS( 60 );
 
@@ -36,6 +33,7 @@ Application.prototype = {
             self.resize( window.innerWidth, window.innerHeight );
         }, false );
         document.body.appendChild( canvas );
+        this.resize( window.innerWidth, window.innerHeight );
         return this;
     },
     resize: function( width, height ) {
