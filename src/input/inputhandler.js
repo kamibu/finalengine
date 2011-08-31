@@ -32,9 +32,7 @@ InputHandler.prototype.isEnabled = function() {
 
 InputHandler.prototype.addAction = function( device, eventId, action ) {
     this.actions.push( action );
-    console.log( 'adding action to device' );
     device.addAction( eventId, action );
-    console.log( 'added' );
     return action;
 };
 

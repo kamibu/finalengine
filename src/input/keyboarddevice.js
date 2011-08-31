@@ -7,11 +7,9 @@ function KeyboardDevice( name ) {
 
     var self = this;
     window.addEventListener( 'keydown', function( e ) {
-        console.log( 'got keydown ' + e.keyCode );
         var actions = self.actions[ e.keyCode ], i, l, action, keypress;
 
         if ( !actions ) {
-            console.log( 'no actions' );
             return;
         }
         
@@ -31,24 +29,22 @@ function KeyboardDevice( name ) {
         }
         keypress.lastPress = Date.now();
 
+        
         for ( i = 0; i < l; ++i ) {
-            console.log( 'setting action' );
             action = actions[ i ];
 
             action.perform( e );
 
             if ( !action.getEndCallback() ) {
-                return;
+                continue;
             }
 
-            console.log( 'setting callinterval' );
             action.callInterval = setInterval( action.getCallback(), action.getSpeed() );
         }
 
         self.setPressed( e.keyCode );
 
         // auto-repeat takes half a second to start (on chrome for linux at least..)
-        console.log( 'setting up callback' );
         keypress.upCallback = setTimeout( function() {
             // check if no keyup was sent within a second
             if ( !self.keyPressed[ e.keyCode ] ) {
@@ -130,18 +126,13 @@ KeyboardDevice.prototype = {
             return;
         }
 
-        console.log( 'handling keyup');
         if ( !( this.keyPress[ e.keyCode ] && this.keyPress[ e.keyCode ].upCallback ) ) {
-            console.log( 'was not pressed or no upcallback' );
             return;
         }
 
         if ( this.keyPress[ e.keyCode ].upInterval ) {
-            console.log( 'clearing upinterval' );
             clearInterval( this.keyPress[ e.keyCode ].upInterval );
         }
-
-        console.log( 'clearing callintervals' );
 
         l = actions.length;
         for ( i = 0; i < l; ++i ) {
