@@ -66,7 +66,7 @@ RenderManager.prototype = {
         this.renderer.clear();
         var g = this.globalUniformCache;
         camera.projectionMatrix.setTo( g.ProjectionMatrix );
-        camera.getInverseMatrix( g.ViewMatrix );
+        camera.getAbsoluteInverseMatrix( g.ViewMatrix );
         g.ViewProjectionMatrix.set( g.ProjectionMatrix ).multiply( g.ViewMatrix );
 
         // TODO: Draw non-transparent materials first, then transparent materials

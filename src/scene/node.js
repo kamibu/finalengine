@@ -135,6 +135,13 @@ Node.prototype = {
         this.update();
         return dest.set( this.worldTransform.getMatrix() );
     },
+    getAbsoluteInverseMatrix: function( dest ) {
+        if ( !dest ) {
+            dest = new Matrix4();
+        }
+        this.update();
+        return dest.set( this.worldTransform.getInverseMatrix() );
+    },
     update: function() {
         if ( this.needsUpdate ) {
             this.Transform_update();
