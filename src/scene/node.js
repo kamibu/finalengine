@@ -63,6 +63,10 @@ Node.prototype = {
     },
     rotate: function( axis, angle, node ) {
         TempVars.lock();
+
+        //Remap angle to the range 0..2 * Math.PI
+        angle -= 2 * Math.PI * Math.floor( angle / 2 / Math.PI );
+
         var rot = TempVars.getQuaternion().setAxisAngle( axis, angle );
         if ( node ) {
             if ( node == Node.Origin ) {

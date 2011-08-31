@@ -84,6 +84,29 @@ Quaternion.prototype = {
         TempVars.release();
         return this;
     },
+    getAngle: function() {
+        if ( this[ 0 ] || this[ 1 ] || this[ 2 ] ) {
+            return 2 * Math.acos( this[ 3 ] );
+        }
+        return 0;
+    },
+    getAxis: function( dest ) {
+        if ( !dest ) {
+            dest = new Vector3();
+        }
+        if ( this[ 0 ] || this[ 1 ] || this[ 2 ] ) {
+            dest[ 0 ] = this[ 0 ];
+            dest[ 1 ] = this[ 1 ];
+            dest[ 2 ] = this[ 2 ];
+            dest.normalize();
+        }
+        else {
+            dest[ 0 ] = 0;
+            dest[ 1 ] = 0;
+            dest[ 2 ] = 1;
+        }
+        return dest;
+    },
     inverse: function() {
         this[ 0 ] = -this[ 0 ];
         this[ 1 ] = -this[ 1 ];
