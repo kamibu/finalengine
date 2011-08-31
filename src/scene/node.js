@@ -63,6 +63,10 @@ Node.prototype = {
     },
     rotate: function( axis, angle, node ) {
         TempVars.lock();
+
+        //Remap angle to the range 0..2 * Math.PI
+        angle -= 2 * Math.PI * Math.floor( angle / 2 / Math.PI );
+
         var rot = TempVars.getQuaternion().setAxisAngle( axis, angle );
         if ( node ) {
             if ( node == Node.Origin ) {
@@ -104,7 +108,14 @@ Node.prototype = {
         node.parent = this;
         this.children.push( node );
         node.invalidate();
+
+        this.onChildAdded( this, node );
         return this;
+    },
+    onChildAdded: function( node, nodeAdded ) {
+        if ( this !== Node.Origin ) {
+            this.parent.onChildAdded( node, nodeAdded );
+        }
     },
     removeChild: function( node ) {
         var children = this.children;
@@ -113,8 +124,14 @@ Node.prototype = {
         node.parent = Node.Origin;
         node.invalidate();
         children.splice( children.indexOf( node ), 1 );
+        this.onChildRemoved( this, node );
 
         return this;
+    },
+    onChildRemoved: function( node, nodeRemoved ) {
+        if ( this !== Node.Origin ) {
+            this.parent.onChildRemoved( node, nodeRemoved );
+        }
     },
     getAbsoluteMatrix: function( dest ) {
         if ( !dest ) {

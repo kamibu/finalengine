@@ -151,9 +151,10 @@ Renderer.prototype = {
             case Renderer.MAX_VERTEX_TEXTURE_UNITS:
                 return this.gl.getParameter( this.gl.MAX_VERTEX_TEXTURE_IMAGE_UNITS );
             case Renderer.FLOAT_TEXTURE:
-                var ext = this.gl.getSupportedExtentions();
+                var ext = this.gl.getSupportedExtensions();
                 for ( var i = 0; i < ext.length; i++ ) {
                     if ( ext[ i ] == 'OES_texture_float' ) {
+                        this.gl.getExtension( ext[ i ] );
                         return true;
                     }
                 }
@@ -315,7 +316,7 @@ Renderer.prototype = {
         /*DEBUG_END*/
 
         var gl = this.gl;
-        var target, format, previousTexture;
+        var target, format, dataType, previousTexture;
         var textureObject = gl.createTexture();
         textureObject.bindPosition = null;
         textureObject.width = texture.width;
@@ -329,14 +330,23 @@ Renderer.prototype = {
                 gl.pixelStorei( gl.UNPACK_FLIP_Y_WEBGL, false );
                 break;
         }
+
+        switch ( texture.dataType ) {
+            case Texture.UNSIGNED_BYTE:
+                dataType = gl.UNSIGNED_BYTE;
+                break;
+            case Texture.FLOAT:
+                dataType = gl.FLOAT;
+                break;
+        }
     
         switch ( texture.format ) {
-                case Texture.RGB:
-                    format = gl.RGB;
-                    break;
-                case Texture.RGBA:
-                    format = gl.RGBA;
-                    break;
+            case Texture.RGB:
+                format = gl.RGB;
+                break;
+            case Texture.RGBA:
+                format = gl.RGBA;
+                break;
         }
 
         switch ( texture.type ) {
@@ -345,10 +355,10 @@ Renderer.prototype = {
                 previousTexture = gl.getParameter( gl.TEXTURE_BINDING_2D );
                 gl.bindTexture( target, textureObject );
                 if ( texture.source === null ) {
-                    gl.texImage2D( gl.TEXTURE_2D, 0, format, texture.width, texture.height, 0, format, gl.UNSIGNED_BYTE, null );
+                    gl.texImage2D( target, 0, format, texture.width, texture.height, 0, format, dataType, null );
                 }
                 else {
-                    gl.texImage2D( gl.TEXTURE_2D, 0, format, format, gl.UNSIGNED_BYTE, texture.source );
+                    gl.texImage2D( target, 0, format, format, dataType, texture.source );
                 }
                 break;
             case Texture.TEXTURE_CUBEMAP:
@@ -356,7 +366,7 @@ Renderer.prototype = {
                 previousTexture = gl.getParameter( gl.TEXTURE_BINDING_CUBE_MAP );
                 gl.bindTexture( target, textureObject );
                 for ( var i = 0; i < 6; ++i ) {
-                    gl.texImage2D( gl.TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, format, format, gl.UNSIGNED_BYTE, texture.source[ i ] );
+                    gl.texImage2D( gl.TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, format, format, dataType, texture.source[ i ] );
                 }
                 break;
         }
@@ -400,7 +410,7 @@ Renderer.prototype = {
                 gl.texParameteri( target, gl.TEXTURE_WRAP_S, gl.REPEAT );
                 break;
             case Texture.MIRROR_REPEAT:
-                gl.texParameteri( target, gl.TEXTURE_WRAP_S, gl.MIRROR_REPEAT );
+                gl.texParameteri( target, gl.TEXTURE_WRAP_S, gl.MIRRORED_REPEAT );
                 break;
             case Texture.CLAMP_TO_EDGE:
                 gl.texParameteri( target, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE );
@@ -703,54 +713,61 @@ Renderer.prototype = {
         while ( uniformCount-- ) {
             info = gl.getActiveUniform( program, uniformCount );
 
-            program.uniforms[ info.name ] = {
+            /* If a shader uses a uniform that is an array then the uniform name that we get has "[0]" at the end.
+             * For example uniform vec4 foo[ 10 ] will have a name of foo[0]. We remove the brackets so the names are
+             * easier to program.
+             */
+            var name = info.size > 1 ? info.name.slice( 0, -3 ) : info.name;
+
+
+            program.uniforms[ name ] = {
                 location: gl.getUniformLocation( program, info.name ),
                 set: null
             };
 
             switch ( info.type ) {
                 case gl.FLOAT:
-                    program.uniforms[ info.name ].set = gl.uniform1f.bind( gl );
+                    program.uniforms[ name ].set = gl.uniform1f.bind( gl );
                     break;
                 case gl.FLOAT_VEC2:
-                    program.uniforms[ info.name ].set = gl.uniform2fv.bind( gl );
+                    program.uniforms[ name ].set = gl.uniform2fv.bind( gl );
                     break;
                 case gl.FLOAT_VEC3:
-                    program.uniforms[ info.name ].set = gl.uniform3fv.bind( gl );
+                    program.uniforms[ name ].set = gl.uniform3fv.bind( gl );
                     break;
                 case gl.FLOAT_VEC4:
-                    program.uniforms[ info.name ].set = gl.uniform4fv.bind( gl );
+                    program.uniforms[ name ].set = gl.uniform4fv.bind( gl );
                     break;
                 case gl.INT:
                 case gl.BOOL:
-                    program.uniforms[ info.name ].set = gl.uniform1i.bind( gl );
+                    program.uniforms[ name ].set = gl.uniform1i.bind( gl );
                     break;
                 case gl.INT_VEC2:
                 case gl.BOOL_VEC2:
-                    program.uniforms[ info.name ].set = gl.uniform2iv.bind( gl );
+                    program.uniforms[ name ].set = gl.uniform2iv.bind( gl );
                     break;
                 case gl.INT_VEC3:
                 case gl.BOOL_VEC3:
-                    program.uniforms[ info.name ].set = gl.uniform3iv.bind( gl );
+                    program.uniforms[ name ].set = gl.uniform3iv.bind( gl );
                     break;
                 case gl.INT_VEC4:
                 case gl.BOOL_VEC4:
-                    program.uniforms[ info.name ].set = gl.uniform4iv.bind( gl );
+                    program.uniforms[ name ].set = gl.uniform4iv.bind( gl );
                     break;
                 case gl.FLOAT_MAT2:
-                    program.uniforms[ info.name ].set = gl.mineUniformMatrix2fv;
+                    program.uniforms[ name ].set = gl.mineUniformMatrix2fv;
                     break;
                 case gl.FLOAT_MAT3:
-                    program.uniforms[ info.name ].set = gl.mineUniformMatrix3fv;
+                    program.uniforms[ name ].set = gl.mineUniformMatrix3fv;
                     break;
                 case gl.FLOAT_MAT4:
-                    program.uniforms[ info.name ].set = gl.mineUniformMatrix4fv;
+                    program.uniforms[ name ].set = gl.mineUniformMatrix4fv;
                     break;
                 case gl.SAMPLER_2D:
-                    program.uniforms[ info.name ].set = gl.mineUniformSampler2D;
+                    program.uniforms[ name ].set = gl.mineUniformSampler2D;
                     break;
                 case gl.SAMPLER_CUBE:
-                    program.uniforms[ info.name ].set = gl.mineUniformSampleCube;
+                    program.uniforms[ name ].set = gl.mineUniformSampleCube;
                     break;
             }
         }
@@ -880,16 +897,16 @@ Renderer.prototype = {
                 assert( typeof vertexAttribute != 'undefined', 'VertexAttribute "' + attribute + '" is missing from the mesh.' );
                 switch ( program.attributes[ attribute ].type ) {
                     case gl.FLOAT:
-                        assert( vertexAttribute.size === 1, 'VertexAttribute "' + attribute + '" needs a VertexBuffer of size = 1.' );
+                        assert( vertexAttribute.size === 1, 'VertexAttribute "' + attribute + '" needs a VertexAttribute of size = 1.' );
                         break;
                     case gl.FLOAT_VEC2:
-                        assert( vertexAttribute.size === 2, 'VertexAttribute "' + attribute + '" needs a VertexBuffer of size = 2.' );
+                        assert( vertexAttribute.size === 2, 'VertexAttribute "' + attribute + '" needs a VertexAttribute of size = 2.' );
                         break;
                     case gl.FLOAT_VEC3:
-                        assert( vertexAttribute.size === 3, 'VertexAttribute "' + attribute + '" needs a VertexBuffer of size = 3.' );
+                        assert( vertexAttribute.size === 3, 'VertexAttribute "' + attribute + '" needs a VertexAttribute of size = 3.' );
                         break;
                     case gl.FLOAT_VEC4:
-                        assert( vertexAttribute.size === 4, 'VertexAttribute "' + attribute + '" needs a VertexBuffer of size = 4.' );
+                        assert( vertexAttribute.size === 4, 'VertexAttribute "' + attribute + '" needs a VertexAttribute of size = 4.' );
                         break;
                 }
             /*DEBUG_END*/

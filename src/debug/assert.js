@@ -10,7 +10,7 @@ function assertIn( value ) {
             return;
         }
     }
-    throw arguments.pop();
+    throw arguments[ arguments.length - 1 ];
 }
 
 var debug = {

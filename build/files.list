@@ -13,6 +13,7 @@ events/eventwaiter.js
 
 math/number.js
 math/matrix4.js
+math/matrix3.js
 math/vector3base.js
 math/vector3.js
 math/quaternion.js
@@ -21,7 +22,7 @@ math/color.js
 
 renderer/renderer.js
 renderer/buffer.js
-renderer/vertexbuffer.js
+renderer/vertexattribute.js
 renderer/texture.js
 renderer/mesh.js
 renderer/shader.js
@@ -31,11 +32,16 @@ bounding/boundingvolume.js
 bounding/boundingsphere.js
 bounding/boundingbox.js    
 
-scene/scene.js
 scene/node.js
 scene/camera.js
 scene/drawable.js
 scene/lights/light.js
+scene/scene.js
+
+animation/animable.js
+animation/joint.js
+animation/skeleton.js
+animation/animation.js
 
 material/material.js
 

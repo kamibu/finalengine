@@ -2,8 +2,6 @@
 var Camera, RenderManager, Scene, Importer, Exporter, InputHandler;
 
 function Application() {
-    var t = new Date() - 0;
-
     this.renderManager = new RenderManager();
     this.scene = new Scene();
     this.camera = new Camera().setPosition( [ 0, 0, 10 ] );
@@ -13,25 +11,23 @@ function Application() {
 
     this.input = new InputHandler();
 
-    this.scene.root.appendChild( this.camera );
+    this.scene.appendChild( this.camera );
 
     var canvas = this.renderManager.renderer.canvas;
     this.setupCanvas( canvas );
 
-    this.resize( window.innerWidth, window.innerHeight );
-
     var self = this;
-    
     this._nextFrame = null;
     this.capFPS( 60 );
 
+    var t = Date.now();
     function renderLoop() {
-        var dt = ( new Date() - 0 ) - t;
-        self.onBeforeRender( dt );
+        var now = Date.now();
+        self.onBeforeRender( t - now );
+        t = now;
         self.renderManager.renderScene( self.scene, self.camera );
         // console.log( self._nextFrame );
         self._nextFrame( renderLoop );
-        t = ( new Date() - 0 );
     }
 
     // it is necessary to call this asynchronously because the inheriting
@@ -50,6 +46,7 @@ Application.prototype = {
             self.resize( window.innerWidth, window.innerHeight );
         }, false );
         document.body.appendChild( canvas );
+        this.resize( window.innerWidth, window.innerHeight );
         return this;
     },
     resize: function( width, height ) {
@@ -65,7 +62,6 @@ Application.prototype = {
     },
     capFPS: function( fps ) {
         if ( fps >= 60 ) {
-            fps = 60;
             this._nextFrame = window.requestAnimationFrame.bind( window );
         }
         else {

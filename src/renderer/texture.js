@@ -12,10 +12,12 @@ function Texture( type ) {
     this.magFilter = Texture.LINEAR;
     this.type = type || Texture.IMAGE;
 
-    this.wrapS = Texture.REPEAT;
-    this.wrapT = Texture.REPEAT;
+    this.wrapS = Texture.CLAMP_TO_EDGE;
+    this.wrapT = Texture.CLAMP_TO_EDGE;
 
     this.format = Texture.RGB;
+
+    this.dataType = Texture.UNSIGNED_BYTE;
 
     this.origin = Texture.UPPER_LEFT_CORNER;
 
@@ -46,6 +48,9 @@ Texture.UPPER_LEFT_CORNER = 2;
 
 Texture.RGB = 1;
 Texture.RGBA = 2;
+
+Texture.UNSIGNED_BYTE = 1;
+Texture.FLOAT = 2;
 
 Texture.prototype = {
     constructor: Texture,
@@ -94,6 +99,13 @@ Texture.prototype = {
             assertIn( format, Texture.RGB, Texture.RGBA, 'Unsupported format. ' + format );
         /*DEBUG_END*/
         this.format = format;
+        return this;
+    },
+    setDataType: function( dataType ) {
+        /*DEBUG*/
+            assertIn( dataType, Texture.UNSIGNED_BYTE, Texture.FLOAT, 'Unsupported format. ' + dataType );
+        /*DEBUG_END*/
+        this.dataType = dataType;
         return this;
     },
     setImage: function( source ) {

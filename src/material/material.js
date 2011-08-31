@@ -32,18 +32,15 @@ Material.prototype = {
         return this;
     },
     setParameter: function( name, value ) {
-        if ( value instanceof Texture ) {
-            this.parameters[ name ] = {
-                data: value
-            };
-        }
-        else if ( typeof value !== 'object' ) {
-            this.parameters[ name ] = {
-                data: value
-            };
+        if ( value instanceof Vector3 ||
+             value instanceof Quaternion ||
+             value instanceof Matrix4 ) {
+            this.parameters[ name ] = value;
         }
         else {
-            this.parameters[ name ] = value;
+            this.parameters[ name ] = {
+                data: value
+            };
         }
         return this;
     },

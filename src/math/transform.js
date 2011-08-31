@@ -72,13 +72,19 @@ Transform.prototype = {
         return dest.set( this.matrix );
     },
     setMatrix: function( matrix ) {
+
+        var m00 = matrix[ 0 ], m01 = matrix[ 1 ], m02 = matrix[ 2 ];
+        this.scale = Math.sqrt( m00 * m00 + m01 * m01 + m02 * m02 );
+
+        this.position[ 0 ] = matrix[ 12 ];
+        this.position[ 1 ] = matrix[ 13 ];
+        this.position[ 2 ] = matrix[ 14 ];
+
         TempVars.lock();
         var mat = TempVars.getMatrix4().set( matrix );
-        mat.getTranslation( this.position );
-        var scale = mat.getScale;
-        this.setScale( scale );
-        this.setOrientation( mat.toMatrix3( TempVars.getMatrix3() ).toQuaternion( TempVars.getQuaternion() ) );
+        this.orientation.fromMatrix3( mat.toMatrix3( TempVars.getMatrix3() ) );
         TempVars.release();
+
         return this.invalidate();
     },
     getInverseMatrix: function( dest ) {

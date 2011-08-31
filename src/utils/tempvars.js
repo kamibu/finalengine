@@ -1,5 +1,5 @@
 // extern
-var Matrix4, Quaternion, Vector3;
+var Matrix4, Quaternion, Vector3, Matrix3;
 
 /*Allocate some typed arrays in order to be used
   for temporary results. Creating new typed arrays
@@ -10,11 +10,13 @@ var TempVars = {
     lock: function() {
         this.vector3ReleasePoints.push( this.vector3Counter );
         this.matrix4ReleasePoints.push( this.matrix4Counter );
+        this.matrix3ReleasePoints.push( this.matrix4Counter );
         this.quaternionReleasePoints.push( this.quaternionCounter );
     },
     release: function() {
         this.vector3Counter = this.vector3ReleasePoints.pop();
         this.matrix4Counter = this.matrix4ReleasePoints.pop();
+        this.matrix3Counter = this.matrix4ReleasePoints.pop();
         this.quaternionCounter = this.quaternionReleasePoints.pop();
     },
 
@@ -36,6 +38,17 @@ var TempVars = {
         var ret = this.matrix4Stack[ this.matrix4Counter++ ];
         if ( !ret ) {
             ret = this.matrix4Stack[ this.matrix4Counter - 1 ] = new Matrix4();
+        }
+        return ret;
+    },
+
+    matrix3ReleasePoints: [],
+    matrix3Counter: 0,
+    matrix3Stack: [],
+    getMatrix3: function() {
+        var ret = this.matrix3Stack[ this.matrix3Counter++ ];
+        if ( !ret ) {
+            ret = this.matrix3Stack[ this.matrix3Counter - 1 ] = new Matrix3();
         }
         return ret;
     },
