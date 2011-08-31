@@ -97,6 +97,10 @@ Node.prototype = {
         return this.invalidate();
     },
     appendChild: function( node ) {
+        if ( node.parent !== Node.Origin ) {
+            node.parent.removeChild( node );
+        }
+
         node.parent = this;
         this.children.push( node );
         node.invalidate();
@@ -105,14 +109,11 @@ Node.prototype = {
     removeChild: function( node ) {
         var children = this.children;
         var l = children.length;
-        while ( l-- ) {
-            if ( children[ l ] == node ) {
-                node.parent = Node.Origin;
-                node.invalidate();
-                children.splice( l, 1 );
-                return this;
-            }
-        }
+
+        node.parent = Node.Origin;
+        node.invalidate();
+        children.splice( children.indexOf( node ), 1 );
+
         return this;
     },
     getAbsoluteMatrix: function( dest ) {
