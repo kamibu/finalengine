@@ -1,12 +1,18 @@
 // extern
-var Matrix4, Renderer, Drawable, Framebuffer, Mesh, Buffer, VertexAttribute, Light;
+var Matrix4, Renderer, Drawable, Framebuffer, Mesh, Buffer, VertexAttribute, Light, Texture;
 
 function RenderManager() {
     this.renderer = new Renderer();
     this.forcedMaterial = null;
 
     this.postProcess = false;
+
     this.framebuffer = new Framebuffer( this.renderer.width, this.renderer.height );
+
+    if ( this.renderer.getParameter( Renderer.FLOAT_TEXTURE ) ) {
+        this.framebuffer.colorTexture.setDataType( Texture.FLOAT );
+    }
+
     this.postProcessEffects = [];
 
     this.quad = new Mesh();

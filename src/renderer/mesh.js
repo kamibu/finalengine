@@ -1,5 +1,5 @@
 // extern
-var assert, assertIn, Buffer, UUID, VertexBuffer;
+var assert, assertIn, Buffer, UUID, VertexAttribute;
 
 function Mesh() {
     this.uuid = UUID();
@@ -84,7 +84,7 @@ Mesh.prototype = {
         this.mode = data.mode;
         this.indexBuffer = new Buffer().setImportData( importer, data.indexBuffer );
         for ( var name in data.vertexAttributes ) {
-            this.vertexAttributes[ name ] = new VertexBuffer().setImportData( importer, data.vertexAttributes[ name ] );
+            this.vertexAttributes[ name ] = new VertexAttribute().setImportData( importer, data.vertexAttributes[ name ] );
         }
         return this;
     }

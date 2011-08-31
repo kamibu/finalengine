@@ -129,6 +129,40 @@ Quaternion.prototype = {
 
         return vector;
     },
+    fromMatrix3: function( matrix ) {
+        var s, t = matrix[ 0 ] + matrix[ 4 ] + matrix[ 8 ];
+        // we protect the division by s by ensuring that s>=1
+        if ( t >= 0 ) { // |w| >= .5
+            s = Math.sqrt( t + 1 ); // |s|>=1 ...
+            this[ 3 ] = 0.5 * s;
+            s = 0.5 / s;                 // so this division isn't bad
+            this[ 0 ] = ( matrix[ 5 ] - matrix[ 7 ] ) * s;
+            this[ 1 ] = ( matrix[ 6 ] - matrix[ 2 ] ) * s;
+            this[ 2 ] = ( matrix[ 1 ] - matrix[ 3 ] ) * s;
+        } else if ( ( matrix[ 0 ] > matrix[ 4 ] ) && ( matrix[ 0 ] > matrix[ 8 ] ) ) {
+            s = Math.sqrt( 1 + matrix[ 0 ] - matrix[ 4 ] - matrix[ 8 ] ); // |s|>=1
+            this[ 0 ] = s * 0.5; // |x| >= .5
+            s = 0.5 / s;
+            this[ 1 ] = ( matrix[ 1 ] + matrix[ 3 ] ) * s;
+            this[ 2 ] = ( matrix[ 6 ] + matrix[ 2 ] ) * s;
+            this[ 3 ] = ( matrix[ 5 ] - matrix[ 7 ] ) * s;
+        } else if ( matrix[ 4 ] > matrix[ 8 ] ) {
+            s = Math.sqrt( 1 + matrix[ 4 ] - matrix[ 0 ] - matrix[ 8 ] ); // |s|>=1
+            this[ 1 ] = s * 0.5; // |y| >= .5
+            s = 0.5 / s;
+            this[ 0 ] = ( matrix[ 1 ] + matrix[ 3 ] ) * s;
+            this[ 2 ] = ( matrix[ 5 ] + matrix[ 7 ] ) * s;
+            this[ 3 ] = ( matrix[ 6 ] - matrix[ 2 ] ) * s;
+        } else {
+            s = Math.sqrt( 1 + matrix[ 8 ] - matrix[ 0 ] - matrix[ 4 ] ); // |s|>=1
+            this[ 2 ] = s * 0.5; // |z| >= .5
+            s = 0.5 / s;
+            this[ 0 ] = ( matrix[ 6 ] + matrix[ 2 ] ) * s;
+            this[ 1 ] = ( matrix[ 5 ] + matrix[ 7 ] ) * s;
+            this[ 3 ] = ( matrix[ 1 ] - matrix[ 3 ] ) * s;
+        }
+        return this;
+    },
     toMatrix4: function( dest ) {
         if ( !dest ) {
             dest = new Matrix4();

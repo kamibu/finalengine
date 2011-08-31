@@ -1,4 +1,4 @@
-var EventWaiter, Importer, Texture, Node, Buffer, VertexBuffer, Drawable, Mesh;
+var EventWaiter, Importer, Texture, Node, Buffer, VertexAttribute, Drawable, Mesh;
 
 function OBJLoader() {
     this.ready = false;
@@ -138,13 +138,13 @@ OBJLoader.prototype = {
                     var normals = new Buffer( Buffer.DATA_BUFFER, Buffer.STATIC );
                     normals.setData( obj.normals );
 
-                    var verticesVB = new VertexBuffer( 'Position' );
+                    var verticesVB = new VertexAttribute( 'Position' );
                     verticesVB.setBuffer( vertices );
 
-                    var normalsVB = new VertexBuffer( 'Normal' );
+                    var normalsVB = new VertexAttribute( 'Normal' );
                     normalsVB.setBuffer( normals );
 
-                    var uvcoordsVB = new VertexBuffer( 'UVCoord' );
+                    var uvcoordsVB = new VertexAttribute( 'UVCoord' );
                     uvcoordsVB.size = 2;
                     uvcoordsVB.setBuffer( uvcoords );
 

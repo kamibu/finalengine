@@ -248,6 +248,24 @@ Matrix4.prototype = {
 
         return vector;
     },
+    toMatrix3: function( dest ) {
+        if ( !dest ) {
+            dest = new Matrix3();
+        }
+        dest[ 0 ] = this[ 0 ];
+        dest[ 1 ] = this[ 1 ];
+        dest[ 2 ] = this[ 2 ];
+
+        dest[ 3 ] = this[ 4 ];
+        dest[ 4 ] = this[ 5 ];
+        dest[ 5 ] = this[ 6 ];
+
+        dest[ 6 ] = this[ 8 ];
+        dest[ 7 ] = this[ 9 ];
+        dest[ 8 ] = this[ 10 ];
+
+        return dest;
+    },
     frustrum: function( left, right, bottom, top, near, far ) {
         var rl = ( right - left );
         var tb = ( top - bottom );
