@@ -1,53 +1,89 @@
+//extern
+var Joint, Node, Transform;
+
 function Skeleton() {
-    this.root = null;
-    this.nextId = 0;
+    Node.call( this );
+    this.jointPositionsAndScales = [];
+    this.jointOrientations = [];
+
+    this.jointSlots = [];
+    this.tempTransform = new Transform();
+    this.tempTransform2 = new Transform();
 }
 
-// var tetra = math.tetra;
-
 Skeleton.prototype = {
-    calculateMatrices: function() {
-        var mats = [];
+    constructor: Skeleton,
+    updateJointUniforms: function() {
+        var joint, pos, slots = this.jointSlots,
+            l = slots.length,
+            trans = this.tempTransform,
+            trans2 = this.tempTransform2;
 
-        function traverseTree( root ) {
-            mats[ root.id ] = calcNodeMatrix( mat4.identity( [] ), root.getPosition(), root.getOrientation() );
-            traverseNode( root );
+        if ( this.jointOrientations.length !== 4 * l ) {
+            this.jointOrientations = new Float32Array( 4 * l );
+            this.jointPositionsAndScales = new Float32Array( 4 * l );
+        }
 
-            var l = mats.length;
-            for( var i = 0; i < l; ++i ) {
-                mats.push.apply( mats, mats.shift() );
+        var jointPositionsAndScales = this.jointPositionsAndScales;
+        var jointOrientations = this.jointOrientations;
+
+        while ( l-- ) {
+            joint = slots[ l ];
+            joint.getAbsolutePosition( trans.position );
+            joint.getAbsoluteOrientation( trans.orientation );
+            trans.setScale( joint.getAbsoluteScale() );
+
+            trans2.set( joint.inverseBindTransform ).combineWith( trans );
+
+            jointPositionsAndScales[ l * 4 + 0 ] = trans2.position[ 0 ];
+            jointPositionsAndScales[ l * 4 + 1 ] = trans2.position[ 1 ];
+            jointPositionsAndScales[ l * 4 + 2 ] = trans2.position[ 2 ];
+            jointPositionsAndScales[ l * 4 + 3 ] = trans2.scale;
+        
+            jointOrientations[ l * 4 + 0 ] = trans2.orientation[ 0 ];
+            jointOrientations[ l * 4 + 1 ] = trans2.orientation[ 1 ];
+            jointOrientations[ l * 4 + 2 ] = trans2.orientation[ 2 ];
+            jointOrientations[ l * 4 + 3 ] = trans2.orientation[ 3 ];
+        }
+    },
+    findJoints: function( node ) {
+        var bucket = [];
+        function fillBucket( node ) {
+            if ( node instanceof Joint ) {
+                bucket.push( node );
+            }
+            var children = node.children;
+            var l = children.length;
+            while ( l-- ) {
+                fillBucket( children[ l ] );
             }
         }
-
-        function calcNodeMatrix( parentMat, position, orientation ) {
-            var T, R, result;
-            T = [];
-            mat4.identity( T );
-            T[ 12 ] -= position[ 0 ];
-            T[ 13 ] -= position[ 1 ];
-            T[ 14 ] -= position[ 2 ];
-            R = tetra.rotMatrix( orientation );
-            mat4.multiply( R, T );
-            R[ 12 ] += position[ 0 ];
-            R[ 13 ] += position[ 1 ];
-            R[ 14 ] += position[ 2 ];
-            result = [];
-            mat4.multiply( parentMat, R, result );
-            return result;
+        fillBucket( node );
+        return bucket;
+    },
+    onChildAdded: function( node, nodeAdded ) {
+        this.Node_onChildAdded( node, nodeAdded );
+        var joints = this.findJoints( nodeAdded );
+        var l = joints.length;
+        while ( l-- ) {
+            this.jointSlots[ l ] = joints[ l ];
         }
-
-        function traverseNode( node ) {
-            var id, i, T, R, result, l, pos, child;
-            l = node.children.length;
-            for( i = 0; i < l; ++i ) {
-                child = node.children[ i ];
-                mats[ child.id ] = calcNodeMatrix( mats[ node.id ], child.getPosition(), child.getOrientation() );
-                traverseNode( child );
-            }
+    },
+    onChildRemoved: function( node, nodeRemoved ) {
+        this.Node_onChildRemoved( node, nodeRemoved );
+        var joints = this.findJoints( nodeRemoved );
+        var l = joints.length;
+        while ( l-- ) {
+            this.jointSlots.splice( this.jointSlots.indexOf( joints[ l ] ), 1 );
         }
+    },
+    getExportData: function( exporter ) {
+        
 
-        traverseTree( root );
+    },
+    setImportData: function( importer, data ) {
 
-        return new Float32Array( mats );
     }
 };
+
+Skeleton.extend( Node );
