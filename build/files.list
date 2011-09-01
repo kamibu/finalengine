@@ -46,6 +46,7 @@ animation/animation.js
 material/material.js
 
 geometry/cube.js
+geometry/rectangle.js
 
 texturemanager.js
 rendermanager.js

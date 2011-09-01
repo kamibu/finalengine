@@ -110,39 +110,20 @@ function Cube() {
         addPoint( face, 1 );
     }
 
-    vertices = new Buffer( Buffer.DATA_BUFFER, Buffer.STATIC );
-    vertices.setData( ret.vertices );
+    vertices = new Buffer().setData( ret.vertices );
+    uvcoords = new Buffer().setData( ret.uvcoords );
+    normals = new Buffer().setData( ret.normals );
 
-    uvcoords = new Buffer( Buffer.DATA_BUFFER, Buffer.STATIC );
-    uvcoords.setData( ret.uvcoords );
+    vertices = new VertexAttribute( 'Position' ).setBuffer( vertices );
+    uvcoords = new VertexAttribute( 'UVCoord' ).setBuffer( uvcoords ).setSize( 2 );
+    normals = new VertexAttribute( 'Normal' ).setBuffer( normals );
 
-    normals = new Buffer( Buffer.DATA_BUFFER, Buffer.STATIC );
-    normals.setData( ret.normals );
-
-    tangents = new Buffer( Buffer.DATA_BUFFER, Buffer.STATIC );
-    tangents.setData( ret.tangents );
-
-    var verticesVB = new VertexAttribute( 'Position' );
-    verticesVB.setBuffer( vertices );
-
-    var normalsVB = new VertexAttribute( 'Normal' );
-    normalsVB.setBuffer( normals );
-
-    var uvcoordsVB = new VertexAttribute( 'UVCoord' );
-    uvcoordsVB.size = 2;
-    uvcoordsVB.setBuffer( uvcoords );
-
-    var tangentsVB = new VertexAttribute( 'Tangent' );
-    tangentsVB.setBuffer( tangents );
-
-    var indices = new Buffer( Buffer.ELEMENT_BUFFER, Buffer.STATIC );
-    indices.setData( ret.indices );
+    var indices = new Buffer( Buffer.ELEMENT_BUFFER ).setData( ret.indices );
 
     var m = new Mesh();
-    m.setVertexAttribute( verticesVB );
-    m.setVertexAttribute( normalsVB );
-    m.setVertexAttribute( uvcoordsVB );
-    m.setVertexAttribute( tangentsVB );
+    m.setVertexAttribute( vertices );
+    m.setVertexAttribute( normals );
+    m.setVertexAttribute( uvcoords );
     m.setIndexBuffer( indices );
 
     this.mesh = m;
