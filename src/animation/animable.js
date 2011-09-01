@@ -1,5 +1,5 @@
 // extern
-var Drawable, Node;
+var Drawable, Node, TempVars;
 
 function Animable(){
     Drawable.call( this );
@@ -20,7 +20,7 @@ Animable.prototype = {
         var skeleton = this.skeleton;
         var animation = this.activeAnimation;
         if ( animation ) {
-            var keyframe = ( ( ( Date.now() - started ) / animation.duration ) * animation.keyframes ) % animation.keyframes;
+            var keyframe = ( ( ( Date.now() - this.started ) / animation.duration ) * animation.keyframes ) % animation.keyframes;
             keyframe |= 0;
 
             var l = animation.matrices.length;
@@ -30,8 +30,8 @@ Animable.prototype = {
                 var m = animation.matrices[ l ][ keyframe ];
 
                 q.fromMatrix3( m );
-                d.skeleton.jointSlots[ l ].setOrientation( q );
-                d.skeleton.jointSlots[ l ].setScale( Math.sqrt( m[ 0 ] * m[ 0 ] + m[ 1 ] * m[ 1 ] + m[ 2 ] * m[ 2 ] ) );
+                skeleton.jointSlots[ l ].setOrientation( q );
+                skeleton.jointSlots[ l ].setScale( Math.sqrt( m[ 0 ] * m[ 0 ] + m[ 1 ] * m[ 1 ] + m[ 2 ] * m[ 2 ] ) );
             }
             TempVars.release();
         }
