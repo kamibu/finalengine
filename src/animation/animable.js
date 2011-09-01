@@ -13,6 +13,9 @@ function Animable(){
 Animable.prototype = {
     constructor: Animable,
     playAnimation: function( name ) {
+        if ( this.animations[ name ] == this.activeAnimation ) {
+            return;
+        }
         this.activeAnimation = this.animations[ name ];
         this.started = Date.now();
     },

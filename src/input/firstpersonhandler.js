@@ -17,6 +17,19 @@ function FirstPersonHandler( node, camera ) {
     this.onKey( 'A', this.rotateLeft.bind( this ) );
     this.onKey( 'D', this.rotateRight.bind( this ) );
     this.onKeyUp( [ 'W', 'A', 'S', 'D' ], this.stopMoving.bind( this ) );
+
+    var self = this;
+    $( window ).keydown( function( event ) {
+        if ( event.which == 87 ) {
+            self.node.children[ 1 ].playAnimation( 'walk' );
+        }
+    } );
+
+    $( window ).keyup( function( event ) {
+        if ( event.which == 87 ) {
+            self.node.children[ 1 ].playAnimation( 'idle' );
+        }
+    } );
 }
 
 FirstPersonHandler.prototype = {
