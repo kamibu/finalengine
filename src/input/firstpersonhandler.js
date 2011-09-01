@@ -5,7 +5,7 @@ function FirstPersonHandler( node, camera ) {
 
     this.node = node;
     this.moveInterval = false;
-    this.velocity = 0.8;
+    this.velocity = 0.5;
     this.angularVelocity = 0.1;
 
     camera.setPosition( [ 0, 28, -60 ] );
@@ -21,7 +21,16 @@ function FirstPersonHandler( node, camera ) {
 
 FirstPersonHandler.prototype = {
     getAngle: function() {
-        var a = Math.acos( this.node.orientation[ 3 ] ) * 2;
+        var a, c = this.node.orientation[ 3 ];
+        if ( c < -1 ) {
+            a = 2 * Math.PI;
+        }
+        else if ( c > 1 ) {
+            a = 0;
+        }
+        else {
+            a = Math.acos( c ) * 2;
+        }
         if ( Math.abs( this.node.orientation[ 1 ] - 1 ) > 1 ) {
             a = 2 * Math.PI - a;
         }
@@ -37,6 +46,7 @@ FirstPersonHandler.prototype = {
         this.rotateInterval = false;
     },
     moveForward: function() {
+        console.log( 'fw' );
         if ( this.walkInterval ) {
             return;
         }
@@ -54,7 +64,7 @@ FirstPersonHandler.prototype = {
         this.walkInterval = setInterval( function() {
             var angle = self.getAngle();
             self.node.move( [ -self.velocity * Math.sin( angle ), 0, -self.velocity * Math.cos( angle ) ] );
-        }, 17 );
+        }, 30 );
     },
     rotateLeft: function() {
         if ( this.rotateInterval ) {
@@ -63,7 +73,7 @@ FirstPersonHandler.prototype = {
         var self = this;
         this.rotateInterval = setInterval( function() {
             self.node.rotate( [ 0, 1, 0 ], self.angularVelocity );
-        }, 17 );
+        }, 30 );
     },
     rotateRight: function() {
         if ( this.rotateInterval ) {
@@ -72,7 +82,7 @@ FirstPersonHandler.prototype = {
         var self = this;
         this.rotateInterval = setInterval( function() {
             self.node.rotate( [ 0, 1, 0 ], -self.angularVelocity );
-        }, 17 );
+        }, 30 );
     }
 };
 
