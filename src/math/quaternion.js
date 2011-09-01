@@ -86,7 +86,14 @@ Quaternion.prototype = {
     },
     getAngle: function() {
         if ( this[ 0 ] || this[ 1 ] || this[ 2 ] ) {
-            return 2 * Math.acos( this[ 3 ] );
+            var acos = Math.acos( this[ 3 ] );
+            if ( acos < -1 ) {
+                return 2 * Math.PI;
+            }
+            else if ( acos > 1 ) {
+                return 0;
+            }
+            return 2 * Math.acos( acos );
         }
         return 0;
     },
