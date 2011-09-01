@@ -20,7 +20,7 @@ Animable.prototype = {
         var skeleton = this.skeleton;
         var animation = this.activeAnimation;
         if ( animation ) {
-            var keyframe = ( ( ( Date.now() - this.started ) / animation.duration ) * animation.keyframes ) % animation.keyframes;
+            var keyframe = ( ( ( Date.now() - this.started ) / animation.duration / 1000 ) * animation.keyframes ) % animation.keyframes;
             keyframe |= 0;
 
             var l = animation.matrices.length;
@@ -33,6 +33,7 @@ Animable.prototype = {
                 skeleton.jointSlots[ l ].setOrientation( q );
                 skeleton.jointSlots[ l ].setScale( Math.sqrt( m[ 0 ] * m[ 0 ] + m[ 1 ] * m[ 1 ] + m[ 2 ] * m[ 2 ] ) );
             }
+            skeleton.jointSlots[ 0 ].setPosition( animation.rootPosition[ keyframe ] );
             TempVars.release();
         }
 
