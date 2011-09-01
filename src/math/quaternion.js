@@ -1,5 +1,5 @@
 // extern
-var Matrix4, TempVars;
+var Matrix4, TempVars, Vector3;
 
 /*jshint sub: true */
 var Quaternion = ( function () {
