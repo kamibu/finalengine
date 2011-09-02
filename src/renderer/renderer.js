@@ -767,7 +767,7 @@ Renderer.prototype = {
                     program.uniforms[ name ].set = gl.mineUniformSampler2D;
                     break;
                 case gl.SAMPLER_CUBE:
-                    program.uniforms[ name ].set = gl.mineUniformSampleCube;
+                    program.uniforms[ name ].set = gl.mineUniformSamplerCube;
                     break;
             }
         }
