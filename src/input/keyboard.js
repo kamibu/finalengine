@@ -90,13 +90,15 @@ Keyboard.prototype = {
         this.setPressed( e.keyCode );
         
         // auto-repeat takes half a second to start (on chrome for linux at least..)
+        /*
         keyData.upCallback = setTimeout( function() {
             self.checkAutoRepeat( e );
         }, 1000 );
+        */
     },
     handleKeyUp: function( e ) {
         var actions = this.actions[ e.keyCode ], keyData = this.getKeyData( e.keyCode );
-        if ( !actions || !keyData.upCallback ) {
+        if ( !actions ) {
             return;
         }
 
@@ -144,7 +146,7 @@ Keyboard.prototype = {
             return;
         }
         // console.log( 'left window, clearing all keydowns' );
-        for ( var i in this.keyPressed ) {
+        for ( var i in this.pressed ) {
             this.handleKeyUp( { keyCode: i } );
         }
     },
