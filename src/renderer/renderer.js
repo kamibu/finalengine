@@ -361,7 +361,7 @@ Renderer.prototype = {
                     gl.texImage2D( target, 0, format, format, dataType, texture.source );
                 }
                 break;
-            case Texture.TEXTURE_CUBEMAP:
+            case Texture.CUBEMAP:
                 target = gl.TEXTURE_CUBE_MAP;
                 previousTexture = gl.getParameter( gl.TEXTURE_BINDING_CUBE_MAP );
                 gl.bindTexture( target, textureObject );
