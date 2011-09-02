@@ -5,7 +5,7 @@ function FirstPersonHandler( node, camera ) {
 
     this.node = node;
     this.moveInterval = false;
-    this.velocity = 0.5;
+    this.velocity = 0.3;
     this.angularVelocity = 0.1;
 
     camera.setPosition( [ 0, 28, -60 ] );
@@ -22,7 +22,7 @@ function FirstPersonHandler( node, camera ) {
     try {
         $( window ).keydown( function( event ) {
             if ( event.which == 87 ) {
-                self.node.children[ 1 ].playAnimation( 'walk' );
+                self.node.children[ 1 ].playAnimation( 'run' );
             }
         } );
 
