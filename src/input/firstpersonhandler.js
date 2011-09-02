@@ -5,7 +5,7 @@ function FirstPersonHandler( node, camera ) {
 
     this.node = node;
     this.moveInterval = false;
-    this.velocity = 0.5;
+    this.velocity = 0.3;
     this.angularVelocity = 0.1;
 
     camera.setPosition( [ 0, 28, -60 ] );
@@ -17,24 +17,6 @@ function FirstPersonHandler( node, camera ) {
     this.onKey( 'A', this.rotateLeft.bind( this ) );
     this.onKey( 'D', this.rotateRight.bind( this ) );
     this.onKeyUp( [ 'W', 'A', 'S', 'D' ], this.stopMoving.bind( this ) );
-
-    var self = this;
-    try {
-        $( window ).keydown( function( event ) {
-            if ( event.which == 87 ) {
-                self.node.children[ 1 ].playAnimation( 'walk' );
-            }
-        } );
-
-        $( window ).keyup( function( event ) {
-            if ( event.which == 87 ) {
-                self.node.children[ 1 ].playAnimation( 'idle' );
-            }
-        } );
-    }
-    catch ( e ) {
-        console.log( 'unable to setup animations' );
-    }
 }
 
 FirstPersonHandler.prototype = {
@@ -64,7 +46,6 @@ FirstPersonHandler.prototype = {
         this.rotateInterval = false;
     },
     moveForward: function() {
-        console.log( 'fw' );
         if ( this.walkInterval ) {
             return;
         }
