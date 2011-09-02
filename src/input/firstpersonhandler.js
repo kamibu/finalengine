@@ -8,15 +8,18 @@ function FirstPersonHandler( node, camera ) {
     this.velocity = 0.3;
     this.angularVelocity = 0.1;
 
-    camera.setPosition( [ 0, 28, -60 ] );
-    camera.setOrientation( [ 0, 1, 0, 0 ] );
-    node.appendChild( camera );
+    if ( camera ) {
+        camera.setPosition( [ 0, 28, 60 ] );
+        camera.setOrientation( [ 0, 1, 0, 0 ] );
+        node.appendChild( camera );
+    }
 
     this.onKey( 'W', this.moveForward.bind( this ) );
     this.onKey( 'S', this.moveBackward.bind( this ) );
     this.onKey( 'A', this.rotateLeft.bind( this ) );
     this.onKey( 'D', this.rotateRight.bind( this ) );
-    this.onKeyUp( [ 'W', 'A', 'S', 'D' ], this.stopMoving.bind( this ) );
+    this.onKeyUp( [ 'W', 'S' ], this.stopMoving.bind( this ) );
+    this.onKeyUp( [ 'A', 'D' ], this.stopRotating.bind( this ) );
 }
 
 FirstPersonHandler.prototype = {
@@ -40,15 +43,16 @@ FirstPersonHandler.prototype = {
         return a;
     },
     stopMoving: function() {
+        console.log( 'got stop moving' );
         clearInterval( this.walkInterval );
-        clearInterval( this.rotateInterval );
         this.walkInterval = false;
+    },
+    stopRotating: function() {
+        console.log( 'got stop rotating' );
+        clearInterval( this.rotateInterval );
         this.rotateInterval = false;
     },
     moveForward: function() {
-        if ( this.walkInterval ) {
-            return;
-        }
         var self = this;
         this.walkInterval = setInterval( function() {
             var angle = self.getAngle();
@@ -56,9 +60,6 @@ FirstPersonHandler.prototype = {
         }, 17 );
     },
     moveBackward: function() {
-        if ( this.walkInterval ) {
-            return;
-        }
         var self = this;
         this.walkInterval = setInterval( function() {
             var angle = self.getAngle();
@@ -66,18 +67,12 @@ FirstPersonHandler.prototype = {
         }, 30 );
     },
     rotateLeft: function() {
-        if ( this.rotateInterval ) {
-            return;
-        }
         var self = this;
         this.rotateInterval = setInterval( function() {
             self.node.rotate( [ 0, 1, 0 ], self.angularVelocity );
         }, 30 );
     },
     rotateRight: function() {
-        if ( this.rotateInterval ) {
-            return;
-        }
         var self = this;
         this.rotateInterval = setInterval( function() {
             self.node.rotate( [ 0, 1, 0 ], -self.angularVelocity );

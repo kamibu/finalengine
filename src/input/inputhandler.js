@@ -1,11 +1,11 @@
-var InputAction, KeyboardDevice;
+var InputAction, Keyboard;
 
 function InputHandler() {
     this.enabled = true;
     this.actions = [];
     this.devices = [];
 
-    this.addDevice( new KeyboardDevice() );
+    this.addDevice( new Keyboard() );
 }
 
 InputHandler.prototype.enable = function() {
@@ -31,6 +31,18 @@ InputHandler.prototype.isEnabled = function() {
 };
 
 InputHandler.prototype.addAction = function( device, eventId, action ) {
+    var self = this;
+    console.log( 'adding action', action );
+    
+    // keep callback reference
+    var cbk = action.callback || function() {};
+    action.callback = function( e ) {
+        console.log( 'got callback' );
+        if ( self.enabled ) {
+            cbk( e );
+        }
+    };
+
     this.actions.push( action );
     device.addAction( eventId, action );
     return action;
@@ -38,37 +50,33 @@ InputHandler.prototype.addAction = function( device, eventId, action ) {
 
 /* sugar functions */
 
-InputHandler.prototype.on = function( device, eventId, callback, speed ) {
-    return this.addAction( device, eventId, new InputAction( callback, speed ) );
-};
-
-InputHandler.prototype.onKey = function( key, callback, speed ) {
-    speed = speed || 100;
+InputHandler.prototype.onKey = function( key, action ) {
+    if ( typeof action != "object" ) {
+        action = { callback: action };
+    }
     if ( Array.isArray( key ) ) {
         for ( var i in key ) {
-            this.onKey( key[ i ], callback, speed );
+            // create copies of objects to avoid multiple references
+            this.onKey( key[ i ], { callback: action.callback } );
+        }
+        return;
+    }
+    return this.addAction( this.devices.keyboard, this[ 'KEY_' + key ], action );
+};
+
+InputHandler.prototype.onKeyUp = function( key, action ) {
+    if ( typeof action != "object" ) {
+        action = { callback: function() {}, endCallback: action };
+    }
+    if ( Array.isArray( key ) ) {
+        for ( var i in key ) {
+            this.onKeyUp( key[ i ], { endCallback: action.endCallback } );
         }
         return;
     }
 
     var keyboardDevice = this.devices.keyboard;
-    return this.on( keyboardDevice, this[ 'KEY_' + key ], callback, speed );
-};
-
-InputHandler.prototype.onKeyUp = function( key, callback, speed ) {
-    if ( Array.isArray( key ) ) {
-        for ( var i in key ) {
-            this.onKeyUp( key[ i ], callback, speed );
-        }
-        return;
-    }
-
-    var keyboardDevice = this.devices.keyboard,
-        eventId = this[ 'KEY_' + key ],
-        action = new InputAction( function() {}, speed );
-
-    action.setEndCallback( callback );
-    return this.addAction( keyboardDevice, eventId, action );
+    return this.addAction( keyboardDevice, this[ 'KEY_' + key ], action );
 };
 
 InputHandler.prototype.addDevice = function( device ) {

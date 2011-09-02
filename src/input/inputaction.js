@@ -26,6 +26,14 @@ InputAction.prototype.getCallback = function() {
     return this.callback;
 };
 
+InputAction.prototype.getIntervalCallback = function() {
+    var self = this;
+    return function() {
+        console.log( 'interval callback' );
+        self.callback();
+    };
+};
+
 InputAction.prototype.perform = function() {
     this.callback.apply( this, arguments );
 };
