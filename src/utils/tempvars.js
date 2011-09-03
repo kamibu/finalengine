@@ -10,13 +10,13 @@ var TempVars = {
     lock: function() {
         this.vector3ReleasePoints.push( this.vector3Counter );
         this.matrix4ReleasePoints.push( this.matrix4Counter );
-        this.matrix3ReleasePoints.push( this.matrix4Counter );
+        this.matrix3ReleasePoints.push( this.matrix3Counter );
         this.quaternionReleasePoints.push( this.quaternionCounter );
     },
     release: function() {
         this.vector3Counter = this.vector3ReleasePoints.pop();
         this.matrix4Counter = this.matrix4ReleasePoints.pop();
-        this.matrix3Counter = this.matrix4ReleasePoints.pop();
+        this.matrix3Counter = this.matrix3ReleasePoints.pop();
         this.quaternionCounter = this.quaternionReleasePoints.pop();
     },
 

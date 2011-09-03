@@ -67,17 +67,53 @@ Node.prototype = {
         //Remap angle to the range 0..2 * Math.PI
         angle -= 2 * Math.PI * Math.floor( angle / 2 / Math.PI );
 
+        //Calculate the quaternion that describes the rotation we want to do
         var rot = TempVars.getQuaternion().setAxisAngle( axis, angle );
+
+        /*
+         * If node is undefined then we are rotating around ourself and our position
+         * remains unchanged. If it is a node a new position is calculated.
+         */
         if ( node ) {
-            if ( node == Node.Origin ) {
-                var newPos = rot.multiplyVector3( this.getAbsolutePosition( TempVars.getVector3() ) );
-                this.setAbsolutePosition( newPos );
+            //Get the absolute position of the node being rotated
+            var newPos = this.getAbsolutePosition( TempVars.getVector3() );
+
+            //If we are rotating around Node.Origin things are simple
+            if ( node === Node.Origin ) {
+                //Rotate our absolute position around the origin
+                rot.multiplyVector3( newPos );
             }
+            /*
+             * If we are rotating around an arbitrary node we need to transform the
+             * system so that the node we are rotation around becomes the Node.Origin.
+             * We then do the rotation and transform the system back to it's original
+             * state.
+             */
             else {
-                throw 'Not yet implemented';
+                //Get the absolute position of the node around which we are rotating
+                var pivotPos = node.getAbsolutePosition( TempVars.getVector3() );
+                //Get the absolute orientation of the node around which we are rotating
+                var pivotRot = node.getAbsoluteOrientation( TempVars.getQuaternion() );
+
+                /*
+                 * Move the rotation point at the origin and apply the inverse rotation of the
+                 * node we are rotating around.
+                 */
+                pivotRot.inverse().multiplyVector3( newPos.subtract( pivotPos ) );
+
+                //Do the rotation as if we where rotating around Node.Origin
+                rot.multiplyVector3( newPos );
+
+                //Move back to the original rotation and position
+                pivotRot.inverse().multiplyVector3( newPos ).add( pivotPos );
             }
+            //Set the position calculated to the node
+            this.setAbsolutePosition( newPos );
         }
+
+        //The orientation change is always the same whether we rotate around ourselfs or around a node
         this.orientation.preMultiply( rot );
+
         TempVars.release();
         return this.invalidate();
     },
