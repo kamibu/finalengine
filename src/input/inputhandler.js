@@ -37,7 +37,7 @@ InputHandler.prototype.addAction = function( device, eventId, action ) {
     // keep callback reference
     var cbk = action.callback || function() {};
     action.callback = function( e ) {
-        console.log( 'got callback' );
+        console.log( 'got cbk', cbk );
         if ( self.enabled ) {
             cbk( e );
         }
@@ -61,7 +61,7 @@ InputHandler.prototype.onKey = function( key, action ) {
         }
         return;
     }
-    return this.addAction( this.devices.keyboard, this[ 'KEY_' + key ], action );
+    return this.addAction( this.keyboard, Keyboard[ 'KEY_' + key ], action );
 };
 
 InputHandler.prototype.onKeyUp = function( key, action ) {
@@ -75,30 +75,21 @@ InputHandler.prototype.onKeyUp = function( key, action ) {
         return;
     }
 
-    var keyboardDevice = this.devices.keyboard;
-    return this.addAction( keyboardDevice, this[ 'KEY_' + key ], action );
+    var keyboardDevice = this.keyboard;
+    return this.addAction( keyboardDevice, Keyboard[ 'KEY_' + key ], action );
 };
 
 InputHandler.prototype.addDevice = function( device ) {
-    var eventIds = device.getEventIds();
-
-    this.devices[ device.getName() ] = device;
-
-    for ( var i in eventIds ) {
-        this[ i ] = eventIds[ i ];
+    if ( this[ device.getName() ] ) {
+        throw "Device name already in use";
     }
+
+    this[ device.getName() ] = device;
 
     return this;
 };
 
 InputHandler.prototype.removeDevice = function( device ) {
-    var eventIds = device.getEventIds();
-
-    for ( var i in eventIds ) {
-        delete this[ i ];
-    }
-
-    delete this.devices[ device.getName() ];
-
+    delete this[ device.getName() ];
     return this;
 };

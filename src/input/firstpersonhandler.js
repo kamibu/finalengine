@@ -54,6 +54,7 @@ FirstPersonHandler.prototype = {
     },
     moveForward: function() {
         var self = this;
+        console.log( 'got move forward' );
         this.walkInterval = setInterval( function() {
             var angle = self.getAngle();
             self.node.move( [ self.velocity * Math.sin( angle ), 0, self.velocity * Math.cos( angle ) ] );

@@ -67,7 +67,7 @@ function InputApp() {
         } );
         */
 
-        var handler = new FirstPersonHandler( character, self.camera );
+        var handler = new FirstPersonHandler( character );
     } );
 
     this.camera.setPosition( [ 0, 2, 4 ] );

@@ -9,28 +9,15 @@ function Keyboard( name ) {
     window.addEventListener( 'keyup', this.handleKeyUp.bind( this ) );
     document.addEventListener( 'mouseout', this.handleMouseOut.bind( this ), false );
 }
-
 Keyboard.prototype = {
     getName: function() {
         return this.name;
-    },
-    getEventIds: function() {
-        return this.keys;
     },
     getKeyData: function( keyCode ) {
         if ( !this.keyData[ keyCode ] ) {
             this.keyData[ keyCode ] = {};
         }
         return this.keyData[ keyCode ];
-    },
-    keys: {
-        'KEY_LEFT_ARROW': 37,
-        'KEY_UP_ARROW': 38,
-        'KEY_RIGHT_ARROW': 39,
-        'KEY_DOWN_ARROW': 40,
-        'KEY_SPACE': 32,
-        'KEY_ENTER': 13,
-        'KEY_ESCAPE': 27
     },
     setPressed: function( key ) {
         if ( this.pressed[ key ] ) {
@@ -172,9 +159,17 @@ Keyboard.prototype = {
     }
 };
 
+Keyboard.KEY_LEFT_ARROW = 37;
+Keyboard.KEY_UP_ARROW = 38;
+Keyboard.KEY_RIGHT_ARROW = 39;
+Keyboard.KEY_DOWN_ARROW = 40;
+Keyboard.KEY_SPACE = 32;
+Keyboard.KEY_ENTER = 13;
+Keyboard.KEY_ESCAPE = 27;
+
 ( function() {
     for ( var i = 65; i < 91; i++ ) {
         var c = String.fromCharCode( i );
-        Keyboard.prototype.keys[ 'KEY_' + c ] = i;
+        Keyboard[ 'KEY_' + c ] = i;
     }
 }() );
