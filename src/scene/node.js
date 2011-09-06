@@ -22,6 +22,20 @@ Node.prototype = {
         this.update();
         return dest.set( this.worldTransform.position );
     },
+    setAbsoluteMatrix: function( matrix ) {
+        var p = [ matrix[ 12 ], matrix[ 13 ], matrix[ 14 ] ],
+            m00 = matrix[ 0 ], m01 = matrix[ 1 ], m02 = matrix[ 2 ],
+            scale = Math.sqrt( m00 * m00 + m01 * m01 + m02 * m02 ),
+            orientation;
+
+        TempVars.lock();
+        orientation = TempVars.getQuaternion().fromMatrix4( matrix );
+        TempVars.release();
+
+        this.setAbsolutePosition( p );
+        this.setAbsoluteOrientation( orientation );
+        return this.setAbsoluteScale( scale );
+    },
     setAbsolutePosition: function( position ) {
         TempVars.lock();
         this.worldTransform.setPosition( position );
