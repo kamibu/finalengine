@@ -1,7 +1,6 @@
-// extern
-var Matrix4, TempVars, Vector3;
-
 /*jshint sub: true */
+/*global Matrix4:true, TempVars: true, Vector3: true*/
+
 var Quaternion = ( function () {
     // check to see if we can modify the instance of a Float32Array
     var testSubject = new Float32Array();
@@ -191,6 +190,13 @@ Quaternion.prototype = {
             this[ 1 ] = ( matrix[ 5 ] + matrix[ 7 ] ) * s;
             this[ 3 ] = ( matrix[ 1 ] - matrix[ 3 ] ) * s;
         }
+        return this;
+    },
+    fromMatrix4: function( matrix ) {
+        TempVars.lock();
+        this.fromMatrix3( matrix.toMatrix3( TempVars.getMatrix3() ) );
+        TempVars.release();
+
         return this;
     },
     toMatrix4: function( dest ) {
