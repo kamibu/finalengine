@@ -23,7 +23,7 @@ function Application() {
     var t = Date.now();
     function renderLoop() {
         var now = Date.now();
-        self.onBeforeRender( t - now );
+        self.onBeforeRender( now - t );
         t = now;
         self.renderManager.renderScene( self.scene, self.camera );
         // console.log( self._nextFrame );
