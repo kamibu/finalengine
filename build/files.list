@@ -28,10 +28,6 @@ renderer/mesh.js
 renderer/shader.js
 renderer/framebuffer.js
 
-bounding/boundingvolume.js
-bounding/boundingsphere.js
-bounding/boundingbox.js    
-
 scene/node.js
 scene/camera.js
 scene/drawable.js
@@ -62,3 +58,5 @@ input/keyboard.js
 
 test/testcase.js
 test/browser/testview.js
+
+jiglib/nodeskin.js
