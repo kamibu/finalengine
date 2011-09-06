@@ -30,10 +30,11 @@ Node.prototype = {
 
         TempVars.lock();
         orientation = TempVars.getQuaternion().fromMatrix4( matrix );
-        TempVars.release();
 
         this.setAbsolutePosition( p );
         this.setAbsoluteOrientation( orientation );
+        TempVars.release();
+
         return this.setAbsoluteScale( scale );
     },
     setAbsolutePosition: function( position ) {
