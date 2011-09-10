@@ -26,24 +26,24 @@ function OBJLoader() {
 OBJLoader.prototype = {
     constructor: OBJLoader,
     splitBuffers: function( attributes, indices, maxLength ) {
-        var slots = [], numSlots;
-        for ( i in attributes ) {
+        var slots = [], numSlots, attributeName, attr;
+        for ( var i in attributes ) {
             numSlots = Math.ceil( attributes[ i ].buffer.length / attributes[ i ].size / maxLength );
             break;
         }
         
         //In the last loop a slot for problematic triangles will be made.
-        for ( var i = 0; i <= numSlots; i++ ) {
+        for ( i = 0; i <= numSlots; i++ ) {
             var slot = slots[ i ] = {};
             for ( attributeName in attributes ) {
-                var attr = attributes[ attributeName ];
+                attr = attributes[ attributeName ];
                 slot[ attributeName ] = i < numSlots ? attr.buffer.slice( i * maxLength * attr.size, ( i + 1 ) * maxLength * attr.size ) : [];
             }
             slot.indices = [];
         }
 
         var triCount = indices.length / 3;
-        for ( var i = 0; i < triCount; i += 3 ) {
+        for ( i = 0; i < triCount; i += 3 ) {
             var a = indices[ i + 0 ];
             var b = indices[ i + 1 ];
             var c = indices[ i + 2 ];
@@ -56,14 +56,15 @@ OBJLoader.prototype = {
             }
             else {
                 for ( attributeName in attributes ) {
-                    var attr = attributes[ attributeName ];
-                    for ( var j = 0; j < attr.size; j++ ) {
+                    attr = attributes[ attributeName ];
+                    var j ;
+                    for ( j = 0; j < attr.size; j++ ) {
                         slots[ numSlots ][ attributeName ].push( attr.buffer[ a * attr.size + j ] );
                     }
-                    for ( var j = 0; j < attr.size; j++ ) {
+                    for ( j = 0; j < attr.size; j++ ) {
                         slots[ numSlots ][ attributeName ].push( attr.buffer[ b * attr.size + j ] );
                     }
-                    for ( var j = 0; j < attr.size; j++ ) {
+                    for ( j = 0; j < attr.size; j++ ) {
                         slots[ numSlots ][ attributeName ].push( attr.buffer[ c * attr.size + j ] );
                     }
                 }
@@ -211,8 +212,8 @@ OBJLoader.prototype = {
 
                         d.mesh = m;
                         d.setMaterial( obj.material );
-                        m.name = material + '_mesh' + ( i == 0 ? '' : i );
-                        d.name = material + '_drawable' + ( i == 0 ? '' : i );
+                        m.name = material + '_mesh' + ( i === 0 ? '' : i );
+                        d.name = material + '_drawable' + ( i === 0 ? '' : i );
                         node.appendChild( d );
                     }
                 }
