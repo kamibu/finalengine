@@ -43,18 +43,15 @@ FirstPersonHandler.prototype = {
         return a;
     },
     stopMoving: function() {
-        console.log( 'got stop moving' );
         clearInterval( this.walkInterval );
         this.walkInterval = false;
     },
     stopRotating: function() {
-        console.log( 'got stop rotating' );
         clearInterval( this.rotateInterval );
         this.rotateInterval = false;
     },
     moveForward: function() {
         var self = this;
-        console.log( 'got move forward' );
         this.walkInterval = setInterval( function() {
             var angle = self.getAngle();
             self.node.move( [ self.velocity * Math.sin( angle ), 0, self.velocity * Math.cos( angle ) ] );
