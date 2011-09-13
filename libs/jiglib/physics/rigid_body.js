@@ -498,8 +498,12 @@
 	 * @param {number} dt a UNIX timestamp 
 	 * @type void
 	 **/
+    var ef_firstTime = true;
 	RigidBody.prototype.addExternalForces=function(dt){
-		this.addGravity();
+        if ( ef_firstTime ) {
+            ef_firstTime = false;
+            this.addGravity();
+        }
 	};
 
 	/**
@@ -694,7 +698,7 @@
 		this._currState.linVelocity = Vector3DUtil.add(this._currState.linVelocity, JNumber3D.getScaleVector(this._force, this._invMass * dt));
 
 		var rac = JNumber3D.getScaleVector(this._torque, dt);
-		JMatrix3D.multiplyVector(this._worldInvInertia, rac);
+		// JMatrix3D.multiplyVector(this._worldInvInertia, rac);
 		this._currState.rotVelocity = Vector3DUtil.add(this._currState.rotVelocity, rac);
 	};
 	

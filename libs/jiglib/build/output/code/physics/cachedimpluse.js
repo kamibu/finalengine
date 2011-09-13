@@ -1,0 +1,1 @@
+(function(a){var b=function(d,e,c){this.normalImpulse=d;this.normalImpulseAux=e;this.frictionImpulse=c;};b.prototype.normalImpulse=null;b.prototype.normalImpulseAux=null;b.prototype.frictionImpulse=null;a.CachedImpulse=b;})(jigLib);

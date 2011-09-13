@@ -1,0 +1,1 @@
+(function(a){var b=function(c){this.type=c;};b.prototype.type=null;Event.EVENT="JigLibJSEvent";a.JEvent=b;})(jigLib);

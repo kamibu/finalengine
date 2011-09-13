@@ -1,0 +1,1 @@
+(function(a){var b=function(f,e,d,c){if(f.id>e.id){this.body0=f;this.body1=e;this.r=d;}else{this.body0=e;this.body1=f;this.r=c;}};b.prototype.body0=null;b.prototype.body1=null;b.prototype.r=null;a.BodyPair=b;})(jigLib);

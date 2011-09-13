@@ -1,0 +1,1 @@
+(function(b){var a=function(d,c,e){this.i0=d;this.i1=c;this.i2=e;};b.TriangleVertexIndices=a;})(jigLib);

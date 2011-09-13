@@ -1,0 +1,1 @@
+(function(a){var b=function(c,d){this.Super(b.COLLISION);this.collisionBody=c;this.collisionImpulse=d;};a.extend(b,a.JEvent);b.prototype.collisionBody=null;b.prototype.collisionImpulse=null;b.COLLISION="JigLibJSCollisionEvent";a.JCollisionEvent=b;})(jigLib);
