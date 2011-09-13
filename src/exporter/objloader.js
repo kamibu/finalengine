@@ -25,6 +25,55 @@ function OBJLoader() {
 
 OBJLoader.prototype = {
     constructor: OBJLoader,
+    splitBuffers: function( attributes, indices, maxLength ) {
+        var slots = [], numSlots, attributeName, attr;
+        for ( var i in attributes ) {
+            numSlots = Math.ceil( attributes[ i ].buffer.length / attributes[ i ].size / maxLength );
+            break;
+        }
+        
+        //In the last loop a slot for problematic triangles will be made.
+        for ( i = 0; i <= numSlots; i++ ) {
+            var slot = slots[ i ] = {};
+            for ( attributeName in attributes ) {
+                attr = attributes[ attributeName ];
+                slot[ attributeName ] = i < numSlots ? attr.buffer.slice( i * maxLength * attr.size, ( i + 1 ) * maxLength * attr.size ) : [];
+            }
+            slot.indices = [];
+        }
+
+        var triCount = indices.length / 3;
+        for ( i = 0; i < triCount; i += 3 ) {
+            var a = indices[ i + 0 ];
+            var b = indices[ i + 1 ];
+            var c = indices[ i + 2 ];
+            var aSlot = a / maxLength | 0;
+            var bSlot = b / maxLength | 0;
+            var cSlot = c / maxLength | 0;
+            if ( aSlot === bSlot && bSlot === cSlot ) {
+                var shift = aSlot * maxLength;
+                slots[ aSlot ].indices.push( a - shift, b - shift, c - shift );
+            }
+            else {
+                for ( attributeName in attributes ) {
+                    attr = attributes[ attributeName ];
+                    var j ;
+                    for ( j = 0; j < attr.size; j++ ) {
+                        slots[ numSlots ][ attributeName ].push( attr.buffer[ a * attr.size + j ] );
+                    }
+                    for ( j = 0; j < attr.size; j++ ) {
+                        slots[ numSlots ][ attributeName ].push( attr.buffer[ b * attr.size + j ] );
+                    }
+                    for ( j = 0; j < attr.size; j++ ) {
+                        slots[ numSlots ][ attributeName ].push( attr.buffer[ c * attr.size + j ] );
+                    }
+                }
+                var currentIndex = slots[ numSlots ].indices.length;
+                slots[ numSlots ].indices.push( currentIndex, currentIndex + 1, currentIndex + 2 );
+            }
+        }
+        return slots;
+    },
     loadMtl: function( url, callback ) {
         var that = this;
         
@@ -126,42 +175,47 @@ OBJLoader.prototype = {
             callback = function( objectsByMaterial ) {
                 var node = new Node();
                 for ( var material in objectsByMaterial ) {
-                    var d = new Drawable();
                     var obj = objectsByMaterial[ material ];
 
-                    var vertices = new Buffer( Buffer.DATA_BUFFER, Buffer.STATIC );
-                    vertices.setData( obj.vertices );
+                    var batches = this.splitBuffers( {
+                        vertices: {
+                            buffer: obj.vertices,
+                            size: 3
+                        },
+                        normals: {
+                            buffer: obj.normals,
+                            size: 3
+                        },
+                        uvcoords: {
+                            buffer: obj.uvcoords,
+                            size: 2
+                        }
+                    }, obj.indices, 0xFFFF );
 
-                    var uvcoords = new Buffer( Buffer.DATA_BUFFER, Buffer.STATIC );
-                    uvcoords.setData( obj.uvcoords );
+                    for ( var i = 0; i < batches.length; i++ ) {
+                        var d = new Drawable();
 
-                    var normals = new Buffer( Buffer.DATA_BUFFER, Buffer.STATIC );
-                    normals.setData( obj.normals );
+                        var vertices = new Buffer().setData( obj.vertices );
+                        var uvcoords = new Buffer().setData( obj.uvcoords );
+                        var normals = new Buffer().setData( obj.normals );
+                        var indices = new Buffer( Buffer.ELEMENT_BUFFER ).setData( obj.indices );
 
-                    var verticesVB = new VertexAttribute( 'Position' );
-                    verticesVB.setBuffer( vertices );
+                        vertices = new VertexAttribute( 'Position' ).setBuffer( vertices );
+                        normals = new VertexAttribute( 'Normal' ).setBuffer( normals );
+                        uvcoords = new VertexAttribute( 'UVCoord' ).setBuffer( uvcoords ).setSize( 2 );
 
-                    var normalsVB = new VertexAttribute( 'Normal' );
-                    normalsVB.setBuffer( normals );
+                        var m = new Mesh();
+                        m.setVertexAttribute( vertices );
+                        m.setVertexAttribute( normals);
+                        m.setVertexAttribute( uvcoords );
+                        m.setIndexBuffer( indices );
 
-                    var uvcoordsVB = new VertexAttribute( 'UVCoord' );
-                    uvcoordsVB.size = 2;
-                    uvcoordsVB.setBuffer( uvcoords );
-
-                    var indices = new Buffer( Buffer.ELEMENT_BUFFER, Buffer.STATIC );
-                    indices.setData( obj.indices );
-
-                    var m = new Mesh();
-                    m.setVertexAttribute( verticesVB );
-                    m.setVertexAttribute( normalsVB );
-                    m.setVertexAttribute( uvcoordsVB );
-                    m.setIndexBuffer( indices );
-
-                    d.mesh = m;
-                    d.setMaterial( obj.material );
-                    m.name = material + '_mesh';
-                    d.name = material + '_drawable';
-                    node.appendChild( d );
+                        d.mesh = m;
+                        d.setMaterial( obj.material );
+                        m.name = material + '_mesh' + ( i === 0 ? '' : i );
+                        d.name = material + '_drawable' + ( i === 0 ? '' : i );
+                        node.appendChild( d );
+                    }
                 }
                 myCallback( node );
             };
