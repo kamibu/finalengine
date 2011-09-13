@@ -22,6 +22,7 @@ function RenderManager() {
     this.globalUniformCache = {
         Time: Date.now(),
         ProjectionMatrix: new Matrix4(),
+        InverseProjectionMatrix: new Matrix4(),
         ViewMatrix: new Matrix4(),
         WorldMatrix: new Matrix4(),
         ViewProjectionMatrix: new Matrix4(),
