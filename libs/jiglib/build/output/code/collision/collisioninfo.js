@@ -1,0 +1,1 @@
+(function(a){var c=a.MaterialProperties;var b=function(){this.mat=new c();this.pointInfo=[];};b.prototype.mat=null;b.prototype.objInfo=null;b.prototype.dirToBody=null;b.prototype.pointInfo=null;b.prototype.satisfied=null;a.CollisionInfo=b;})(jigLib);

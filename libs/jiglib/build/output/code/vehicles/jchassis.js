@@ -1,0 +1,1 @@
+(function(b){var a=b.JBox;var c=function(e,g,f,h,d){if(f==null){f=40;}if(h==null){h=70;}if(d==null){d=30;}this.Super(g,f,h,d);this._car=e;};b.extend(c,b.JBox);c.prototype._car=null;c.prototype.addExternalForces=function(d){this.clearForces();this.addGravity();this._car.addExternalForces(d);};c.prototype.postPhysics=function(d){this._car.postPhysics(d);};b.JChassis=c;})(jigLib);

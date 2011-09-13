@@ -32,12 +32,10 @@ InputHandler.prototype.isEnabled = function() {
 
 InputHandler.prototype.addAction = function( device, eventId, action ) {
     var self = this;
-    console.log( 'adding action', action );
     
     // keep callback reference
     var cbk = action.callback || function() {};
     action.callback = function( e ) {
-        console.log( 'got cbk', cbk );
         if ( self.enabled ) {
             cbk( e );
         }

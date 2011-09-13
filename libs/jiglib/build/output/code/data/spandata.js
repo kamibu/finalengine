@@ -1,0 +1,1 @@
+(function(a){var b=function(){};b.prototype.min=null;b.prototype.max=null;b.prototype.flag=null;b.prototype.depth=null;a.SpanData=b;})(jigLib);

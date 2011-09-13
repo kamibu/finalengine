@@ -44,6 +44,8 @@ PhysicsApp.prototype.addCube = function() {
     box.set_friction( 10 );
     box.moveTo( [ Math.random() - 0.5, 10, 0, 0 ] );
 
+    window.box = box;
+
     this.system.addBody( box );
 }
 

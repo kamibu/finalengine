@@ -1,0 +1,1 @@
+(function(a){var b=function(){this.accumulatedFrictionImpulse=[0,0,0,0];};b.prototype.initialPenetration=null;b.prototype.r0;b.prototype.r1;b.prototype.position;b.prototype.minSeparationVel=0;b.prototype.denominator=0;b.prototype.accumulatedNormalImpulse=0;b.prototype.accumulatedNormalImpulseAux=0;b.prototype.accumulatedFrictionImpulse=null;a.CollPointInfo=b;})(jigLib);

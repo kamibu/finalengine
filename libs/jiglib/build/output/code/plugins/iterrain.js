@@ -1,0 +1,1 @@
+(function(a){var b=function(){};b.prototype.get_minW=function(){};b.prototype.get_minH=function(){};b.prototype.get_maxW=function(){};b.prototype.get_maxH=function(){};b.prototype.get_dw=function(){};b.prototype.get_dh=function(){};b.prototype.get_sw=function(){};b.prototype.get_sh=function(){};b.prototype.get_heights=function(){};a.ITerrain=b;})(jigLib);

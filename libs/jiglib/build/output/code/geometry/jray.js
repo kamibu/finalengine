@@ -1,0 +1,1 @@
+(function(a){var d=a.Vector3DUtil;var b=a.JNumber3D;var c=function(f,e){this.origin=f;this.dir=e;};c.prototype.origin=null;c.prototype.dir=null;c.prototype.getOrigin=function(e){return d.add(this.origin,b.getScaleVector(this.dir,e));};a.JRay=c;})(jigLib);

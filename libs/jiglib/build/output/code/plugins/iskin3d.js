@@ -1,0 +1,1 @@
+(function(b){var c=b.Matrix3D;function a(){this.matrix=new c();}a.prototype.matrix=null;a.prototype.get_transform=function(){return this.matrix;};a.prototype.set_transform=function(d){this.matrix=d;};b.ISkin3D=a;})(jigLib);

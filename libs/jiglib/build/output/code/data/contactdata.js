@@ -1,0 +1,1 @@
+(function(a){var b=function(){};b.prototype.pair=null;b.prototype.impulse=null;a.ContactData=b;})(jigLib);
