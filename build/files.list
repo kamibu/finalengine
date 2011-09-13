@@ -43,6 +43,7 @@ material/material.js
 
 geometry/cube.js
 geometry/rectangle.js
+geometry/sphere.js
 
 texturemanager.js
 rendermanager.js
