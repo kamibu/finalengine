@@ -1,6 +1,14 @@
 // extern
 var Camera, RenderManager, Scene, Importer, Exporter, InputHandler;
 
+/**
+ * @class
+ * 
+ * Abstract application class that initializes basic modules and starts the main loop.
+ *
+ * Extend this class to write your own initialization code on the constructor of a
+ * child class.
+ */
 function Application() {
     this.renderManager = new RenderManager();
     this.scene = new Scene();
@@ -57,7 +65,19 @@ Application.prototype = {
         camera.setPerspective();
         return this;
     },
-    onBeforeRender: function ( elapsed ) {
+    /** 
+     * Overwrite this method to update your application before rendering.
+     * The render loop uses requestAnimationFrame.
+     * @param dt milliseconds since the previous onBeforeRender.
+     */
+    onBeforeRender: function( dt ) {
+
+    },
+    /** 
+     * Overwrite this method to update your application on every iteration of the main loop.
+     * The main loop is an interval called around 60 times per second.
+     * @param dt milliseconds since the previous update */
+    update: function ( dt ) {
         // overwrite me
     },
     capFPS: function( fps ) {

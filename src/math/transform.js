@@ -1,8 +1,7 @@
-// extern
-var Matrix4, Quaternion, TempVars, Vector3;
+/*global Matrix4: true, Quaternion: true, TempVars: true, Vector3: true */
 
-/*
- * Represents a transformation in 3d space (position, orientation, scale)
+/** @class
+ * Represents a transformation in 3D space (position, orientation, scale).
  */
 function Transform() {
     this.position = new Vector3();
@@ -20,39 +19,74 @@ Transform.prototype = {
         this.scale = transform.scale;
         return this.invalidate();
     },
+    /** 
+     * @param {Array} position The new position as a vector.
+     * @returns {Transform} this
+     */
     setPosition: function( position ) {
         this.position.set( position );
         return this.invalidate();
     },
+    /**
+     * @param {Array} orientation The new orientation as a quaternion.
+     * @returns {Transform} this
+     */
     setOrientation: function( orientation ) {
         this.orientation.set( orientation );
         return this.invalidate();
     },
+    /**
+     * Scales the object uniformly.
+     * @param {Number} scale The new scale as a scalar.
+     * @returns {Transform} this
+     */
     setScale: function( scale ) {
         this.scale = scale;
         return this.invalidate();
     },
+    /**
+     * Returns a copy of the position vector.
+     * @param {Vector3} [dest] Alter this variable instead of generating a new Vector3.
+     * @returns {Vector3} dest if specified, a new Vector3 otherwise.
+     */
     getPosition: function( dest ) {
         if ( !dest ) {
             dest = new Vector3();
         }
         return dest.set( this.position );
     },
+    /**
+     * Returns a copy of the orientation quaternion.
+     * @param {Quaternion} [dest] Alter this variable instead of generating a new quaternion.
+     * @returns {Quaternion} dest if specified, a new quaternion otherwise.
+     */
     getOrientation: function( dest ) {
         if ( !dest ) {
             dest = new Quaternion();
         }
         return dest.set( this.orientation );
     },
+    /**
+     * @returns {Number}
+     */
     getScale: function() {
         return this.scale;
     },
+    /**
+     * Resets transform to default values.
+     * @returns {Transform} this
+     */
     setIdentity: function() {
         this.position.set( [ 0, 0, 0 ] );
         this.orientation.set( [ 0, 0, 0, 1 ] );
         this.scale = 1;
         return this.invalidate();
     },
+    /**
+     * Combines this transform with another and stores the result to this transform.
+     * @returns {Transform} this
+     */
+    // TODO: further documenting
     combineWith: function( transform ) {
         TempVars.lock();
         this.scale *= transform.scale;
@@ -62,6 +96,11 @@ Transform.prototype = {
 
         return this.invalidate();
     },
+    /**
+     * Returns a transformation matrix.
+     * @param {Matrix4} [dest] Alter dest object instead of creating a new matrix.
+     * @returns {Matrix4} dest if specified, a new matrix otherwise.
+     */
     getMatrix: function( dest ) {
         if ( !dest ) {
             dest = new Matrix4();
@@ -71,8 +110,12 @@ Transform.prototype = {
         }
         return dest.set( this.matrix );
     },
+    /**
+     * Sets position, orientation and scale to match a transformation matrix.
+     * @param {Matrix4} matrix
+     * @returns {Transform} this
+     */
     setMatrix: function( matrix ) {
-
         var m00 = matrix[ 0 ], m01 = matrix[ 1 ], m02 = matrix[ 2 ];
         this.scale = Math.sqrt( m00 * m00 + m01 * m01 + m02 * m02 );
 
@@ -87,6 +130,10 @@ Transform.prototype = {
 
         return this.invalidate();
     },
+    /**
+     * @param {Matrix4} [dest] Alter dest instead of creating a new Matrix4
+     * @returns {Matrix4} dest if specified, a new matrix otherwise.
+     */
     getInverseMatrix: function( dest ) {
         if ( !dest ) {
             dest = new Matrix4();
