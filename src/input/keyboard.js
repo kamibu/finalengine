@@ -1,8 +1,10 @@
-function Keyboard( name ) {
-    this.name = name || "keyboard";
+/**
+ * @class
+ * @extends InputDevice
+ */
+function Keyboard() {
     this.actions = {};
     this.keyData = {};
-    this.REPEAT_INTERVAL = 200;
     this.pressed = {};
 
     window.addEventListener( 'keydown', this.handleKeyDown.bind( this ) );
@@ -10,9 +12,6 @@ function Keyboard( name ) {
     document.addEventListener( 'mouseout', this.handleMouseOut.bind( this ), false );
 }
 Keyboard.prototype = {
-    getName: function() {
-        return this.name;
-    },
     getKeyData: function( keyCode ) {
         if ( !this.keyData[ keyCode ] ) {
             this.keyData[ keyCode ] = {};
@@ -110,6 +109,9 @@ Keyboard.prototype = {
 
         this.unsetPressed( e.keyCode );
     },
+    /**
+     * @see InputDevice#addAction
+     */
     addAction: function ( key, options ) {
         if ( typeof options == "function" ) {
             options = { callback: options };
@@ -159,17 +161,53 @@ Keyboard.prototype = {
     }
 };
 
-Keyboard.KEY_LEFT_ARROW = 37;
+Keyboard.extends( InputDevice );
+
+/**#@+
+ * @type Array
+ */
+
+/**
+ * @public
+ */
+Keyboard.foo = function() {
+};
+/**
+ * @private
+ */
+Keyboard.baz = function() {
+};
+/**#@-*/
+
 Keyboard.KEY_UP_ARROW = 38;
 Keyboard.KEY_RIGHT_ARROW = 39;
 Keyboard.KEY_DOWN_ARROW = 40;
 Keyboard.KEY_SPACE = 32;
 Keyboard.KEY_ENTER = 13;
 Keyboard.KEY_ESCAPE = 27;
-
-( function() {
-    for ( var i = 65; i < 91; i++ ) {
-        var c = String.fromCharCode( i );
-        Keyboard[ 'KEY_' + c ] = i;
-    }
-}() );
+Keyboard.KEY_A = 65;
+Keyboard.KEY_B = 66;
+Keyboard.KEY_C = 67;
+Keyboard.KEY_D = 68;
+Keyboard.KEY_E = 69;
+Keyboard.KEY_F = 70;
+Keyboard.KEY_G = 71;
+Keyboard.KEY_H = 72;
+Keyboard.KEY_I = 73;
+Keyboard.KEY_J = 74;
+Keyboard.KEY_K = 75;
+Keyboard.KEY_L = 76;
+Keyboard.KEY_M = 77;
+Keyboard.KEY_N = 78;
+Keyboard.KEY_O = 79;
+Keyboard.KEY_P = 80;
+Keyboard.KEY_Q = 81;
+Keyboard.KEY_R = 82;
+Keyboard.KEY_S = 83;
+Keyboard.KEY_T = 84;
+Keyboard.KEY_U = 85;
+Keyboard.KEY_V = 86;
+Keyboard.KEY_W = 87;
+Keyboard.KEY_X = 88;
+Keyboard.KEY_Y = 89;
+Keyboard.KEY_Z = 90;

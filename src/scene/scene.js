@@ -1,6 +1,13 @@
 // extern
 var Node, Drawable;
 
+/** 
+ * @class
+ *
+ * The tree of nodes to be rendered.
+ *
+ * @extends Node
+ */
 function Scene() {
     Node.call( this );
     this.drawableList = [];
@@ -8,6 +15,11 @@ function Scene() {
 
 Scene.prototype = {
     constructor: Scene,
+    /**
+     * Returns the nodes in the tree below a given node that are instances of {@link Drawable}.
+     * @param {Node} node
+     * @returns {Array} An array of nodes.
+     */
     findDrawables: function( node ) {
         var bucket = [];
         function fillBucket( node ) {
@@ -23,13 +35,13 @@ Scene.prototype = {
         fillBucket( node );
         return bucket;
     },
-    onChildAdded: function( node, nodeAdded ) {
-        this.Node_onChildAdded( node, nodeAdded );
-        var drawables = this.findDrawables( nodeAdded );
+    onChildAdded: function( node ) {
+        this.Node_onChildAdded( node );
+        var drawables = this.findDrawables( node );
         this.drawableList.push.apply( this.drawableList, drawables );
     },
-    onChildRemoved: function( node, nodeRemoved ) {
-        var drawables = this.findDrawables( nodeRemoved );
+    onChildRemoved: function( node, parentNode ) {
+        var drawables = this.findDrawables( node );
         var l = drawables.length;
         while ( l-- ) {
             this.drawableList.splice( this.drawableList.indexOf( drawables[ l ] ), 1 );

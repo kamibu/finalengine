@@ -1,20 +1,44 @@
 // extern
-var Matrix4, Quaternion, TempVars, Transform, UUID, Vector3;
+/*global Matrix4: true, Quaternion: true, TempVars: true, Transform: true, UUID: true, Vector3: true */
 
-/*
- * An abstract 3 dimensional object with a location in space and a tree-like structure
+/**
+ * @class
+ * <p>An abstract 3 dimensional object with a location in space and a tree-like structure.</p>
+ *
+ * <p>Inherited position, orientation and scale from Transform represent transformations in local coordinates, relative to the parent node. All transformations applied to a node are recursively applied to its children too.</p>
+ *
+ * @extends Transform
  */
 function Node() {
+    /** 
+     * @public
+     * @see UUID
+     */
     this.uuid = UUID();
-    this.worldTransform = new Transform();
+
+    /** 
+     * @public 
+     * @default Node.Origin
+     * */
     this.parent = Node.Origin;
+
+    /** 
+     * @public
+     * @default []
+     */
     this.children = [];
+
+    this.worldTransform = new Transform();
     this.name = this.uuid;
     Transform.call( this );
 }
 
 Node.prototype = {
     constructor: Node,
+    /**
+     * @param {Vector3} [dest]
+     * @returns dest if specfied, a new Vector3 otherwise.
+     */
     getAbsolutePosition: function( dest ) {
         if ( !dest ) {
             dest = new Vector3();
@@ -22,6 +46,10 @@ Node.prototype = {
         this.update();
         return dest.set( this.worldTransform.position );
     },
+    /**
+     * @param {Vector3} position
+     * @returns this
+     */
     setAbsolutePosition: function( position ) {
         TempVars.lock();
         this.worldTransform.setPosition( position );
@@ -38,6 +66,10 @@ Node.prototype = {
         TempVars.release();
         return this.invalidate();
     },
+    /**
+     * @param {Quaternion} [dest] Alter dest instead of creating new quaternion.
+     * @returns dest if specified, new quaternion otherwise.
+     */
     getAbsoluteOrientation: function( dest ) {
         if ( !dest ) {
             dest = new Quaternion();
@@ -45,6 +77,10 @@ Node.prototype = {
         this.update();
         return this.worldTransform.getOrientation( dest );
     },
+    /**
+     * @param {Quaternion} orientation
+     * @returns this
+     */
     setAbsoluteOrientation: function( orientation ) {
         TempVars.lock();
         this.worldTransform.setOrientation( orientation );
@@ -52,15 +88,29 @@ Node.prototype = {
         TempVars.release();
         return this.invalidate();
     },
+    /**
+     * @returns {Number} scale
+     */
     getAbsoluteScale: function() {
         this.update();
         return this.worldTransform.getScale();
     },
+    /**
+     * @param {Number} scale
+     * @returns this
+     */
     setAbsoluteScale: function( scale ) {
         this.worldTransform.setScale( scale );
         this.scale = scale / this.parent.getAbsoluteScale();
         return this.invalidate();
     },
+    /** 
+     * Rotates node around itself or another object.
+     * @param {Array} axis A 3-element vector representing the axis.
+     * @param {Number} angle Angle to rotate in radians.
+     * @param {Node} [node] If specified, rotate around this node.
+     * @returns this
+     */
     rotate: function( axis, angle, node ) {
         TempVars.lock();
 
@@ -117,6 +167,12 @@ Node.prototype = {
         TempVars.release();
         return this.invalidate();
     },
+    /** 
+     * Moves node relative to its current position or the position of another node.
+     * @param {Vector3} vector The position transformation vector.
+     * @param {Node} [node] Move relatively to node instead of the current position.
+     * @returns this
+     */
     move: function( vector, node ) {
         if ( node ) {
             if ( node == Node.Origin ) {
@@ -148,11 +204,19 @@ Node.prototype = {
         this.onChildAdded( this, node );
         return this;
     },
-    onChildAdded: function( node, nodeAdded ) {
+    /**
+     * Override this method to process the addition of a node anywhere in the tree below this node.
+     * @params {Node} node The node that was added to the tree.
+     */
+    onChildAdded: function( node ) {
         if ( this !== Node.Origin ) {
-            this.parent.onChildAdded( node, nodeAdded );
+            this.parent.onChildAdded( node );
         }
     },
+    /** 
+     * Removes child from list of children and reset child's parent reference to Node.Origin
+     * @param {Node} node The node to remove.
+     * @returns this */
     removeChild: function( node ) {
         var children = this.children;
         var l = children.length;
@@ -160,15 +224,25 @@ Node.prototype = {
         node.parent = Node.Origin;
         node.invalidate();
         children.splice( children.indexOf( node ), 1 );
-        this.onChildRemoved( this, node );
+        this.onChildRemoved( node, this );
 
         return this;
     },
-    onChildRemoved: function( node, nodeRemoved ) {
+    /**
+     * Override this method to process the removal of a node anywhere in the tree below this node.
+     * @params {Node} node The node that wars removed from the tree.
+     * @params {Node} parentNode The previous parent of the node.
+     */
+    onChildRemoved: function( node, parentNode ) {
         if ( this !== Node.Origin ) {
-            this.parent.onChildRemoved( node, nodeRemoved );
+            this.parent.onChildRemoved( node, parentNode );
         }
     },
+    /**
+     * Returns world-coordinate transformation matrix.
+     * @param {Matrix4} [dest] Alter dest instead of creating a new matrix.
+     * @returns {Matrix4} dest if specified, a new matrix otherwise.
+     */
     getAbsoluteMatrix: function( dest ) {
         if ( !dest ) {
             dest = new Matrix4();
@@ -176,6 +250,11 @@ Node.prototype = {
         this.update();
         return dest.set( this.worldTransform.getMatrix() );
     },
+    /**
+     * Returns the inverse of world-coordinate transformation matrix.
+     * @param {Matrix4} [dest] Alter dest instead of creating a new matrix.
+     * @returns {Matrix4} dest if specified, a new matrix otherwise.
+     */
     getAbsoluteInverseMatrix: function( dest ) {
         if ( !dest ) {
             dest = new Matrix4();

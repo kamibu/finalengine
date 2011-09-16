@@ -1,7 +1,6 @@
-// extern
-var Matrix4, TempVars, Vector3;
-
 /*jshint sub: true */
+/*global Matrix4: true, TempVars: true, Vector3: true */
+
 var Quaternion = ( function () {
     // check to see if we can modify the instance of a Float32Array
     var testSubject = new Float32Array();
