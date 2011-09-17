@@ -1,4 +1,4 @@
-var InputAction, Keyboard;
+var InputAction, Keyboard, Mouse;
 
 function InputHandler() {
     this.enabled = true;
@@ -6,6 +6,7 @@ function InputHandler() {
     this.devices = [];
 
     this.addDevice( new Keyboard() );
+    this.addDevice( new Mouse() );
 }
 
 InputHandler.prototype.enable = function() {
@@ -75,6 +76,14 @@ InputHandler.prototype.onKeyUp = function( key, action ) {
 
     var keyboardDevice = this.keyboard;
     return this.addAction( keyboardDevice, Keyboard[ 'KEY_' + key ], action );
+};
+
+InputHandler.prototype.onMouseMove = function( action ) {
+    this.addAction( this.mouse, Mouse.MOUSE_MOVE, action );
+};
+
+InputHandler.prototype.onMouseWheel = function( action ) {
+    this.addAction( this.mouse, Mouse.MOUSE_WHEEL, action );
 };
 
 InputHandler.prototype.addDevice = function( device ) {

@@ -22,7 +22,6 @@ function RenderManager() {
     this.globalUniformCache = {
         Time: Date.now(),
         ProjectionMatrix: new Matrix4(),
-        InverseProjectionMatrix: new Matrix4(),
         ViewMatrix: new Matrix4(),
         WorldMatrix: new Matrix4(),
         ViewProjectionMatrix: new Matrix4(),
@@ -48,14 +47,10 @@ RenderManager.prototype = {
 
         l = effects.length;
 
-        var g = this.globalUniformCache;
         renderer.bindFramebuffer( null );
         renderer.clear();
         for ( i = 0; i < l; ++i ) {
             effect = effects[ i ];
-            for ( var engineParameter in effect.engineParameters ) {
-                effect.setParameter( engineParameter, g[ engineParameter ] );
-            }
             effect.setParameter( 'ColorTexture', colorTexture );
             effect.setParameter( 'FramebufferWidth', this.framebuffer.width );
             effect.setParameter( 'FramebufferHeight', this.framebuffer.height );
@@ -79,7 +74,6 @@ RenderManager.prototype = {
         camera.projectionMatrix.setTo( g.ProjectionMatrix );
         camera.getAbsoluteInverseMatrix( g.ViewMatrix );
         g.ViewProjectionMatrix.set( g.ProjectionMatrix ).multiply( g.ViewMatrix );
-        g.InverseProjectionMatrix.set( g.ProjectionMatrix ).inverse();
 
         // TODO: Draw non-transparent materials first, then transparent materials
         //Sort drawables by material
