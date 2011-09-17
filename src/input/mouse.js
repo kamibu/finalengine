@@ -21,7 +21,6 @@ Mouse.prototype = {
         return "mouse";
     },
     handleMouseDown: function( e ) {
-        console.log( 'got mouse down' );
         var i, action, actions = this.actions[ e.button ], l;
 
         this.down[ e.button ] = true;
@@ -37,7 +36,6 @@ Mouse.prototype = {
         }
     },
     handleMouseUp: function( e ) {
-        console.log( 'got mouse up' );
         var i, action, actions = this.actions[ e.button ], l;
 
         this.down[ e.button ] = false;
