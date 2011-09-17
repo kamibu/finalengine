@@ -1,5 +1,9 @@
-var EventWaiter, Importer, Texture, Node, Buffer, VertexAttribute, Drawable, Mesh;
+/*global EventWaiter: true, Importer: true, Texture: true, Node: true, Buffer: true, VertexAttribute: true, Drawable: true, Mesh: true */
 
+/**
+ * @class
+ * Loads .obj files.
+ */
 function OBJLoader() {
     this.ready = false;
     var self = this;
@@ -116,6 +120,11 @@ OBJLoader.prototype = {
         };
         matReq.send();
     },
+    /**
+     * Generates a node tree (an instance of {@link Node}) that can be added to a scene for rendering.
+     * @param {String} url The complete url to the .obj file
+     * @param {Function} callback Called when loading is finished with the node tree as a parameter.
+     */
     loadOBJ: function( url, callback ) {
         /*WRAPPER FUNCTIONS*/
             if ( !this.ready ) {

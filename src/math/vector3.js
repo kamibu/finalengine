@@ -33,7 +33,7 @@ Vector3.prototype = {
     },
     /**
      * Adds the values of a vector to this object.
-     * @param {Array} Array-like object to add.
+     * @param {Array} vector Array-like object to add.
      * @returns {Vector3} this
      */
     add: function( vector ) {
@@ -44,7 +44,7 @@ Vector3.prototype = {
     },
     /**
      * Subtracts the values of a vector from this object.
-     * @param {Array} Array-like object to subtract.
+     * @param {Array} vector Array-like object to subtract.
      * @returns {Vector3} this
      */
     subtract: function( vector ) {

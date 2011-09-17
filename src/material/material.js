@@ -1,6 +1,8 @@
-// extern
-var Matrix4, Quaternion, Shader, UUID, Vector3, Color, Texture;
+/*global Matrix4: true, Quaternion: true, Shader: true, UUID: true, Vector3: true, Color: true, Texture: true */
 
+/**
+ * @class
+ */
 function Material() {
     this.uuid = UUID();
     this.uid = Material.uid++;

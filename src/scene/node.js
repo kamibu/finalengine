@@ -105,7 +105,7 @@ Node.prototype = {
         return this.invalidate();
     },
     /** 
-     * Rotates object around itself or around a node.
+     * Rotates node around itself or another object.
      * @param {Array} axis A 3-element vector representing the axis.
      * @param {Number} angle Angle to rotate in radians.
      * @param {Node} [node] If specified, rotate around this node.
@@ -167,6 +167,12 @@ Node.prototype = {
         TempVars.release();
         return this.invalidate();
     },
+    /** 
+     * Moves node relative to its current position or the position of another node.
+     * @param {Vector3} vector The position transformation vector.
+     * @param {Node} [node] Move relatively to node instead of the current position.
+     * @returns this
+     */
     move: function( vector, node ) {
         if ( node ) {
             if ( node == Node.Origin ) {
@@ -199,15 +205,18 @@ Node.prototype = {
         return this;
     },
     /**
-     * @event
      * Override this method to process the addition of a node anywhere in the tree below this node.
-     * @params node The node that was added to the tree.
+     * @params {Node} node The node that was added to the tree.
      */
     onChildAdded: function( node ) {
         if ( this !== Node.Origin ) {
             this.parent.onChildAdded( node );
         }
     },
+    /** 
+     * Removes child from list of children and reset child's parent reference to Node.Origin
+     * @param {Node} node The node to remove.
+     * @returns this */
     removeChild: function( node ) {
         var children = this.children;
         var l = children.length;
@@ -215,20 +224,25 @@ Node.prototype = {
         node.parent = Node.Origin;
         node.invalidate();
         children.splice( children.indexOf( node ), 1 );
-        this.onChildRemoved( this, node );
+        this.onChildRemoved( node, this );
 
         return this;
     },
     /**
-     * @event
      * Override this method to process the removal of a node anywhere in the tree below this node.
-     * @params node The node that wars removed from the tree.
+     * @params {Node} node The node that wars removed from the tree.
+     * @params {Node} parentNode The previous parent of the node.
      */
-    onChildRemoved: function( node, nodeRemoved ) {
+    onChildRemoved: function( node, parentNode ) {
         if ( this !== Node.Origin ) {
-            this.parent.onChildRemoved( node, nodeRemoved );
+            this.parent.onChildRemoved( node, parentNode );
         }
     },
+    /**
+     * Returns world-coordinate transformation matrix.
+     * @param {Matrix4} [dest] Alter dest instead of creating a new matrix.
+     * @returns {Matrix4} dest if specified, a new matrix otherwise.
+     */
     getAbsoluteMatrix: function( dest ) {
         if ( !dest ) {
             dest = new Matrix4();
@@ -236,6 +250,11 @@ Node.prototype = {
         this.update();
         return dest.set( this.worldTransform.getMatrix() );
     },
+    /**
+     * Returns the inverse of world-coordinate transformation matrix.
+     * @param {Matrix4} [dest] Alter dest instead of creating a new matrix.
+     * @returns {Matrix4} dest if specified, a new matrix otherwise.
+     */
     getAbsoluteInverseMatrix: function( dest ) {
         if ( !dest ) {
             dest = new Matrix4();

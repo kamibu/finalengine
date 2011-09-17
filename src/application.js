@@ -11,12 +11,34 @@ var Camera, RenderManager, Scene, Importer, Exporter, InputHandler;
  */
 function Application() {
     this.renderManager = new RenderManager();
+
+    /**
+     * The scene to be rendered. Change this property if you need to render some other scene object.
+     * @type Scene
+     */
     this.scene = new Scene();
+
+    /**
+     * The default camera. 
+     *
+     * Its original position is at (0, 0, 10). Setting this property to another camera does not affect the rendering.
+     * @type Camera
+     */
     this.camera = new Camera().setPosition( [ 0, 0, 10 ] );
 
+    /**
+     * The default importer. Imports from "resources" folder.
+     */
     this.importer = new Importer( 'resources' );
+
+    /**
+     * The default exporter. Exports to "resources" folder.
+     */
     this.exporter = new Exporter( 'resources' );
 
+    /**
+     * The default input handler.
+     */
     this.input = new InputHandler();
 
     this.scene.appendChild( this.camera );
