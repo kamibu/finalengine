@@ -60,6 +60,7 @@ exporter/objloader.js
 input/inputhandler.js
 input/firstpersonhandler.js
 input/keyboard.js
+input/mouse.js
 
 test/testcase.js
 test/browser/testview.js
