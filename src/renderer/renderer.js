@@ -912,7 +912,7 @@ Renderer.prototype = {
             /*DEBUG_END*/
 
 			this.bindBuffer( vertexAttribute.buffer );
-			gl.vertexAttribPointer( program.attributes[ attribute ].location, vertexAttribute.size, gl.FLOAT, false, vertexAttribute.stride, vertexAttribute.offset );
+			gl.vertexAttribPointer( program.attributes[ attribute ].location, vertexAttribute.size, gl.FLOAT, false, vertexAttribute.stride * 4, vertexAttribute.offset * 4 );
 		}
 
 		this.bindBuffer( mesh.indexBuffer );

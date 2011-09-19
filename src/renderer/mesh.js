@@ -21,57 +21,66 @@ function Mesh() {
     this.vertexAttributes = {};
 
 	this.indexBuffer = null;
-    this.isInterleaved = false;
 }
 
 Mesh.prototype = {
     constructor: Mesh,
     /**
-     * @param {Buffer} vertexBuffer
+     * @param {VertexAttribute} attribute
      */
-    setVertexAttribute: function( vertexBuffer ) {
-        this.vertexAttributes[ vertexBuffer.semantic ] = vertexBuffer;
+    setVertexAttribute: function( attribute ) {
+        this.vertexAttributes[ attribute.semantic ] = attribute;
+        return this;
     },
     /**
      * @param {Buffer} buffer
      */
     setIndexBuffer: function( buffer ) {
         this.indexBuffer = buffer;
+        return this;
     },
     interleave: function() {
+        var interleavedBuffer, data, stride, attribute, attr, i, length, start;
         /*DEBUG*/
-            assert( !this.isInterleaved, 'Tried to interleave an already interleaved Mesh' );
+            var l = 0;
+            for ( attribute in this.vertexAttributes ) {
+                attr = this.vertexAttributes[ attribute ];
+                if ( !l ) {
+                    l = attr.length;
+                }
+                assert( attr.length == l, 'The vertex attributes in this mesh are of unequal lengths' );
+            }
         /*DEBUG_END*/
-        var interleavedBuffer, data, stride, attribute, buffer, attr, i, j;
 
-        interleavedBuffer = new Buffer( Buffer.DATA_BUFFER, Buffer.STATIC );
+        interleavedBuffer = new Buffer();
 
         stride = 0;
         for ( attribute in this.vertexAttributes ) {
-            attr = this.vertexAttributes[ attribute ] = this.vertexAttributes[ attribute ].clone();
-            attr.offset = stride;
-            stride += 4 * attr.size;
+            stride += attr.size;
+            length = attr.length;
         }
 
-        data = [];
+        data = new Float32Array( length * stride );
+
+        var offset = 0;
         for ( attribute in this.vertexAttributes ) {
             attr = this.vertexAttributes[ attribute ];
-            attr.stride = stride;
-            buffer = attr.buffer;
 
-            i = buffer.length / attr.size;
+            i = length;
             while ( i-- ) {
-                for ( j = 0; j < attr.size; j++ ) {
-                    data[ attr.offset / 4 + i * stride / 4 + j ] = buffer.data[ attr.size * i + j ];
-                }
+                start = stride * i + offset;
+                attr.getElement( i, data.subarray( start, start + attr.size ) );
             }
+
+            attr.stride = stride;
+            attr.offset = offset;
+            offset += attr.size;
+            attr.setBuffer( interleavedBuffer );
         }
 
         interleavedBuffer.setData( data );
-        for ( attribute in this.vertexAttributes ) {
-            this.vertexAttributes[ attribute ].setBuffer( interleavedBuffer );
-        }
-        this.isInterleaved = true;
+
+        return this;
     },
     /**
      * @param mode
@@ -81,6 +90,7 @@ Mesh.prototype = {
             assertIn( mode, Mesh.POINTS, Mesh.LINES, Mesh.LINE_LOOP, Mesh.LINE_STRIP, Mesh.TRIANGLES, Mesh.TRIANGLE_STRIP, Mesh.TRIANGLE_FAN, 'Illegal value.' );
         /*DEBUG_END*/
         this.mode = mode;
+        return this;
     },
     /**
      * Calculates normals and sets the normal buffer vertex attribute.
@@ -144,6 +154,7 @@ Mesh.prototype = {
         normals = new Buffer().setData( fNormals );
         normals = new VertexAttribute( 'Normal' ).setBuffer( normals );
         this.setVertexAttribute( normals );
+        return this;
     },
     getExportData: function( exporter ) {
         var ret = {
