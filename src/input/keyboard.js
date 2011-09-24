@@ -164,50 +164,72 @@ Keyboard.prototype = {
 Keyboard.extends( InputDevice );
 
 /**#@+
- * @type Array
+ * @const
  */
 
-/**
- * @public
- */
-Keyboard.foo = function() {
-};
-/**
- * @private
- */
-Keyboard.baz = function() {
-};
-/**#@-*/
-
+/** @public */
+Keyboard.KEY_LEFT_ARROW = 37;
+/** @public */
 Keyboard.KEY_UP_ARROW = 38;
+/** @public */
 Keyboard.KEY_RIGHT_ARROW = 39;
+/** @public */
 Keyboard.KEY_DOWN_ARROW = 40;
+/** @public */
 Keyboard.KEY_SPACE = 32;
+/** @public */
 Keyboard.KEY_ENTER = 13;
+/** @public */
 Keyboard.KEY_ESCAPE = 27;
+/** @public */
 Keyboard.KEY_A = 65;
+/** @public */
 Keyboard.KEY_B = 66;
+/** @public */
 Keyboard.KEY_C = 67;
+/** @public */
 Keyboard.KEY_D = 68;
+/** @public */
 Keyboard.KEY_E = 69;
+/** @public */
 Keyboard.KEY_F = 70;
+/** @public */
 Keyboard.KEY_G = 71;
+/** @public */
 Keyboard.KEY_H = 72;
+/** @public */
 Keyboard.KEY_I = 73;
+/** @public */
 Keyboard.KEY_J = 74;
+/** @public */
 Keyboard.KEY_K = 75;
+/** @public */
 Keyboard.KEY_L = 76;
+/** @public */
 Keyboard.KEY_M = 77;
+/** @public */
 Keyboard.KEY_N = 78;
+/** @public */
 Keyboard.KEY_O = 79;
+/** @public */
 Keyboard.KEY_P = 80;
+/** @public */
 Keyboard.KEY_Q = 81;
+/** @public */
 Keyboard.KEY_R = 82;
+/** @public */
 Keyboard.KEY_S = 83;
+/** @public */
 Keyboard.KEY_T = 84;
+/** @public */
 Keyboard.KEY_U = 85;
+/** @public */
 Keyboard.KEY_V = 86;
+/** @public */
 Keyboard.KEY_W = 87;
+/** @public */
 Keyboard.KEY_X = 88;
+/** @public */
 Keyboard.KEY_Y = 89;
+/** @public */
 Keyboard.KEY_Z = 90;
