@@ -10,19 +10,19 @@
  * @extends Transform
  */
 function Node() {
-    /** 
+    /**
      * @public
      * @see UUID
      */
-    this.uuid = UUID();
+    this.uuid = UUID.generateCanonicalForm();
 
-    /** 
-     * @public 
+    /**
+     * @public
      * @default Node.Origin
      * */
     this.parent = Node.Origin;
 
-    /** 
+    /**
      * @public
      * @default []
      */
@@ -104,7 +104,7 @@ Node.prototype = {
         this.scale = scale / this.parent.getAbsoluteScale();
         return this.invalidate();
     },
-    /** 
+    /**
      * Rotates node around itself or another object.
      * @param {Array} axis A 3-element vector representing the axis.
      * @param {Number} angle Angle to rotate in radians.
@@ -167,7 +167,7 @@ Node.prototype = {
         TempVars.release();
         return this.invalidate();
     },
-    /** 
+    /**
      * Moves node relative to its current position or the position of another node.
      * @param {Vector3} vector The position transformation vector.
      * @param {Node} [node] Move relatively to node instead of the current position.
@@ -213,7 +213,7 @@ Node.prototype = {
             this.parent.onChildAdded( node );
         }
     },
-    /** 
+    /**
      * Removes child from list of children and reset child's parent reference to Node.Origin
      * @param {Node} node The node to remove.
      * @returns this */

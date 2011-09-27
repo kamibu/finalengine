@@ -5,10 +5,10 @@
  *
  * A fast implementation of 4x4 transformation matrixes.
  *
- * It is used as an array of length 16 in row-major order 
+ * It is used as an array of length 16 in row-major order
  * (e.g. you can use the [] operator to access elements).
  */
-var Matrix4 = ( 
+var Matrix4 = (
     /** @constructor */
     function () {
     // check to see if we can modify the instance of a Float32Array
@@ -46,7 +46,7 @@ var Matrix4 = (
 
 Matrix4.prototype = {
     constructor: Matrix4,
-    /** 
+    /**
      * Returns a clone of this matrix.
      * @param {Matrix4} [dest] A matrix4 or any other array-like object to copy to.
      * @returns {Matrix4}
@@ -98,17 +98,24 @@ Matrix4.prototype = {
     /** Returns the translation vector of this matrix.
      * @returns {Vector3}
      */
-    getTranslation: function() {
+    getTranslation: function( dest ) {
+        if ( !dest ) {
+            dest = new Vector3();
+        }
         dest[ 0 ] = this[ 12 ];
         dest[ 1 ] = this[ 13 ];
         dest[ 2 ] = this[ 14 ];
         return dest;
     },
-    /** 
+    /**
      * Returns the rotation matrix corresponding to this matrix.
      * @returns {Matrix3}
      */
-    getRotationMatrix: function() {
+    getRotationMatrix: function( dest ) {
+        if ( !dest ) {
+            dest = new Matrix4();
+        }
+
         dest[ 0 ] = this[ 0 ];
         dest[ 1 ] = this[ 1 ];
         dest[ 2 ] = this[ 2 ];
@@ -122,7 +129,7 @@ Matrix4.prototype = {
         dest[ 8 ] = this[ 10 ];
         return dest;
     },
-    /** 
+    /**
      * Sets this matrix to its transpose.
      * @returns this
      */
@@ -163,7 +170,7 @@ Matrix4.prototype = {
                         a10*a01*a32*a23 - a00*a11*a32*a23 - a20*a11*a02*a33 + a10*a21*a02*a33 +
                         a20*a01*a12*a33 - a00*a21*a12*a33 - a10*a01*a22*a33 + a00*a11*a22*a33;
     },
-    /** 
+    /**
      * Set this matrix to its inverse.
      * @returns this
      */
@@ -208,7 +215,7 @@ Matrix4.prototype = {
         this[ 15 ] = ( a20 * b03 - a21 * b01 + a22 * b00 ) * invDet;
         return this;
     },
-    /* 
+    /*
      * Sets this matrix to the product of this matrix with the parameter passed.
      * @param {Matrix4} The matrix to multiply with.
      */
@@ -243,8 +250,8 @@ Matrix4.prototype = {
 
         return this;
     },
-    /** 
-     * Multiply with a Vector3 and store the value to the vector. 
+    /**
+     * Multiply with a Vector3 and store the value to the vector.
      * @param {Vector3} vector A vector or array-like object to multiply with.
      * @returns {Vector4} The vector.
      */
@@ -256,8 +263,8 @@ Matrix4.prototype = {
         vector[ 2 ] = this[ 2 ] * x + this[ 6 ] * y + this[ 10 ] * z + this[ 14 ];
         return vector;
     },
-    /** 
-     * Multiply with a Vector4 and store the value to the vector. 
+    /**
+     * Multiply with a Vector4 and store the value to the vector.
      * @param {Vector4} vector A vector or array-like object to multiply with.
      * @returns {Vector4} The vector.
      */
@@ -304,8 +311,8 @@ Matrix4.identity = function( dest ) {
     return dest;
 };
 
-/** 
- * Generates a frustrum matrix with the given bounds. 
+/**
+ * Generates a frustrum matrix with the given bounds.
  * @returns {Matrix4} dest if specified, a new Matrix4 otherwise
  */
 Matrix4.frustrum = function( left, right, bottom, top, near, far, dest ) {
@@ -335,8 +342,8 @@ Matrix4.frustrum = function( left, right, bottom, top, near, far, dest ) {
     return dest;
 };
 
-/** 
- * Generates a perspective projection matrix with the given bounds. 
+/**
+ * Generates a perspective projection matrix with the given bounds.
  * @returns {Matrix4} dest if specified, a new Matrix4 otherwise
  */
 Matrix4.perspective = function( fovy, aspect, near, far, dest ) {
@@ -345,8 +352,8 @@ Matrix4.perspective = function( fovy, aspect, near, far, dest ) {
     return this.frustrum( -right, right, -top, top, near, far );
 };
 
-/** 
- * Generates an orthogonal projection matrix with the given bounds 
+/**
+ * Generates an orthogonal projection matrix with the given bounds
  * returns {Matrix4} dest if specified, a new Matrix4 otherwise
  */
 Matrix4.ortho = function( left, right, bottom, top, near, far, dest ) {

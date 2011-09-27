@@ -1,3 +1,5 @@
+/*global InputDevice:true */
+
 /**
  * @class
  * @extends InputDevice
@@ -50,14 +52,14 @@ Keyboard.prototype = {
 
         keyData = this.getKeyData( e.keyCode );
         keyData.lastPress = Date.now();
-        
+
         if ( this.pressed[ e.keyCode ] ) {
             // we are checking repetition
             return;
         }
-        
+
         var hasEndCallback = false;
-        
+
         // call associated actions
         actions.forEach( function( action ) {
             action.callback( e );
@@ -74,7 +76,7 @@ Keyboard.prototype = {
 
         // we believe it is an autorepeat until we get a keyup
         this.setPressed( e.keyCode );
-        
+
         // auto-repeat takes half a second to start (on chrome for linux at least..)
         /*
         keyData.upCallback = setTimeout( function() {
@@ -161,7 +163,7 @@ Keyboard.prototype = {
     }
 };
 
-Keyboard.extends( InputDevice );
+Keyboard.extend( InputDevice );
 
 /**#@+
  * @const

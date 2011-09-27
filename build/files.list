@@ -2,6 +2,7 @@ debug/assert.js
 js/object.js
 js/requestAnimationFrame.js
 js/typedarrays.js
+js/number.js
 
 utils/uuid.js
 utils/tempvars.js
@@ -11,7 +12,6 @@ network/request.js
 events/eventemitter.js
 events/eventwaiter.js
 
-math/number.js
 math/matrix4.js
 math/matrix3.js
 math/vector3base.js

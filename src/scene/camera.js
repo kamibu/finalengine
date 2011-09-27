@@ -11,36 +11,37 @@
 function Camera() {
     Node.call( this );
 
-    /** 
-     * @public
-     * @default 1 
-     */
-    this.width = 1;
-    
-    /** 
+    /**
      * @public
      * @default 1
+     */
+    this.width = 1;
+
+    /**
+     * @public
+     * @default 1
+     */
     this.height = 1;
 
-    /** 
-     * @public 
+    /**
+     * @public
      * @default 1
      */
     this.ratio = 1;
 
-    /** 
-     * @public 
+    /**
+     * @public
      * @default 0.1
      */
     this.zNear = 0.1;
 
     /**
-     * @public 
+     * @public
      * @default 1000
      */
     this.zFar = 1000;
 
-    /** 
+    /**
      * @public
      * @default 55
      */

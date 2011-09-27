@@ -41,7 +41,7 @@ var Matrix3 = (
 
 Matrix3.prototype = {
     constructor: Matrix3,
-    /** 
+    /**
      * Returns a clone of this matrix.
      * @param {Matrix3} [dest] A matrix3 or any other array-like object to copy to.
      * @returns {Matrix3}
@@ -60,7 +60,7 @@ Matrix3.prototype = {
         dest[ 7 ] = this[ 7 ];
         dest[ 8 ] = this[ 8 ];
         return dest;
-    }
+    },
     /**
      * Copies the values of an array into this matrix.
      * @param {Array} src An array-like object to copy from.
@@ -76,7 +76,7 @@ Matrix3.prototype = {
         this[ 7 ] = data[ 7 ];
         this[ 8 ] = data[ 8 ];
         return this;
-    },
+    }
 //    toQuaternion: function() {
 //        var ret = new Quaternion();
 //        if ( this[ 0 ] > this[ 4 ] && this[ 0 ] > this[ 8 ] ) {

@@ -19,7 +19,7 @@ Transform.prototype = {
         this.scale = transform.scale;
         return this.invalidate();
     },
-    /** 
+    /**
      * @param {Array} position The new position as a vector.
      * @returns {Transform} this
      */
