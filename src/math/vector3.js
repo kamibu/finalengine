@@ -3,7 +3,7 @@
 
 /** @class
  *
- * A 3-element vector. 
+ * A 3-element vector.
  *
  * Uses Float32Array internally, if possible.
  * Most methods alter the object whose method were called for performance reasons.

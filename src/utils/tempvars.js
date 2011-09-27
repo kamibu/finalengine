@@ -1,4 +1,4 @@
-/*global Matrix4: true, Quaternion; true, Vector3: true, Matrix3: true */
+/*global Matrix4:true, Quaternion:true, Vector3:true, Matrix3:true */
 
 /** @class
  *
@@ -6,7 +6,7 @@
  * to avoid the performance costs of instantiating new objects in javascript.
  */
 var TempVars = {
-    /** 
+    /**
      * Make sure the tempvars used are not overwritten.
      * Call lock on every method before getting any tempvars.
      */
@@ -16,8 +16,8 @@ var TempVars = {
         this.matrix3ReleasePoints.push( this.matrix3Counter );
         this.quaternionReleasePoints.push( this.quaternionCounter );
     },
-    /** 
-     * Allow locked tempvars to be overwritten again. 
+    /**
+     * Allow locked tempvars to be overwritten again.
      * Call release after a method is done using its tempvars.
      */
     release: function() {

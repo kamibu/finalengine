@@ -1,7 +1,7 @@
 // extern
 var Node, Drawable;
 
-/** 
+/**
  * @class
  *
  * The tree of nodes to be rendered.

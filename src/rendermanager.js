@@ -1,6 +1,8 @@
-// extern
-var Matrix4, Renderer, Drawable, Framebuffer, Mesh, Buffer, VertexAttribute, Light, Texture;
+/*global Matrix4:true, Renderer:true, Drawable:true, Framebuffer:true, Mesh:true, Buffer:true, VertexAttribute:true, Light:true, Texture:true*/
 
+/**
+ * @class
+ */
 function RenderManager() {
     this.renderer = new Renderer();
     this.forcedMaterial = null;
@@ -30,14 +32,19 @@ function RenderManager() {
     };
 }
 
-
 RenderManager.prototype = {
     constructor: RenderManager,
+    /**
+     * @public
+     */
     addPostProcessEffect: function( material ) {
         this.postProcess = true;
         this.postProcessEffects.push( material );
         return this;
     },
+    /**
+     * @public
+     */
     applyPostProcessEffects: function() {
         var i, l, effect,
             effects = this.postProcessEffects,
@@ -59,11 +66,17 @@ RenderManager.prototype = {
         }
         return this;
     },
+    /**
+     * @public
+     */
     resize: function( width, height ) {
         this.renderer.setSize( width, height );
         this.framebuffer.setDimentions( width, height );
         return this;
     },
+    /**
+     * @public
+     */
     renderScene: function( scene, camera ) {
         if ( this.postProcess ) {
             this.renderer.bindFramebuffer( this.framebuffer );

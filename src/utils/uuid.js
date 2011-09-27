@@ -63,4 +63,4 @@ var UUID = {
         }
         return s;
     }
-}
+};

@@ -1,7 +1,7 @@
 /*global Vector3: true*/
 
 /** @class
- * 
+ *
  * Color representation as a Vector3.
  *
  * @extends Vector3
