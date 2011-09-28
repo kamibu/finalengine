@@ -21,11 +21,11 @@ Vector3.prototype = {
         return new this.constructor( this );
     },
     /**
-     * Set the elements according to an array.
-     * @param {Array} data Array to copy from.
+     * Set the elements according to another vector.
+     * @param {Vector3} data Array to copy from.
      * @returns {Vector3} this
      */
-    fromArray: function( data ) {
+    set: function( data ) {
         this[ 0 ] = data[ 0 ];
         this[ 1 ] = data[ 1 ];
         this[ 2 ] = data[ 2 ];

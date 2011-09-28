@@ -63,7 +63,7 @@ Camera.prototype = {
      * Updates perspective projection matrix based on the camera properties.
      */
     setPerspective: function () {
-        this.projectionMatrix.perspective( this.fieldOfView, this.width / this.height, this.zNear, this.zFar );
+        Matrix4.perspective( this.fieldOfView, this.width / this.height, this.zNear, this.zFar, this.projectionMatrix );
         this.ratio = this.width / this.height;
         this.horizCosFOV = Math.cos( Math.atan( this.tanFOV * this.ratio ) );
         this.horizTanFOV = this.tanFOV * this.ratio;

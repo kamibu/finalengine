@@ -3,7 +3,7 @@ var assertIn, UUID;
 
 function Texture( type ) {
     this.uid = Texture.uid++;
-    this.uuid = UUID();
+    this.uuid = UUID.generateCanonicalForm();
     this.name = this.uuid;
 
     this.width = 1;

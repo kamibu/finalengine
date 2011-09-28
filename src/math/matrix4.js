@@ -35,7 +35,7 @@ var Matrix4 = (
         ret[ '__proto__' ] = this.constructor.prototype;
         ret.data = ret;
         if ( data ) {
-            ret.fromArray( data );
+            ret.set( data );
         }
         else {
             ret.identity();
@@ -77,7 +77,7 @@ Matrix4.prototype = {
      * Copies the values of an array to this matrix.
      * @param {Array} src An array-like object to copy from.
      */
-    fromArray: function( src ) {
+    set: function( src ) {
         this[ 0 ] = src[ 0 ];
         this[ 1 ] = src[ 1 ];
         this[ 2 ] = src[ 2 ];
@@ -94,6 +94,30 @@ Matrix4.prototype = {
         this[ 13 ] = src[ 13 ];
         this[ 14 ] = src[ 14 ];
         this[ 15 ] = src[ 15 ];
+
+        return this;
+    },
+    /**
+     * Copies the values of this matrix to another matrix.
+     * @param {Array} src An array-like object to copy to.
+     */
+    copyTo: function( dest ) {
+        dest[ 0 ] = this[ 0 ];
+        dest[ 1 ] = this[ 1 ];
+        dest[ 2 ] = this[ 2 ];
+        dest[ 3 ] = this[ 3 ];
+        dest[ 4 ] = this[ 4 ];
+        dest[ 5 ] = this[ 5 ];
+        dest[ 6 ] = this[ 6 ];
+        dest[ 7 ] = this[ 7 ];
+        dest[ 8 ] = this[ 8 ];
+        dest[ 9 ] = this[ 9 ];
+        dest[ 10 ] = this[ 10 ];
+        dest[ 11 ] = this[ 11 ];
+        dest[ 12 ] = this[ 12 ];
+        dest[ 13 ] = this[ 13 ];
+        dest[ 14 ] = this[ 14 ];
+        dest[ 15 ] = this[ 15 ];
     },
     /** Returns the translation vector of this matrix.
      * @returns {Vector3}
@@ -349,7 +373,7 @@ Matrix4.frustrum = function( left, right, bottom, top, near, far, dest ) {
 Matrix4.perspective = function( fovy, aspect, near, far, dest ) {
     var top = near * Math.tan( fovy * Math.PI / 360.0 );
     var right = top * aspect;
-    return this.frustrum( -right, right, -top, top, near, far );
+    return Matrix4.frustrum( -right, right, -top, top, near, far, dest );
 };
 
 /**

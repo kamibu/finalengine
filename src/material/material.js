@@ -4,7 +4,7 @@
  * @class
  */
 function Material() {
-    this.uuid = UUID();
+    this.uuid = UUID.generateCanonicalForm();
     this.uid = Material.uid++;
     this.name = this.uuid;
 
@@ -148,7 +148,7 @@ Material.prototype = {
                     else {
                         ret.parameters[ parameter ] = {
                             type: p.constructor.name,
-                            data: p.setTo( [] )
+                            data: p.copyTo( [] )
                         };
                     }
                     break;

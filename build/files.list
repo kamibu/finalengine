@@ -57,6 +57,7 @@ exporter/exporter.js
 exporter/importer.js
 exporter/objloader.js
 
+input/inputdevice.js
 input/inputhandler.js
 input/firstpersonhandler.js
 input/keyboard.js

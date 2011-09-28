@@ -84,7 +84,7 @@ RenderManager.prototype = {
 
         this.renderer.clear();
         var g = this.globalUniformCache;
-        camera.projectionMatrix.setTo( g.ProjectionMatrix );
+        camera.projectionMatrix.copyTo( g.ProjectionMatrix );
         camera.getAbsoluteInverseMatrix( g.ViewMatrix );
         g.ViewProjectionMatrix.set( g.ProjectionMatrix ).multiply( g.ViewMatrix );
 
