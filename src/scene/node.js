@@ -281,8 +281,8 @@ Node.prototype = {
     },
     getExportData: function( exporter ) {
         var ret = {};
-        ret.position = this.getPosition().setTo( [] );
-        ret.orientation = this.getOrientation().setTo( [] );
+        ret.position = this.getPosition().toArray();
+        ret.orientation = this.getOrientation().toArray();
         ret.scale = this.getScale();
         ret.name = this.name;
         ret.children = [];

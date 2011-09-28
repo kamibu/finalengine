@@ -3,7 +3,7 @@
 /** @public */
 function Shader() {
     this.uid = Shader.uid++;
-    this.uuid = UUID();
+    this.uuid = UUID.generateCanonicalForm();
     this.name = this.uuid;
 
     this.vertexSource = '';

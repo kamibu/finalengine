@@ -2,7 +2,7 @@
 var assert, Buffer, UUID;
 
 function VertexAttribute( semantic ) {
-    this.uuid = UUID();
+    this.uuid = UUID.generateCanonicalForm();
     this.name = this.uuid;
 
 	this.semantic = semantic || '';
