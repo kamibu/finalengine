@@ -28,14 +28,14 @@ Shader.prototype = {
     },
     getExportData: function( exporter ) {
         return {
-            vertexSource: this.vertexSource,
-            fragmentSource: this.fragmentSource,
+            vertexSource: this.vertexSource.split( '\n' ),
+            fragmentSource: this.fragmentSource.split( '\n' ),
             name: this.name
         };
     },
     setImportData: function( importer, data ) {
-        this.vertexSource = data.vertexSource;
-        this.fragmentSource = data.fragmentSource;
+        this.vertexSource = data.vertexSource.join( '\n' );
+        this.fragmentSource = data.fragmentSource.join( '\n' );
         this.name = data.name;
         this.needsUpdate = true;
         return this;

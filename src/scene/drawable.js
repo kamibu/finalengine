@@ -4,7 +4,7 @@ var Node, assert, Material;
 function Drawable() {
     Node.call( this );
     this.mesh = null;
-    this.material = null;
+    this.material = new BasicMaterial();
 }
 
 Drawable.prototype = {

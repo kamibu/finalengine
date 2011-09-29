@@ -1,5 +1,5 @@
 // extern
-var Matrix4, Quaternion, TempVars, Transform, UUID, Vector3;
+var Matrix4, Quaternion, TempVars, Transform, UUID, Vector3, BoundingSphere;
 
 /*
  * An abstract 3 dimensional object with a location in space and a tree-like structure
@@ -10,6 +10,7 @@ function Node() {
     this.parent = Node.Origin;
     this.children = [];
     this.name = this.uuid;
+    this.boundingVolume = new BoundingSphere();
     Transform.call( this );
 }
 

@@ -1,87 +1,114 @@
-/*jshint sub: true */
-var Vector3Base;
-
 var Vector3 = function( data ) {
-    return Vector3Base.call( this, data );
+    if ( data instanceof Array ) {
+        this.d = new Float32Array( 3 ).set( data );
+    }
+    else {
+        this.d = new Float32Array( 3 ).set( data.d );
+    }
 };
 
 Vector3.prototype = {
     constructor: Vector3,
+    get '0' function() {
+        
+    },
     set: function( data ) {
-        this[ 0 ] = data[ 0 ];
-        this[ 1 ] = data[ 1 ];
-        this[ 2 ] = data[ 2 ];
+        this.d.set( data.d );
         return this;
     },
     setTo: function( dest ) {
-        dest[ 0 ] = this[ 0 ];
-        dest[ 1 ] = this[ 1 ];
-        dest[ 2 ] = this[ 2 ];
+        dest.b.set( this.a );
         return dest;
     },
     add: function( vector ) {
-        this[ 0 ] += vector[ 0 ];
-        this[ 1 ] += vector[ 1 ];
-        this[ 2 ] += vector[ 2 ];
+        var a = this.d,
+            b = vector.d;
+        a[ 0 ] += b[ 0 ];
+        a[ 1 ] += b[ 1 ];
+        a[ 2 ] += b[ 2 ];
         return this;
     },
     subtract: function( vector ) {
-        this[ 0 ] -= vector[ 0 ];
-        this[ 1 ] -= vector[ 1 ];
-        this[ 2 ] -= vector[ 2 ];
+        var a = this.d,
+            b = vector.d;
+        a[ 0 ] -= b[ 0 ];
+        a[ 1 ] -= b[ 1 ];
+        a[ 2 ] -= b[ 2 ];
         return this;
     },
     negate: function() {
-        this[ 0 ] = -this[ 0 ];
-        this[ 1 ] = -this[ 1 ];
-        this[ 2 ] = -this[ 2 ];
+        var a = this.d;
+        a[ 0 ] = -a[ 0 ];
+        a[ 1 ] = -a[ 1 ];
+        a[ 2 ] = -a[ 2 ];
         return this;
     },
     scale: function( factor ) {
-        this[ 0 ] *= factor;
-        this[ 1 ] *= factor;
-        this[ 2 ] *= factor;
+        var a = this.d;
+        a[ 0 ] *= factor;
+        a[ 1 ] *= factor;
+        a[ 2 ] *= factor;
         return this;
     },
     normalize: function() {
-        var x = this[ 0 ], y = this[ 1 ], z = this[ 2 ];
+        var a = this.d;
+        var x = a[ 0 ], y = a[ 1 ], z = a[ 2 ];
         var len = Math.sqrt( x * x + y * y + z * z);
 
-        if ( !len ) {
-            this[ 0 ] = 0;
-            this[ 1 ] = 0;
-            this[ 2 ] = 0;
+        if ( len === 0 ) {
+            a[ 0 ] = 0;
+            a[ 1 ] = 0;
+            a[ 2 ] = 0;
             return this;
         }
 
         len = 1 / len;
-        this[ 0 ] = x * len;
-        this[ 1 ] = y * len;
-        this[ 2 ] = z * len;
+        a[ 0 ] *= len;
+        a[ 1 ] *= len;
+        a[ 2 ] *= len;
         return this;
     },
     cross: function( vector ) {
-        var x = this[ 0 ], y = this[ 1 ], z = this[ 2 ];
-        var x2 = vector[ 0 ], y2 = vector[ 1 ], z2 = vector[ 2 ];
+        var a = this.d,
+            b = vector.d;
+        var x = a[ 0 ], y = a[ 1 ], z = a[ 2 ];
+        var x2 = b[ 0 ], y2 = b[ 1 ], z2 = b[ 2 ];
 
-        this[ 0 ] = y * z2 - z * y2;
-        this[ 1 ] = z * x2 - x * z2;
-        this[ 2 ] = x * y2 - y * x2;
+        a[ 0 ] = y * z2 - z * y2;
+        a[ 1 ] = z * x2 - x * z2;
+        a[ 2 ] = x * y2 - y * x2;
         return this;
     },
     length: function() {
-        var x = this[ 0 ], y = this[ 1 ], z = this[ 2 ];
-        return Math.sqrt( x * x + y * y + z * z);
+        var a = this.d;
+        var x = a[ 0 ], y = a[ 1 ], z = a[ 2 ];
+        return Math.sqrt( x * x + y * y + z * z );
     },
     length2: function() {
-        var x = this[ 0 ], y = this[ 1 ], z = this[ 2 ];
+        var a = this.d;
+        var x = a[ 0 ], y = a[ 1 ], z = a[ 2 ];
         return x * x + y * y + z * z;
     },
     dot: function( vector ) {
-        return this[ 0 ] * vector[ 0 ] + this[ 1 ] * vector[ 1 ] + this[ 2 ] * vector[ 2 ];
+        var a = this.d,;
+            b = vector.d;
+        return a[ 0 ] * b[ 0 ] + a[ 1 ] * b[ 1 ] + a[ 2 ] * b[ 2 ];
+    },
+    absolute: function() {
+        var a = this.d;
+        if ( a[ 0 ] < 0 ) {
+            a[ 0 ] = -a[ 0 ];
+        }
+        if ( a[ 1 ] < 0 ) {
+            a[ 1 ] = -a[ 1 ];
+        }
+        if ( a[ 2 ] < 0 ) {
+            a[ 2 ] = -a[ 2 ];
+        }
+        return this;
     },
     clone: function() {
-        return new this.constructor( this );
+        return new Vector3( this );
     }
 };
 
