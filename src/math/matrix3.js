@@ -76,6 +76,25 @@ Matrix3.prototype = {
         this[ 7 ] = data[ 7 ];
         this[ 8 ] = data[ 8 ];
         return this;
+    },
+    /**
+     * Reset matrix to identity matrix.
+     * @returns {Matrix3} this
+     */
+    setIdentity: function() {
+        this[ 0 ] = 1;
+        this[ 1 ] = 0;
+        this[ 2 ] = 0;
+
+        this[ 3 ] = 0;
+        this[ 4 ] = 1;
+        this[ 5 ] = 0;
+
+        this[ 6 ] = 0;
+        this[ 7 ] = 0;
+        this[ 8 ] = 1;
+
+        return this;
     }
 //    toQuaternion: function() {
 //        var ret = new Quaternion();
@@ -90,31 +109,6 @@ Matrix3.prototype = {
 //
 //        }
 //    },
-};
-
-/**
- * Generates an identity matrix.
- * @param {Matrix3} [dest] A matrix to reset to the identity matrix.
- * @returns {Matrix3} dest if specified, a new Matrix3 otherwise
- */
-Matrix3.identity = function( dest ) {
-    if ( !dest ) {
-        dest = new Matrix3();
-    }
-
-    dest[ 0 ] = 1;
-    dest[ 1 ] = 0;
-    dest[ 2 ] = 0;
-
-    dest[ 3 ] = 0;
-    dest[ 4 ] = 1;
-    dest[ 5 ] = 0;
-
-    dest[ 6 ] = 0;
-    dest[ 7 ] = 0;
-    dest[ 8 ] = 1;
-
-    return dest;
 };
 
 ( function () {
