@@ -1,8 +1,18 @@
-// extern
-var Matrix4, Quaternion, Shader, UUID, Vector3, Color, Texture;
+/*global 
+    Color       :  false,
+    Matrix4     :  false,
+    Quaternion  :  false,
+    Shader      :  false,
+    Texture     :  false,
+    UUID        :  false,
+    Vector3     :  false
+*/
 
+/**
+ * @class
+ */
 function Material() {
-    this.uuid = UUID();
+    this.uuid = UUID.generateCanonicalForm();
     this.uid = Material.uid++;
     this.name = this.uuid;
 

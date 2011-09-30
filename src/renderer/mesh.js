@@ -1,30 +1,40 @@
-// extern
-var assert, assertIn, Buffer, UUID, VertexAttribute, Buffer, TempVars;
+/*global assert:true, assertIn: true, Buffer: true, UUID: true, VertexAttribute: true, TempVars: true*/
 
+/**
+ * @class
+ *
+ * The 3D representation of a {@link Drawable}.
+ *
+ * <p>This is the representation object that the lower-level {@link Renderer} class can use to render 3D objects.</p>
+ */
 function Mesh() {
-    this.uuid = UUID();
+    /* @public */
+    this.uuid = UUID.generate();
+
+    /* @public */
     this.name = this.uuid;
 
+    /* @public */
     this.mode = Mesh.TRIANGLES;
+
+    /* @public */
     this.vertexAttributes = {};
+
 	this.indexBuffer = null;
 }
 
-
-Mesh.POINTS = 1;
-Mesh.LINES = 2;
-Mesh.LINE_LOOP = 3;
-Mesh.LINE_STRIP = 4;
-Mesh.TRIANGLES = 5;
-Mesh.TRIANGLE_STRIP = 6;
-Mesh.TRIANGLE_FAN = 7;
-
 Mesh.prototype = {
     constructor: Mesh,
+    /**
+     * @param {VertexAttribute} attribute
+     */
     setVertexAttribute: function( attribute ) {
         this.vertexAttributes[ attribute.semantic ] = attribute;
         return this;
     },
+    /**
+     * @param {Buffer} buffer
+     */
     setIndexBuffer: function( buffer ) {
         this.indexBuffer = buffer;
         return this;
@@ -72,6 +82,9 @@ Mesh.prototype = {
 
         return this;
     },
+    /**
+     * @param mode
+     */
     setMode: function( mode ) {
         /*DEBUG*/
             assertIn( mode, Mesh.POINTS, Mesh.LINES, Mesh.LINE_LOOP, Mesh.LINE_STRIP, Mesh.TRIANGLES, Mesh.TRIANGLE_STRIP, Mesh.TRIANGLE_FAN, 'Illegal value.' );
@@ -79,6 +92,9 @@ Mesh.prototype = {
         this.mode = mode;
         return this;
     },
+    /**
+     * Calculates normals and sets the normal buffer vertex attribute.
+     */
     calculateNormals: function() {
         var points = this.vertexAttributes.Position;
         var indices = this.indexBuffer.data;
@@ -160,3 +176,21 @@ Mesh.prototype = {
         return this;
     }
 };
+
+/**#@+
+ * @const
+ */
+/** @public */
+Mesh.POINTS = 1;
+/** @public */
+Mesh.LINES = 2;
+/** @public */
+Mesh.LINE_LOOP = 3;
+/** @public */
+Mesh.LINE_STRIP = 4;
+/** @public */
+Mesh.TRIANGLES = 5;
+/** @public */
+Mesh.TRIANGLE_STRIP = 6;
+/** @public */
+Mesh.TRIANGLE_FAN = 7;

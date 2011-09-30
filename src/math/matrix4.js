@@ -1,8 +1,16 @@
-// extern
-var Matrix3, Vector3;
-
 /*jshint sub: true */
-var Matrix4 = ( function () {
+/*global Matrix3: true, Vector3: true*/
+
+/** @class
+ *
+ * A fast implementation of 4x4 transformation matrixes.
+ *
+ * It is used as an array of length 16 in row-major order
+ * (e.g. you can use the [] operator to access elements).
+ */
+var Matrix4 = (
+    /** @constructor */
+    function () {
     // check to see if we can modify the instance of a Float32Array
     var testSubject = new Float32Array();
     var a = {};
@@ -26,9 +34,11 @@ var Matrix4 = ( function () {
         var ret = new Array( 16 );
         ret[ '__proto__' ] = this.constructor.prototype;
         ret.data = ret;
-        ret.identity();
         if ( data ) {
             ret.set( data );
+        }
+        else {
+            ret.identity();
         }
         return ret;
     };
@@ -36,26 +46,15 @@ var Matrix4 = ( function () {
 
 Matrix4.prototype = {
     constructor: Matrix4,
-    set: function( data ) {
-        this[ 0 ] = data[ 0 ];
-        this[ 1 ] = data[ 1 ];
-        this[ 2 ] = data[ 2 ];
-        this[ 3 ] = data[ 3 ];
-        this[ 4 ] = data[ 4 ];
-        this[ 5 ] = data[ 5 ];
-        this[ 6 ] = data[ 6 ];
-        this[ 7 ] = data[ 7 ];
-        this[ 8 ] = data[ 8 ];
-        this[ 9 ] = data[ 9 ];
-        this[ 10 ] = data[ 10 ];
-        this[ 11 ] = data[ 11 ];
-        this[ 12 ] = data[ 12 ];
-        this[ 13 ] = data[ 13 ];
-        this[ 14 ] = data[ 14 ];
-        this[ 15 ] = data[ 15 ];
-        return this;
-    },
-    setTo: function( dest ) {
+    /**
+     * Returns a clone of this matrix.
+     * @param {Matrix4} [dest] A matrix4 or any other array-like object to copy to.
+     * @returns {Matrix4}
+     */
+    clone: function( dest ) {
+        if ( !dest ) {
+            dest = new Matrix4();
+        }
         dest[ 0 ] = this[ 0 ];
         dest[ 1 ] = this[ 1 ];
         dest[ 2 ] = this[ 2 ];
@@ -74,28 +73,55 @@ Matrix4.prototype = {
         dest[ 15 ] = this[ 15 ];
         return dest;
     },
-    identity: function() {
-        this[ 0 ] = 1;
-        this[ 1 ] = 0;
-        this[ 2 ] = 0;
-        this[ 3 ] = 0;
+    /**
+     * Copies the values of an array to this matrix.
+     * @param {Array} src An array-like object to copy from.
+     */
+    set: function( src ) {
+        this[ 0 ] = src[ 0 ];
+        this[ 1 ] = src[ 1 ];
+        this[ 2 ] = src[ 2 ];
+        this[ 3 ] = src[ 3 ];
+        this[ 4 ] = src[ 4 ];
+        this[ 5 ] = src[ 5 ];
+        this[ 6 ] = src[ 6 ];
+        this[ 7 ] = src[ 7 ];
+        this[ 8 ] = src[ 8 ];
+        this[ 9 ] = src[ 9 ];
+        this[ 10 ] = src[ 10 ];
+        this[ 11 ] = src[ 11 ];
+        this[ 12 ] = src[ 12 ];
+        this[ 13 ] = src[ 13 ];
+        this[ 14 ] = src[ 14 ];
+        this[ 15 ] = src[ 15 ];
 
-        this[ 4 ] = 0;
-        this[ 5 ] = 1;
-        this[ 6 ] = 0;
-        this[ 7 ] = 0;
-
-        this[ 8 ] = 0;
-        this[ 9 ] = 0;
-        this[ 10 ] = 1;
-        this[ 11 ] = 0;
-
-        this[ 12 ] = 0;
-        this[ 13 ] = 0;
-        this[ 14 ] = 0;
-        this[ 15 ] = 1;
         return this;
     },
+    /**
+     * Copies the values of this matrix to another matrix.
+     * @param {Array} src An array-like object to copy to.
+     */
+    copyTo: function( dest ) {
+        dest[ 0 ] = this[ 0 ];
+        dest[ 1 ] = this[ 1 ];
+        dest[ 2 ] = this[ 2 ];
+        dest[ 3 ] = this[ 3 ];
+        dest[ 4 ] = this[ 4 ];
+        dest[ 5 ] = this[ 5 ];
+        dest[ 6 ] = this[ 6 ];
+        dest[ 7 ] = this[ 7 ];
+        dest[ 8 ] = this[ 8 ];
+        dest[ 9 ] = this[ 9 ];
+        dest[ 10 ] = this[ 10 ];
+        dest[ 11 ] = this[ 11 ];
+        dest[ 12 ] = this[ 12 ];
+        dest[ 13 ] = this[ 13 ];
+        dest[ 14 ] = this[ 14 ];
+        dest[ 15 ] = this[ 15 ];
+    },
+    /** Returns the translation vector of this matrix.
+     * @returns {Vector3}
+     */
     getTranslation: function( dest ) {
         if ( !dest ) {
             dest = new Vector3();
@@ -105,10 +131,15 @@ Matrix4.prototype = {
         dest[ 2 ] = this[ 14 ];
         return dest;
     },
+    /**
+     * Returns the rotation matrix corresponding to this matrix.
+     * @returns {Matrix3}
+     */
     getRotationMatrix: function( dest ) {
         if ( !dest ) {
-            dest = new Matrix3();
+            dest = new Matrix4();
         }
+
         dest[ 0 ] = this[ 0 ];
         dest[ 1 ] = this[ 1 ];
         dest[ 2 ] = this[ 2 ];
@@ -122,7 +153,11 @@ Matrix4.prototype = {
         dest[ 8 ] = this[ 10 ];
         return dest;
     },
-    transpose: function(){
+    /**
+     * Sets this matrix to its transpose.
+     * @returns this
+     */
+    transpose: function() {
         var a01 = this[ 1 ],
             a02 = this[ 2 ],
             a03 = this[ 3 ],
@@ -144,7 +179,8 @@ Matrix4.prototype = {
         this[ 14 ] = a23;
         return this;
     },
-    determinant: function() {
+    /** Get the determinant of this matrix. */
+    getDeterminant: function() {
         // Cache the matrix values (makes for huge speed increases!)
         var a00 = this[ 0 ], a01 = this[ 1 ], a02 = this[ 2 ], a03 = this[ 3 ],
             a10 = this[ 4 ], a11 = this[ 5 ], a12 = this[ 6 ], a13 = this[ 7 ],
@@ -158,6 +194,10 @@ Matrix4.prototype = {
                         a10*a01*a32*a23 - a00*a11*a32*a23 - a20*a11*a02*a33 + a10*a21*a02*a33 +
                         a20*a01*a12*a33 - a00*a21*a12*a33 - a10*a01*a22*a33 + a00*a11*a22*a33;
     },
+    /**
+     * Set this matrix to its inverse.
+     * @returns this
+     */
     inverse: function() {
         // Cache the matrix values (makes for huge speed increases!)
         var a00 = this[ 0 ], a01 = this[ 1 ], a02 = this[ 2 ], a03 = this[ 3 ];
@@ -199,6 +239,10 @@ Matrix4.prototype = {
         this[ 15 ] = ( a20 * b03 - a21 * b01 + a22 * b00 ) * invDet;
         return this;
     },
+    /*
+     * Sets this matrix to the product of this matrix with the parameter passed.
+     * @param {Matrix4} The matrix to multiply with.
+     */
     multiply: function( matrix ) {
         // Cache the matrix values (makes for huge speed increases!)
         var a00 = this[ 0 ], a01 = this[ 1 ], a02 = this[ 2 ], a03 = this[ 3 ];
@@ -230,6 +274,11 @@ Matrix4.prototype = {
 
         return this;
     },
+    /**
+     * Multiply with a Vector3 and store the value to the vector.
+     * @param {Vector3} vector A vector or array-like object to multiply with.
+     * @returns {Vector4} The vector.
+     */
     multiplyVector3: function( vector ) {
         var x = vector[ 0 ], y = vector[ 1 ], z = vector[ 2 ];
 
@@ -238,6 +287,11 @@ Matrix4.prototype = {
         vector[ 2 ] = this[ 2 ] * x + this[ 6 ] * y + this[ 10 ] * z + this[ 14 ];
         return vector;
     },
+    /**
+     * Multiply with a Vector4 and store the value to the vector.
+     * @param {Vector4} vector A vector or array-like object to multiply with.
+     * @returns {Vector4} The vector.
+     */
     multiplyVector4: function( vector ) {
         var x = vector[ 0 ], y = vector[ 1 ], z = vector[ 2 ], w = vector[ 3 ];
 
@@ -247,76 +301,110 @@ Matrix4.prototype = {
         vector[ 3 ] = this[ 3 ] * x + this[ 7 ] * y + this[ 11 ] * z + this[ 15 ] * w;
 
         return vector;
-    },
-    toMatrix3: function( dest ) {
-        if ( !dest ) {
-            dest = new Matrix3();
-        }
-        dest[ 0 ] = this[ 0 ];
-        dest[ 1 ] = this[ 1 ];
-        dest[ 2 ] = this[ 2 ];
-
-        dest[ 3 ] = this[ 4 ];
-        dest[ 4 ] = this[ 5 ];
-        dest[ 5 ] = this[ 6 ];
-
-        dest[ 6 ] = this[ 8 ];
-        dest[ 7 ] = this[ 9 ];
-        dest[ 8 ] = this[ 10 ];
-
-        return dest;
-    },
-    frustrum: function( left, right, bottom, top, near, far ) {
-        var rl = ( right - left );
-        var tb = ( top - bottom );
-        var fn = ( far - near );
-        this[ 0 ] = ( near * 2 ) / rl;
-        this[ 1 ] = 0;
-        this[ 2 ] = 0;
-        this[ 3 ] = 0;
-        this[ 4 ] = 0;
-        this[ 5 ] = ( near * 2 ) / tb;
-        this[ 6 ] = 0;
-        this[ 7 ] = 0;
-        this[ 8 ] = ( right + left ) / rl;
-        this[ 9 ] = ( top + bottom ) / tb;
-        this[ 10 ] = -( far + near ) / fn;
-        this[ 11 ] = -1;
-        this[ 12 ] = 0;
-        this[ 13 ] = 0;
-        this[ 14 ] = -( far * near * 2 ) / fn;
-        this[ 15 ] = 0;
-        return this;
-    },
-    perspective: function( fovy, aspect, near, far ) {
-        var top = near * Math.tan( fovy * Math.PI / 360.0 );
-        var right = top * aspect;
-        return this.frustrum( -right, right, -top, top, near, far );
-    },
-    ortho: function( left, right, bottom, top, near, far ) {
-        var rl = ( right - left );
-        var tb = ( top - bottom );
-        var fn = ( far - near );
-        this[ 0 ] = 2 / rl;
-        this[ 1 ] = 0;
-        this[ 2 ] = 0;
-        this[ 3 ] = 0;
-        this[ 4 ] = 0;
-        this[ 5 ] = 2 / tb;
-        this[ 6 ] = 0;
-        this[ 7 ] = 0;
-        this[ 8 ] = 0;
-        this[ 9 ] = 0;
-        this[ 10 ] = -2 / fn;
-        this[ 11 ] = 0;
-        this[ 12 ] = -( left + right ) / rl;
-        this[ 13 ] = -( top + bottom ) / tb;
-        this[ 14 ] = -( far + near ) / fn;
-        this[ 15 ] = 1;
-    },
-    clone: function() {
-        return new this.constructor( this );
     }
+};
+
+/**
+ * Generates an identity matrix.
+ * @param {Matrix4} [dest] A matrix to reset to the identity matrix.
+ * @returns{Matrix4} dest if specified, a new Matrix4 otherwise
+ */
+Matrix4.identity = function( dest ) {
+    if ( !dest ) {
+        dest = new Matrix4();
+    }
+    dest[ 0 ] = 1;
+    dest[ 1 ] = 0;
+    dest[ 2 ] = 0;
+    dest[ 3 ] = 0;
+
+    dest[ 4 ] = 0;
+    dest[ 5 ] = 1;
+    dest[ 6 ] = 0;
+    dest[ 7 ] = 0;
+
+    dest[ 8 ] = 0;
+    dest[ 9 ] = 0;
+    dest[ 10 ] = 1;
+    dest[ 11 ] = 0;
+
+    dest[ 12 ] = 0;
+    dest[ 13 ] = 0;
+    dest[ 14 ] = 0;
+    dest[ 15 ] = 1;
+    return dest;
+};
+
+/**
+ * Generates a frustrum matrix with the given bounds.
+ * @returns {Matrix4} dest if specified, a new Matrix4 otherwise
+ */
+Matrix4.frustrum = function( left, right, bottom, top, near, far, dest ) {
+    if ( !dest ) {
+        dest = new Matrix4();
+    }
+
+    var rl = ( right - left );
+    var tb = ( top - bottom );
+    var fn = ( far - near );
+    dest[ 0 ] = ( near * 2 ) / rl;
+    dest[ 1 ] = 0;
+    dest[ 2 ] = 0;
+    dest[ 3 ] = 0;
+    dest[ 4 ] = 0;
+    dest[ 5 ] = ( near * 2 ) / tb;
+    dest[ 6 ] = 0;
+    dest[ 7 ] = 0;
+    dest[ 8 ] = ( right + left ) / rl;
+    dest[ 9 ] = ( top + bottom ) / tb;
+    dest[ 10 ] = -( far + near ) / fn;
+    dest[ 11 ] = -1;
+    dest[ 12 ] = 0;
+    dest[ 13 ] = 0;
+    dest[ 14 ] = -( far * near * 2 ) / fn;
+    dest[ 15 ] = 0;
+    return dest;
+};
+
+/**
+ * Generates a perspective projection matrix with the given bounds.
+ * @returns {Matrix4} dest if specified, a new Matrix4 otherwise
+ */
+Matrix4.perspective = function( fovy, aspect, near, far, dest ) {
+    var top = near * Math.tan( fovy * Math.PI / 360.0 );
+    var right = top * aspect;
+    return Matrix4.frustrum( -right, right, -top, top, near, far, dest );
+};
+
+/**
+ * Generates an orthogonal projection matrix with the given bounds
+ * returns {Matrix4} dest if specified, a new Matrix4 otherwise
+ */
+Matrix4.ortho = function( left, right, bottom, top, near, far, dest ) {
+    if ( !dest ) {
+        dest = new Matrix4();
+    }
+
+    var rl = ( right - left );
+    var tb = ( top - bottom );
+    var fn = ( far - near );
+    this[ 0 ] = 2 / rl;
+    this[ 1 ] = 0;
+    this[ 2 ] = 0;
+    this[ 3 ] = 0;
+    this[ 4 ] = 0;
+    this[ 5 ] = 2 / tb;
+    this[ 6 ] = 0;
+    this[ 7 ] = 0;
+    this[ 8 ] = 0;
+    this[ 9 ] = 0;
+    this[ 10 ] = -2 / fn;
+    this[ 11 ] = 0;
+    this[ 12 ] = -( left + right ) / rl;
+    this[ 13 ] = -( top + bottom ) / tb;
+    this[ 14 ] = -( far + near ) / fn;
+    this[ 15 ] = 1;
+    return this;
 };
 
 ( function () {

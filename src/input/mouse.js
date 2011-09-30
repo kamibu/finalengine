@@ -1,3 +1,7 @@
+/**
+ * @class
+ * @extends InputDevice
+ */
 function Mouse() {
     this.down = {};
 
@@ -17,9 +21,6 @@ function Mouse() {
 
 Mouse.prototype = {
     constructor: Mouse,
-    getName: function() {
-        return "mouse";
-    },
     handleMouseDown: function( e ) {
         var i, action, actions = this.actions[ e.button ], l;
 
@@ -85,6 +86,9 @@ Mouse.prototype = {
             actions[ i ].callback( e );
         }
     },
+    /**
+     * @see InputDevice#addAction
+     */
     addAction: function( eventId, action ) {
         if ( typeof action == 'function' ) {
             action = { callback: action };
@@ -105,8 +109,13 @@ Mouse.prototype = {
     }
 };
 
+/** @public */
 Mouse.BUTTON_LEFT = 0;
+/** @public */
 Mouse.BUTTON_MIDDLE = 1;
+/** @public */
 Mouse.BUTTON_RIGHT = 2;
+/** @public */
 Mouse.MOUSE_WHEEL = 3;
+/** @public */
 Mouse.MOUSE_MOVE = 4;

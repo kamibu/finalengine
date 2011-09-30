@@ -1,14 +1,31 @@
-var InputAction, Keyboard, Mouse;
+/*global Keyboard: true, Mouse: true*/
 
+/**
+ * @class
+ * Higher level API for input devices and grouping of input actions.
+ *
+ * <p>It has a keyboard and a mouse device attached by default for convenience.</p>
+ */
 function InputHandler() {
+    /**
+     * Whether actions should be triggered or not
+     * @default true
+     */
     this.enabled = true;
+
     this.actions = [];
     this.devices = [];
 
-    this.addDevice( new Keyboard() );
-    this.addDevice( new Mouse() );
+    this.keyboard = new Keyboard();
+    this.addDevice( this.keyboard );
+
+    this.mouse = new Mouse();
+    this.addDevice( this.mouse );
 }
 
+/**
+ * @public
+ */
 InputHandler.prototype.enable = function() {
     var i, l = this.actions.length;
     for ( i = 0; i < l; ++i ) {
@@ -18,6 +35,9 @@ InputHandler.prototype.enable = function() {
     this.enabled = true;
 };
 
+/**
+ * @public
+ */
 InputHandler.prototype.disable = function() {
     var i, l = this.actions.length;
     for ( i = 0; i < l; ++i ) {
@@ -27,13 +47,22 @@ InputHandler.prototype.disable = function() {
     this.enabled = false;
 };
 
+/**
+ * @public
+ */
 InputHandler.prototype.isEnabled = function() {
     return this.enabled;
 };
 
+/**
+ * @param {InputDevice} device
+ * @param {Number} eventId
+ * @param {Object} action An object describing the action to be called.
+ * @see InputDevice#addAction
+ */
 InputHandler.prototype.addAction = function( device, eventId, action ) {
     var self = this;
-    
+
     // keep callback reference
     var cbk = action.callback || function() {};
     action.callback = function( e ) {
@@ -47,8 +76,12 @@ InputHandler.prototype.addAction = function( device, eventId, action ) {
     return action;
 };
 
-/* sugar functions */
-
+/**
+ * Register a keypress.
+ * @param {String} key The key name e.g. 'A' or 'ESCAPE'.
+ * @param {Object} action An object or callback function describing the action to be called.
+ * @see Keyboard
+ */
 InputHandler.prototype.onKey = function( key, action ) {
     if ( typeof action != "object" ) {
         action = { callback: action };
@@ -63,6 +96,12 @@ InputHandler.prototype.onKey = function( key, action ) {
     return this.addAction( this.keyboard, Keyboard[ 'KEY_' + key ], action );
 };
 
+/**
+ * Register a keyup.
+ * @param {String} key The key name e.g. 'A' or 'ESCAPE'.
+ * @param {Object} action An object or callback function describing the action to be called.
+ * @see Keyboard
+ */
 InputHandler.prototype.onKeyUp = function( key, action ) {
     if ( typeof action != "object" ) {
         action = { callback: function() {}, endCallback: action };
@@ -74,8 +113,7 @@ InputHandler.prototype.onKeyUp = function( key, action ) {
         return;
     }
 
-    var keyboardDevice = this.keyboard;
-    return this.addAction( keyboardDevice, Keyboard[ 'KEY_' + key ], action );
+    return this.addAction( this.keyboard, Keyboard[ 'KEY_' + key ], action );
 };
 
 InputHandler.prototype.onMouseMove = function( action ) {
@@ -87,16 +125,16 @@ InputHandler.prototype.onMouseWheel = function( action ) {
 };
 
 InputHandler.prototype.addDevice = function( device ) {
-    if ( this[ device.getName() ] ) {
+    if ( this.devices.indexOf( device ) != -1 ) {
         throw "Device name already in use";
     }
 
-    this[ device.getName() ] = device;
+    this.devices.push( device );
 
     return this;
 };
 
 InputHandler.prototype.removeDevice = function( device ) {
-    delete this[ device.getName() ];
+    this.devices.splice( this.devices.indexOf( device ), 1 );
     return this;
 };

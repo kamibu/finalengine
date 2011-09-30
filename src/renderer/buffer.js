@@ -2,7 +2,7 @@
 var assertIn, UUID;
 
 function Buffer( type, usage ) {
-    this.uuid = UUID();
+    this.uuid = UUID.generateCanonicalForm();
     this.name = this.uuid;
 
     this.uid = Buffer.uid++;

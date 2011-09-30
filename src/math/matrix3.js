@@ -1,8 +1,13 @@
-// extern
-var Matrix4, Quaternion;
-
 /*jshint sub: true */
-var Matrix3 = ( function () {
+/*global Matrix4: true, Quaternaion: true*/
+
+/** @class
+ * A fast mplementation of 3x3 rotation matrixes.
+ */
+var Matrix3 = (
+    /** @constructor
+     */
+    function () {
     // check to see if we can modify the instance of a Float32Array
     var testSubject = new Float32Array();
     var a = {};
@@ -36,19 +41,15 @@ var Matrix3 = ( function () {
 
 Matrix3.prototype = {
     constructor: Matrix3,
-    set: function( data ) {
-        this[ 0 ] = data[ 0 ];
-        this[ 1 ] = data[ 1 ];
-        this[ 2 ] = data[ 2 ];
-        this[ 3 ] = data[ 3 ];
-        this[ 4 ] = data[ 4 ];
-        this[ 5 ] = data[ 5 ];
-        this[ 6 ] = data[ 6 ];
-        this[ 7 ] = data[ 7 ];
-        this[ 8 ] = data[ 8 ];
-        return this;
-    },
-    setTo: function( dest ) {
+    /**
+     * Returns a clone of this matrix.
+     * @param {Matrix3} [dest] A matrix3 or any other array-like object to copy to.
+     * @returns {Matrix3}
+     */
+    clone: function( dest ) {
+        if ( !dest ) {
+            dest = new Matrix4();
+        }
         dest[ 0 ] = this[ 0 ];
         dest[ 1 ] = this[ 1 ];
         dest[ 2 ] = this[ 2 ];
@@ -60,7 +61,27 @@ Matrix3.prototype = {
         dest[ 8 ] = this[ 8 ];
         return dest;
     },
-    identity: function() {
+    /**
+     * Copies the values of an array into this matrix.
+     * @param {Array} src An array-like object to copy from.
+     */
+    fromArray: function( data ) {
+        this[ 0 ] = data[ 0 ];
+        this[ 1 ] = data[ 1 ];
+        this[ 2 ] = data[ 2 ];
+        this[ 3 ] = data[ 3 ];
+        this[ 4 ] = data[ 4 ];
+        this[ 5 ] = data[ 5 ];
+        this[ 6 ] = data[ 6 ];
+        this[ 7 ] = data[ 7 ];
+        this[ 8 ] = data[ 8 ];
+        return this;
+    },
+    /**
+     * Reset matrix to identity matrix.
+     * @returns {Matrix3} this
+     */
+    setIdentity: function() {
         this[ 0 ] = 1;
         this[ 1 ] = 0;
         this[ 2 ] = 0;
@@ -74,8 +95,8 @@ Matrix3.prototype = {
         this[ 8 ] = 1;
 
         return this;
-    },
-    toQuaternion: function() {
+    }
+//    toQuaternion: function() {
 //        var ret = new Quaternion();
 //        if ( this[ 0 ] > this[ 4 ] && this[ 0 ] > this[ 8 ] ) {
 //            var r =
@@ -87,10 +108,7 @@ Matrix3.prototype = {
 //        else {
 //
 //        }
-    },
-    clone: function() {
-        return new this.constructor( this );
-    }
+//    },
 };
 
 ( function () {

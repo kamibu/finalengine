@@ -1,24 +1,37 @@
-// extern
-var Vector3;
+/*global Vector3: true*/
 
+/** @class
+ *
+ * Color representation as a Vector3.
+ *
+ * @extends Vector3
+ */
 function Color( data ) {
     return Vector3.call( this, data );
 }
 
 Color.prototype = {
     constructor: Color,
+    /**
+     * Makes sure values are valid (0..1)
+     * @returns this
+     */
     clip: function() {
         this[ 0 ] = this[ 0 ] > 1 ? 1 : this[ 0 ] < 0 ? 0 : this[ 0 ];
         this[ 1 ] = this[ 1 ] > 1 ? 1 : this[ 1 ] < 0 ? 0 : this[ 1 ];
         this[ 2 ] = this[ 2 ] > 1 ? 1 : this[ 2 ] < 0 ? 0 : this[ 2 ];
         return this;
     },
+    /**
+     * @param {Color} color The amount of color to add
+     * @returns this
+     */
     add: function( color ) {
         this.Vector3_add( color );
         return this.clip();
     },
     /**
-     * Defines the color using a hex string in the form of 'abb4a3'
+     * Defines the color using a hex string.
      */
     fromHex: function( hex ) {
         var r = parseInt( hex[ 0 ] + hex[ 1 ], 16 );
@@ -27,7 +40,7 @@ Color.prototype = {
         return this.fromRGB( r, g, b );
     },
     /**
-     * Defines the color using r, g, b in range 0...255
+     * Defines the color using r, g, b in range 0...255.
      */
     fromRGB: function( r, g, b ) {
         this.set( arguments );

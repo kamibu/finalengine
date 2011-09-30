@@ -1,14 +1,52 @@
 // extern
 var Camera, RenderManager, Scene, Importer, Exporter, InputHandler;
 
+/**
+ * @class
+ *
+ * Abstract application class that initializes basic modules and starts the main loop.
+ *
+ * Extend this class to write your own initialization code on the constructor of a
+ * child class.
+ */
 function Application() {
+    /**
+     * The render manager used for rendering the scene.
+     * Its {@link RenderManager#renderScene} method is called in a loop.
+     * @type RenderManager
+     */
     this.renderManager = new RenderManager();
+
+    /**
+     * The scene to be rendered. Change this property if you need to render some other scene object.
+     * @type Scene
+     */
     this.scene = new Scene();
+
+    /**
+     * The default camera.
+     *
+     * Its original position is at (0, 0, 10). Setting this property to another camera does not affect the rendering.
+     * @type Camera
+     */
     this.camera = new Camera().setPosition( [ 0, 0, 10 ] );
 
+    /**
+     * The default importer. Imports from "resources" folder.
+     * @type Importer
+     */
     this.importer = new Importer( 'resources' );
+
+    /**
+     * The default exporter. Exports to "resources" folder.
+     * @type Exporter
+     */
     this.exporter = new Exporter( 'resources' );
 
+    /**
+     * The default input handler.
+     * @type InputHandler
+     */
     this.input = new InputHandler();
 
     this.scene.appendChild( this.camera );
@@ -57,7 +95,19 @@ Application.prototype = {
         camera.setPerspective();
         return this;
     },
-    onBeforeRender: function ( elapsed ) {
+    /**
+     * Overwrite this method to update your application before rendering.
+     * The render loop uses requestAnimationFrame.
+     * @param dt milliseconds since the previous onBeforeRender.
+     */
+    onBeforeRender: function( dt ) {
+
+    },
+    /**
+     * Overwrite this method to update your application on every iteration of the main loop.
+     * The main loop is an interval called around 60 times per second.
+     * @param dt milliseconds since the previous update */
+    update: function ( dt ) {
         // overwrite me
     },
     capFPS: function( fps ) {

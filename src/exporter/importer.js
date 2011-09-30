@@ -1,11 +1,18 @@
-// extern
-var Request, EventWaiter;
-
 /*jshint evil: true */
+/*global Request: true, EventWaiter: true */
+
+/**
+ * @class
+ *
+ * Imports objects from JSON format.
+ */
 function Importer( resourcePath ) {
     if ( resourcePath[ resourcePath.length - 1 ] !== '/' ) {
         resourcePath += '/';
     }
+    /**
+     * @public
+     */
     this.resourcePath = resourcePath;
     this.cache = {};
     this.waiter = new EventWaiter();
@@ -28,6 +35,12 @@ Importer.prototype = {
             self.waiter.waitLess();
         } );
     },
+    /**
+     * Loads an asset.
+     *
+     * @param {String} asset The path to the asset relative to resourcePath and without the .json extension.
+     * @param {Function} callback Callback that is called with the loaded object as a parameter.
+     */
     load: function( asset, callback ) {
         var self = this;
         this._load( asset, function(){} );

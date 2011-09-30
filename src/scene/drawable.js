@@ -1,17 +1,36 @@
-// extern
-var Node, assert, Material;
+/*global Node: true, assert: true, Material: true*/
 
+/**
+ * @class
+ * A node with a 3D representation.
+ *
+ * @extends Node
+ */
 function Drawable() {
     Node.call( this );
+    /**
+     * @public
+     * @type {Mesh}
+     * @default null
+     */
     this.mesh = null;
+
+    /**
+     * @public
+     * @type {Material}
+     * @default {BasicMaterial}
+     */
     this.material = new BasicMaterial();
 }
 
 Drawable.prototype = {
     constructor: Drawable,
     onBeforeRender: function( camera ) {
-
     },
+    /**
+     * @param {Material} material
+     * @returns this
+     */
     setMaterial: function( material ) {
         /*DEBUG*/
             assert( Material.prototype.isPrototypeOf( material ), 'Tried to set a material which is not or does not inherit from Material' );
