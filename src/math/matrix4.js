@@ -51,10 +51,8 @@ Matrix4.prototype = {
      * @param {Matrix4} [dest] A matrix4 or any other array-like object to copy to.
      * @returns {Matrix4}
      */
-    clone: function( dest ) {
-        if ( !dest ) {
-            dest = new Matrix4();
-        }
+    clone: function() {
+        dest = new Matrix4();
         dest[ 0 ] = this[ 0 ];
         dest[ 1 ] = this[ 1 ];
         dest[ 2 ] = this[ 2 ];
@@ -301,110 +299,95 @@ Matrix4.prototype = {
         vector[ 3 ] = this[ 3 ] * x + this[ 7 ] * y + this[ 11 ] * z + this[ 15 ] * w;
 
         return vector;
+    },
+    /**
+     * Generates an identity matrix.
+     * @param {Matrix4} [dest] A matrix to reset to the identity matrix.
+     * @returns{Matrix4} dest if specified, a new Matrix4 otherwise
+     */
+    setIdentity: function() {
+        this[ 0 ] = 1;
+        this[ 1 ] = 0;
+        this[ 2 ] = 0;
+        this[ 3 ] = 0;
+
+        this[ 4 ] = 0;
+        this[ 5 ] = 1;
+        this[ 6 ] = 0;
+        this[ 7 ] = 0;
+
+        this[ 8 ] = 0;
+        this[ 9 ] = 0;
+        this[ 10 ] = 1;
+        this[ 11 ] = 0;
+
+        this[ 12 ] = 0;
+        this[ 13 ] = 0;
+        this[ 14 ] = 0;
+        this[ 15 ] = 1;
+        return this;
+    },
+    /**
+     * Generates a frustrum matrix with the given bounds.
+     * @returns {Matrix4} dest if specified, a new Matrix4 otherwise
+     */
+    setFrustrum: function( left, right, bottom, top, near, far ) {
+        var rl = ( right - left );
+        var tb = ( top - bottom );
+        var fn = ( far - near );
+        this[ 0 ] = ( near * 2 ) / rl;
+        this[ 1 ] = 0;
+        this[ 2 ] = 0;
+        this[ 3 ] = 0;
+        this[ 4 ] = 0;
+        this[ 5 ] = ( near * 2 ) / tb;
+        this[ 6 ] = 0;
+        this[ 7 ] = 0;
+        this[ 8 ] = ( right + left ) / rl;
+        this[ 9 ] = ( top + bottom ) / tb;
+        this[ 10 ] = -( far + near ) / fn;
+        this[ 11 ] = -1;
+        this[ 12 ] = 0;
+        this[ 13 ] = 0;
+        this[ 14 ] = -( far * near * 2 ) / fn;
+        this[ 15 ] = 0;
+        return this;
+    },
+    /**
+     * Generates a perspective projection matrix with the given bounds.
+     * @returns {Matrix4} dest if specified, a new Matrix4 otherwise
+     */
+    setPerspective: function( fovy, aspect, near, far ) {
+        var top = near * Math.tan( fovy * Math.PI / 360.0 );
+        var right = top * aspect;
+        return this.setFrustrum( -right, right, -top, top, near, far );
     }
-};
-
-/**
- * Generates an identity matrix.
- * @param {Matrix4} [dest] A matrix to reset to the identity matrix.
- * @returns{Matrix4} dest if specified, a new Matrix4 otherwise
- */
-Matrix4.identity = function( dest ) {
-    if ( !dest ) {
-        dest = new Matrix4();
-    }
-    dest[ 0 ] = 1;
-    dest[ 1 ] = 0;
-    dest[ 2 ] = 0;
-    dest[ 3 ] = 0;
-
-    dest[ 4 ] = 0;
-    dest[ 5 ] = 1;
-    dest[ 6 ] = 0;
-    dest[ 7 ] = 0;
-
-    dest[ 8 ] = 0;
-    dest[ 9 ] = 0;
-    dest[ 10 ] = 1;
-    dest[ 11 ] = 0;
-
-    dest[ 12 ] = 0;
-    dest[ 13 ] = 0;
-    dest[ 14 ] = 0;
-    dest[ 15 ] = 1;
-    return dest;
-};
-
-/**
- * Generates a frustrum matrix with the given bounds.
- * @returns {Matrix4} dest if specified, a new Matrix4 otherwise
- */
-Matrix4.frustrum = function( left, right, bottom, top, near, far, dest ) {
-    if ( !dest ) {
-        dest = new Matrix4();
-    }
-
-    var rl = ( right - left );
-    var tb = ( top - bottom );
-    var fn = ( far - near );
-    dest[ 0 ] = ( near * 2 ) / rl;
-    dest[ 1 ] = 0;
-    dest[ 2 ] = 0;
-    dest[ 3 ] = 0;
-    dest[ 4 ] = 0;
-    dest[ 5 ] = ( near * 2 ) / tb;
-    dest[ 6 ] = 0;
-    dest[ 7 ] = 0;
-    dest[ 8 ] = ( right + left ) / rl;
-    dest[ 9 ] = ( top + bottom ) / tb;
-    dest[ 10 ] = -( far + near ) / fn;
-    dest[ 11 ] = -1;
-    dest[ 12 ] = 0;
-    dest[ 13 ] = 0;
-    dest[ 14 ] = -( far * near * 2 ) / fn;
-    dest[ 15 ] = 0;
-    return dest;
-};
-
-/**
- * Generates a perspective projection matrix with the given bounds.
- * @returns {Matrix4} dest if specified, a new Matrix4 otherwise
- */
-Matrix4.perspective = function( fovy, aspect, near, far, dest ) {
-    var top = near * Math.tan( fovy * Math.PI / 360.0 );
-    var right = top * aspect;
-    return Matrix4.frustrum( -right, right, -top, top, near, far, dest );
-};
-
-/**
- * Generates an orthogonal projection matrix with the given bounds
- * returns {Matrix4} dest if specified, a new Matrix4 otherwise
- */
-Matrix4.ortho = function( left, right, bottom, top, near, far, dest ) {
-    if ( !dest ) {
-        dest = new Matrix4();
-    }
-
-    var rl = ( right - left );
-    var tb = ( top - bottom );
-    var fn = ( far - near );
-    this[ 0 ] = 2 / rl;
-    this[ 1 ] = 0;
-    this[ 2 ] = 0;
-    this[ 3 ] = 0;
-    this[ 4 ] = 0;
-    this[ 5 ] = 2 / tb;
-    this[ 6 ] = 0;
-    this[ 7 ] = 0;
-    this[ 8 ] = 0;
-    this[ 9 ] = 0;
-    this[ 10 ] = -2 / fn;
-    this[ 11 ] = 0;
-    this[ 12 ] = -( left + right ) / rl;
-    this[ 13 ] = -( top + bottom ) / tb;
-    this[ 14 ] = -( far + near ) / fn;
-    this[ 15 ] = 1;
-    return this;
+    /**
+     * Generates an orthogonal projection matrix with the given bounds
+     * returns {Matrix4} dest if specified, a new Matrix4 otherwise
+     */
+    setOrthogonal: function( left, right, bottom, top, near, far ) {
+        var rl = ( right - left );
+        var tb = ( top - bottom );
+        var fn = ( far - near );
+        this[ 0 ] = 2 / rl;
+        this[ 1 ] = 0;
+        this[ 2 ] = 0;
+        this[ 3 ] = 0;
+        this[ 4 ] = 0;
+        this[ 5 ] = 2 / tb;
+        this[ 6 ] = 0;
+        this[ 7 ] = 0;
+        this[ 8 ] = 0;
+        this[ 9 ] = 0;
+        this[ 10 ] = -2 / fn;
+        this[ 11 ] = 0;
+        this[ 12 ] = -( left + right ) / rl;
+        this[ 13 ] = -( top + bottom ) / tb;
+        this[ 14 ] = -( far + near ) / fn;
+        this[ 15 ] = 1;
+        return this;
+    };
 };
 
 ( function () {
