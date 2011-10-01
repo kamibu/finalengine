@@ -8,7 +8,6 @@ Object.defineProperty( Function.prototype, "extend", {
         var method, l = arguments.length;
         while ( l-- ) {
             var parent = arguments[ l ];
-            var childPrototype = this.prototype;
 
             //Continue with the overriding handling
             for ( method in parent.prototype ) {
@@ -19,22 +18,20 @@ Object.defineProperty( Function.prototype, "extend", {
                 /* If a parent method is overrided provide a way to call it by setting
                  * the ParentClass_overridedMethod method on child's prototype
                  */
-                if ( childPrototype[ method ] ) {
-                    this.prototype[ parent.name + '_' + method ] = parent.prototype[ method ];
+                if ( this.prototype.hasOwnProperty( method ) ) {
+                    Object.defineProperty( this.prototype, parent.name + '_' + method, Object.getOwnPropertyDescriptor( parent.prototype, method ) );
                 }
                 else {
-                    this.prototype[ method ] = parent.prototype[ method ];
+                    Object.defineProperty( this.prototype, method, Object.getOwnPropertyDescriptor( parent.prototype, method ) );
                 }
             }
         }
 
         var propertiesObject = {};
         for ( method in this.prototype ) {
-            propertiesObject[ method ] = {
-                value: this.prototype[ method ],
-                enumerable: true
-            };
+            propertiesObject[ method ] = Object.getOwnPropertyDescriptor( this.prototype, method );
         }
+
         this.prototype = Object.create( arguments[ 0 ].prototype, propertiesObject );
     }
 } );
