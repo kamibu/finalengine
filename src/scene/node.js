@@ -1,5 +1,12 @@
-// extern
-/*global Matrix4: true, Quaternion: true, TempVars: true, Transform: true, UUID: true, Vector3: true */
+/*global
+    BoundingSphere  :  false,
+    Matrix4         :  false,
+    Quaternion      :  false,
+    TempVars        :  false,
+    Transform       :  false,
+    UUID            :  false,
+    Vector3         :  false
+*/
 
 /**
  * @class
@@ -30,6 +37,7 @@ function Node() {
 
     this.worldTransform = new Transform();
     this.name = this.uuid;
+    this.boundingVolume = new BoundingSphere();
     Transform.call( this );
 }
 

@@ -21,6 +21,7 @@ var Renderer = function( canvas, width, height ) {
     this.decayTime = 5 * 1000;
     this.width = width || 640;
     this.height = height || 480;
+    this.render = this.dummyRender;
 
     this.canvas = canvas || document.createElement( 'canvas' );
     this.canvas.width = this.width;
@@ -797,6 +798,11 @@ Renderer.prototype = {
      * appropriate buffers will be bound to the appropriate attributes.
      */
     useShader: function( shader ) {
+        if ( shader === null ) {
+            this.render = this.dummyRender;
+            return;
+        }
+        this.render = this._render;
         var programObject, u, uniform;
         if ( !this.programObjects[ shader.uid ] || shader.needsUpdate ) {
             this.deleteShader( shader );
@@ -852,7 +858,7 @@ Renderer.prototype = {
      * vertices from the buffers binded when useShader() was called. An optional
      * paramter is the drawing method which defaults to TRIANGLES.
      */
-    render: function( mesh ) {
+    _render: function( mesh ) {
 		if ( !this.currentShader ) {
 			/*DEBUG*/
 				debug.log( debug.ERROR, 'Tried to render without a shader. Call useShader() before rendering.' );
@@ -917,5 +923,8 @@ Renderer.prototype = {
 
 		this.bindBuffer( mesh.indexBuffer );
         gl.drawElements( mode, mesh.indexBuffer.data.length, gl.UNSIGNED_SHORT, 0 );
-    }
+    },
+    dummyRender: function( mesh ) {
+    },
+    render: null
 };

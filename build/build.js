@@ -3,6 +3,7 @@ var options = {
     browser    :  true,
     curly      :  true,
     devel      :  true,
+    es5        :  true,
     immed      :  true,
     jquery     :  true,
     newcap     :  true,

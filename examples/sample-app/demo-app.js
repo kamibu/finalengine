@@ -2,6 +2,7 @@ function DemoApp() {
     Application.call( this );
     this.scene.appendChild( new Sphere() );
 }
+
 DemoApp.extend( Application );
 
-new DemoApp();
+var d = new DemoApp();

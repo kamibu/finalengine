@@ -1,35 +1,47 @@
-/*jshint sub: true */
-/*global Vector3Base:true */
-
 /** @class
  *
  * A 3-element vector.
  *
- * Uses Float32Array internally, if possible.
+ * Uses Float32Array internally.
  * Most methods alter the object whose method were called for performance reasons.
  */
 function Vector3( data ) {
-    return Vector3Base.call( this, data );
+    this.data = new Float32Array( 3 );
+    if ( data ) {
+        if ( data.data ) {
+            this.data.set( data.data );
+        }
+        else {
+            this.data.set( data );
+        }
+    }
 }
 
 Vector3.prototype = {
     constructor: Vector3,
     /**
-     * @public
-     */
-    clone: function() {
-        return new this.constructor( this );
-    },
-    /**
      * Set the elements according to another vector.
-     * @param {Vector3} data Array to copy from.
+     * @param {Vector3} src Vector to copy from.
      * @returns {Vector3} this
      */
-    set: function( data ) {
-        this[ 0 ] = data[ 0 ];
-        this[ 1 ] = data[ 1 ];
-        this[ 2 ] = data[ 2 ];
+    set: function( src ) {
+        if ( src instanceof Array ) {
+            throw 'error';
+        }
+        this.data.set( src.data );
         return this;
+    },
+    /**
+     * Copies the values of this vector to another vector.
+     * @param {Vector3} dest A Vector3 object to copy to.
+     * @returns {Vector3} dest
+     */
+    copyTo: function( dest ) {
+        if ( dest instanceof Array ) {
+            throw 'error';
+        }
+        dest.data.set( this.data );
+        return dest;
     },
     /**
      * Adds the values of a vector to this object.
@@ -37,9 +49,11 @@ Vector3.prototype = {
      * @returns {Vector3} this
      */
     add: function( vector ) {
-        this[ 0 ] += vector[ 0 ];
-        this[ 1 ] += vector[ 1 ];
-        this[ 2 ] += vector[ 2 ];
+        var a = this.data,
+            b = vector.data;
+        a[ 0 ] += b[ 0 ];
+        a[ 1 ] += b[ 1 ];
+        a[ 2 ] += b[ 2 ];
         return this;
     },
     /**
@@ -48,9 +62,11 @@ Vector3.prototype = {
      * @returns {Vector3} this
      */
     subtract: function( vector ) {
-        this[ 0 ] -= vector[ 0 ];
-        this[ 1 ] -= vector[ 1 ];
-        this[ 2 ] -= vector[ 2 ];
+        var a = this.data,
+            b = vector.data;
+        a[ 0 ] -= b[ 0 ];
+        a[ 1 ] -= b[ 1 ];
+        a[ 2 ] -= b[ 2 ];
         return this;
     },
     /**
@@ -58,9 +74,10 @@ Vector3.prototype = {
      * @returns {Vector3} this
      */
     negate: function() {
-        this[ 0 ] = -this[ 0 ];
-        this[ 1 ] = -this[ 1 ];
-        this[ 2 ] = -this[ 2 ];
+        var a = this.data;
+        a[ 0 ] = -a[ 0 ];
+        a[ 1 ] = -a[ 1 ];
+        a[ 2 ] = -a[ 2 ];
         return this;
     },
     /**
@@ -69,29 +86,31 @@ Vector3.prototype = {
      * @returns {Vector3} this
      */
     scale: function( factor ) {
-        this[ 0 ] *= factor;
-        this[ 1 ] *= factor;
-        this[ 2 ] *= factor;
+        var a = this.data;
+        a[ 0 ] *= factor;
+        a[ 1 ] *= factor;
+        a[ 2 ] *= factor;
         return this;
     },
     /**
      * @returns {Vector3} this
      */
     normalize: function() {
-        var x = this[ 0 ], y = this[ 1 ], z = this[ 2 ];
+        var a = this.data;
+        var x = a[ 0 ], y = a[ 1 ], z = a[ 2 ];
         var len = Math.sqrt( x * x + y * y + z * z);
 
-        if ( !len ) {
-            this[ 0 ] = 0;
-            this[ 1 ] = 0;
-            this[ 2 ] = 0;
+        if ( len === 0 ) {
+            a[ 0 ] = 0;
+            a[ 1 ] = 0;
+            a[ 2 ] = 0;
             return this;
         }
 
         len = 1 / len;
-        this[ 0 ] = x * len;
-        this[ 1 ] = y * len;
-        this[ 2 ] = z * len;
+        a[ 0 ] *= len;
+        a[ 1 ] *= len;
+        a[ 2 ] *= len;
         return this;
     },
     /**
@@ -102,12 +121,14 @@ Vector3.prototype = {
      * @returns {Vector3} this
      */
     cross: function( vector ) {
-        var x = this[ 0 ], y = this[ 1 ], z = this[ 2 ];
-        var x2 = vector[ 0 ], y2 = vector[ 1 ], z2 = vector[ 2 ];
+        var a = this.data,
+            b = vector.data;
+        var x = a[ 0 ], y = a[ 1 ], z = a[ 2 ];
+        var x2 = b[ 0 ], y2 = b[ 1 ], z2 = b[ 2 ];
 
-        this[ 0 ] = y * z2 - z * y2;
-        this[ 1 ] = z * x2 - x * z2;
-        this[ 2 ] = x * y2 - y * x2;
+        a[ 0 ] = y * z2 - z * y2;
+        a[ 1 ] = z * x2 - x * z2;
+        a[ 2 ] = x * y2 - y * x2;
         return this;
     },
     /**
@@ -115,14 +136,16 @@ Vector3.prototype = {
      * @returns {Number}
      */
     length: function() {
-        var x = this[ 0 ], y = this[ 1 ], z = this[ 2 ];
-        return Math.sqrt( x * x + y * y + z * z);
+        var a = this.data;
+        var x = a[ 0 ], y = a[ 1 ], z = a[ 2 ];
+        return Math.sqrt( x * x + y * y + z * z );
     },
     /**
      * Returns the length of this vector squared.
      */
     length2: function() {
-        var x = this[ 0 ], y = this[ 1 ], z = this[ 2 ];
+        var a = this.data;
+        var x = a[ 0 ], y = a[ 1 ], z = a[ 2 ];
         return x * x + y * y + z * z;
     },
     /**
@@ -130,8 +153,63 @@ Vector3.prototype = {
      * @returns {Number}
      */
     dot: function( vector ) {
-        return this[ 0 ] * vector[ 0 ] + this[ 1 ] * vector[ 1 ] + this[ 2 ] * vector[ 2 ];
+        var a = this.data,
+            b = vector.data;
+        return a[ 0 ] * b[ 0 ] + a[ 1 ] * b[ 1 ] + a[ 2 ] * b[ 2 ];
+    },
+    /**
+     * @returns {Vector3} this
+     */
+    absolute: function() {
+        var a = this.data;
+        if ( a[ 0 ] < 0 ) {
+            a[ 0 ] = -a[ 0 ];
+        }
+        if ( a[ 1 ] < 0 ) {
+            a[ 1 ] = -a[ 1 ];
+        }
+        if ( a[ 2 ] < 0 ) {
+            a[ 2 ] = -a[ 2 ];
+        }
+        return this;
+    },
+    clone: function() {
+        return new Vector3( this );
+    },
+    get 0 () {
+        throw 'Do not fucking use it';
+    },
+    set 0 ( value ) {
+        throw 'Do not fucking use it';
+    },
+    get 1 () {
+        throw 'Do not fucking use it';
+    },
+    set 1 ( value ) {
+        throw 'Do not fucking use it';
+    },
+    get 2 () {
+        throw 'Do not fucking use it';
+    },
+    set 2 ( value ) {
+        throw 'Do not fucking use it';
+    },
+    get x () {
+        return this.data[ 0 ];
+    },
+    set x ( value ) {
+        this.data[ 0 ] = value;
+    },
+    get y () {
+        return this.data[ 1 ];
+    },
+    set y ( value ) {
+        this.data[ 1 ] = value;
+    },
+    get z () {
+        return this.data[ 2 ];
+    },
+    set z ( value ) {
+        this.data[ 2 ] = value;
     }
 };
-
-// Vector3.extend( Vector3Base );

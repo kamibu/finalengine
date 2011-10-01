@@ -1,4 +1,9 @@
-/*global Node: true, assert: true, Material: true*/
+/*global
+    assert         :  false,
+    BasicMaterial  :  false,
+    Material       :  false,
+    Node           :  false
+*/
 
 /**
  * @class
@@ -18,9 +23,9 @@ function Drawable() {
     /**
      * @public
      * @type {Material}
-     * @default null
+     * @default {BasicMaterial}
      */
-    this.material = null;
+    this.material = new BasicMaterial();
 }
 
 Drawable.prototype = {
