@@ -1,5 +1,11 @@
-// extern
-var Camera, RenderManager, Scene, Importer, Exporter, InputHandler;
+/*global
+    Camera         :  false,
+    Exporter       :  false,
+    Importer       :  false,
+    RenderManager  :  false,
+    Scene          :  false,
+    Vector3        :  false
+*/
 
 /**
  * @class
@@ -29,7 +35,7 @@ function Application() {
      * Its original position is at (0, 0, 10). Setting this property to another camera does not affect the rendering.
      * @type Camera
      */
-    this.camera = new Camera().setPosition( [ 0, 0, 10 ] );
+    this.camera = new Camera().setPosition( new Vector3( [ 0, 0, 10 ] ) );
 
     /**
      * The default importer. Imports from "resources" folder.
@@ -47,7 +53,7 @@ function Application() {
      * The default input handler.
      * @type InputHandler
      */
-    this.input = new InputHandler();
+//    this.input = new InputHandler();
 
     this.scene.appendChild( this.camera );
 
@@ -96,7 +102,7 @@ Application.prototype = {
         return this;
     },
     /**
-     * Overwrite this method to update your application before rendering.
+     * Override this method to update your application before rendering.
      * The render loop uses requestAnimationFrame.
      * @param dt milliseconds since the previous onBeforeRender.
      */
@@ -104,11 +110,11 @@ Application.prototype = {
 
     },
     /**
-     * Overwrite this method to update your application on every iteration of the main loop.
+     * Override this method to update your application on every iteration of the main loop.
      * The main loop is an interval called around 60 times per second.
      * @param dt milliseconds since the previous update */
     update: function ( dt ) {
-        // overwrite me
+        // override me
     },
     capFPS: function( fps ) {
         if ( fps >= 60 ) {

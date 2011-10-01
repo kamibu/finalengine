@@ -1,4 +1,10 @@
-/*global Matrix4: true, Quaternion: true, TempVars: true, Vector3: true */
+/*global
+    Matrix4     :  false,
+    Node        :  false,
+    Quaternion  :  false,
+    TempVars    :  false,
+    Vector3     :  false
+*/
 
 /** @class
  * Represents a transformation in 3D space (position, orientation, scale).
@@ -20,7 +26,7 @@ Transform.prototype = {
         return this.invalidate();
     },
     /**
-     * @param {Array} position The new position as a vector.
+     * @param {Vector3} position The new position as a vector.
      * @returns {Transform} this
      */
     setPosition: function( position ) {
@@ -28,7 +34,7 @@ Transform.prototype = {
         return this.invalidate();
     },
     /**
-     * @param {Array} orientation The new orientation as a quaternion.
+     * @param {Vector3} orientation The new orientation as a quaternion.
      * @returns {Transform} this
      */
     setOrientation: function( orientation ) {
@@ -77,8 +83,8 @@ Transform.prototype = {
      * @returns {Transform} this
      */
     setIdentity: function() {
-        this.position.set( [ 0, 0, 0 ] );
-        this.orientation.set( [ 0, 0, 0, 1 ] );
+        this.position.data.set( [ 0, 0, 0 ] );
+        this.orientation.data.set( [ 0, 0, 0, 1 ] );
         this.scale = 1;
         return this.invalidate();
     },
@@ -116,15 +122,18 @@ Transform.prototype = {
      * @returns {Transform} this
      */
     setMatrix: function( matrix ) {
-        var m00 = matrix[ 0 ], m01 = matrix[ 1 ], m02 = matrix[ 2 ];
-        this.scale = Math.sqrt( m00 * m00 + m01 * m01 + m02 * m02 );
+        var a = matrix.data;
 
-        this.position[ 0 ] = matrix[ 12 ];
-        this.position[ 1 ] = matrix[ 13 ];
-        this.position[ 2 ] = matrix[ 14 ];
+        var m00 = a[ 0 ], m01 = a[ 1 ], m02 = a[ 2 ];
+        this.scale = Math.sqrt( m00 * m00 + m01 * m01 + m02 * m02 );
+        
+        var pos = this.position.data;
+        pos[ 0 ] = a[ 12 ];
+        pos[ 1 ] = a[ 13 ];
+        pos[ 2 ] = a[ 14 ];
 
         TempVars.lock();
-        var mat = TempVars.getMatrix4().set( matrix );
+        var mat = TempVars.getMatrix4().set( a );
         this.orientation.fromMatrix3( mat.toMatrix3( TempVars.getMatrix3() ) );
         TempVars.release();
 
@@ -143,33 +152,37 @@ Transform.prototype = {
         }
         this.orientation.toMatrix4( dest ).transpose();
         //Translation part rotated by the transposed 3x3 matrix
-        var x = -this.position[ 0 ];
-        var y = -this.position[ 1 ];
-        var z = -this.position[ 2 ];
-        dest[ 12 ] = x * dest[ 0 ] + y * dest[ 4 ] + z * dest[ 8 ];
-        dest[ 13 ] = x * dest[ 1 ] + y * dest[ 5 ] + z * dest[ 9 ];
-        dest[ 14 ] = x * dest[ 2 ] + y * dest[ 6 ] + z * dest[ 10 ];
+        var pos = this.position.data,
+            a = dest.data;
+
+        var x = -pos[ 0 ],
+            y = -pos[ 1 ],
+            z = -pos[ 2 ];
+        a[ 12 ] = x * a[ 0 ] + y * a[ 4 ] + z * a[ 8 ];
+        a[ 13 ] = x * a[ 1 ] + y * a[ 5 ] + z * a[ 9 ];
+        a[ 14 ] = x * a[ 2 ] + y * a[ 6 ] + z * a[ 10 ];
         return dest;
     },
     update: function() {
-        var mat = this.matrix;
+        var mat = this.matrix,
+            a = mat.data;
         this.orientation.toMatrix4( mat );
         if ( this.scale != 1 ) {
             var s = this.scale;
-            mat[ 0 ] *= s;
-            mat[ 1 ] *= s;
-            mat[ 2 ] *= s;
-            mat[ 4 ] *= s;
-            mat[ 5 ] *= s;
-            mat[ 6 ] *= s;
-            mat[ 8 ] *= s;
-            mat[ 9 ] *= s;
-            mat[ 10 ] *= s;
+            a[ 0 ] *= s;
+            a[ 1 ] *= s;
+            a[ 2 ] *= s;
+            a[ 4 ] *= s;
+            a[ 5 ] *= s;
+            a[ 6 ] *= s;
+            a[ 8 ] *= s;
+            a[ 9 ] *= s;
+            a[ 10 ] *= s;
         }
-        var pos = this.position;
-        mat[ 12 ] = pos[ 0 ];
-        mat[ 13 ] = pos[ 1 ];
-        mat[ 14 ] = pos[ 2 ];
+        var pos = this.position.data;
+        a[ 12 ] = pos[ 0 ];
+        a[ 13 ] = pos[ 1 ];
+        a[ 14 ] = pos[ 2 ];
         this.needsUpdate = false;
         return this;
     },

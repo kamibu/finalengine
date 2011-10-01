@@ -1,9 +1,12 @@
-// extern
-<<<<<<< HEAD
-var Matrix4, Quaternion, TempVars, Transform, UUID, Vector3, BoundingSphere;
-=======
-/*global Matrix4: true, Quaternion: true, TempVars: true, Transform: true, UUID: true, Vector3: true */
->>>>>>> d2613fd1e824d861e3c8ebd4128e98c1d1126ce0
+/*global
+    BoundingSphere  :  false,
+    Matrix4         :  false,
+    Quaternion      :  false,
+    TempVars        :  false,
+    Transform       :  false,
+    UUID            :  false,
+    Vector3         :  false
+*/
 
 /**
  * @class

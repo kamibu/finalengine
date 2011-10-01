@@ -6,33 +6,41 @@
  * Most methods alter the object whose method were called for performance reasons.
  */
 function Vector3( data ) {
-    if ( data instanceof Array ) {
-        this.data = new Float32Array( 3 ).set( data );
-    }
-    else {
-        this.data = new Float32Array( 3 ).set( data.d );
+    this.data = new Float32Array( 3 );
+    if ( data ) {
+        if ( data.data ) {
+            this.data.set( data.data );
+        }
+        else {
+            this.data.set( data );
+        }
     }
 }
 
 Vector3.prototype = {
     constructor: Vector3,
     /**
-     * @public
-     */
-    clone: function() {
-        return new this.constructor( this );
-    },
-    /**
      * Set the elements according to another vector.
-     * @param {Vector3} data Array to copy from.
+     * @param {Vector3} src Vector to copy from.
      * @returns {Vector3} this
      */
-    set: function( data ) {
-        this.data.set( data.data );
+    set: function( src ) {
+        if ( src instanceof Array ) {
+            throw 'error';
+        }
+        this.data.set( src.data );
         return this;
     },
+    /**
+     * Copies the values of this vector to another vector.
+     * @param {Vector3} dest A Vector3 object to copy to.
+     * @returns {Vector3} dest
+     */
     copyTo: function( dest ) {
-        dest.data.set( this.a );
+        if ( dest instanceof Array ) {
+            throw 'error';
+        }
+        dest.data.set( this.data );
         return dest;
     },
     /**
@@ -42,7 +50,7 @@ Vector3.prototype = {
      */
     add: function( vector ) {
         var a = this.data,
-            b = vector.d;
+            b = vector.data;
         a[ 0 ] += b[ 0 ];
         a[ 1 ] += b[ 1 ];
         a[ 2 ] += b[ 2 ];
@@ -55,7 +63,7 @@ Vector3.prototype = {
      */
     subtract: function( vector ) {
         var a = this.data,
-            b = vector.d;
+            b = vector.data;
         a[ 0 ] -= b[ 0 ];
         a[ 1 ] -= b[ 1 ];
         a[ 2 ] -= b[ 2 ];
@@ -114,7 +122,7 @@ Vector3.prototype = {
      */
     cross: function( vector ) {
         var a = this.data,
-            b = vector.d;
+            b = vector.data;
         var x = a[ 0 ], y = a[ 1 ], z = a[ 2 ];
         var x2 = b[ 0 ], y2 = b[ 1 ], z2 = b[ 2 ];
 
@@ -146,7 +154,7 @@ Vector3.prototype = {
      */
     dot: function( vector ) {
         var a = this.data,
-            b = vector.d;
+            b = vector.data;
         return a[ 0 ] * b[ 0 ] + a[ 1 ] * b[ 1 ] + a[ 2 ] * b[ 2 ];
     },
     /**
@@ -167,7 +175,41 @@ Vector3.prototype = {
     },
     clone: function() {
         return new Vector3( this );
+    },
+    get 0 () {
+        throw 'Do not fucking use it';
+    },
+    set 0 ( value ) {
+        throw 'Do not fucking use it';
+    },
+    get 1 () {
+        throw 'Do not fucking use it';
+    },
+    set 1 ( value ) {
+        throw 'Do not fucking use it';
+    },
+    get 2 () {
+        throw 'Do not fucking use it';
+    },
+    set 2 ( value ) {
+        throw 'Do not fucking use it';
+    },
+    get x () {
+        return this.data[ 0 ];
+    },
+    set x ( value ) {
+        this.data[ 0 ] = value;
+    },
+    get y () {
+        return this.data[ 1 ];
+    },
+    set y ( value ) {
+        this.data[ 1 ] = value;
+    },
+    get z () {
+        return this.data[ 2 ];
+    },
+    set z ( value ) {
+        this.data[ 2 ] = value;
     }
 };
-
-// Vector3.extend( Vector3Base );

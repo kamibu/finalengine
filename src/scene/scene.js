@@ -44,7 +44,7 @@ Scene.prototype = {
         this.drawableList.push.apply( this.drawableList, drawables );
     },
     onChildRemoved: function( node, nodeRemoved ) {
-        this.Node_onChildRemoved( node, nodeAdded );
+        this.Node_onChildRemoved( node, nodeRemoved );
         var drawables = this.findClass( nodeRemoved, Drawable );
         var l = drawables.length;
         while ( l-- ) {
