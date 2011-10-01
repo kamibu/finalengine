@@ -1,4 +1,4 @@
-/*global 
+/*global
     Color       :  false,
     Matrix4     :  false,
     Quaternion  :  false,
@@ -26,13 +26,19 @@ Material.prototype = {
     constructor: Material,
     setParameter: function( name, value ) {
         if ( typeof value === 'object' ) {
-            this.parameters[ name ] = value;   
+            this.parameters[ name ] = value.data;
         }
         else {
-            this.parameters[ name ] = {
-                data: value
-            };
+            this.parameters[ name ] = value;
         }
         return this;
+    },
+    getShader: function() {
+        if ( this.shader !== null ) {
+            for ( var parameterName in this.parameters ) {
+                this.shader.uniforms[ parameterName ] = this.parameters[ parameterName ];
+            }
+        }
+        return this.shader;
     }
 };

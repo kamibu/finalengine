@@ -10,7 +10,6 @@ function Shader() {
     this.fragmentSource = '';
 
     this.uniforms = {};
-	this.attributes = {};
 
     this.needsUpdate = false;
 }

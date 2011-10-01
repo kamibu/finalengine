@@ -14,7 +14,6 @@ events/eventwaiter.js
 
 math/matrix4.js
 math/matrix3.js
-math/vector3base.js
 math/vector3.js
 math/quaternion.js
 math/transform.js
@@ -43,24 +42,18 @@ animation/skeleton.js
 animation/animation.js
 
 material/material.js
+material/basicmaterial.js
 
 geometry/cube.js
 geometry/rectangle.js
 geometry/sphere.js
 
-texturemanager.js
 rendermanager.js
 application.js
 
 exporter/exporter.js
 exporter/importer.js
 exporter/objloader.js
-
-input/inputdevice.js
-input/inputhandler.js
-input/firstpersonhandler.js
-input/keyboard.js
-input/mouse.js
 
 test/testcase.js
 test/browser/testview.js

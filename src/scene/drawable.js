@@ -1,4 +1,9 @@
-/*global Node: true, assert: true, Material: true*/
+/*global
+    assert         :  false,
+    BasicMaterial  :  false,
+    Material       :  false,
+    Node           :  false
+*/
 
 /**
  * @class
