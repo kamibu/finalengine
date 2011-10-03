@@ -289,8 +289,8 @@ Node.prototype = {
     },
     getExportData: function( exporter ) {
         var ret = {};
-        ret.position = this.getPosition().toArray();
-        ret.orientation = this.getOrientation().toArray();
+        ret.position = this.getPosition() + '';
+        ret.orientation = this.getOrientation() + '';
         ret.scale = this.getScale();
         ret.name = this.name;
         ret.children = [];
@@ -304,8 +304,8 @@ Node.prototype = {
     },
     setImportData: function( importer, data ) {
         this.name = data.name;
-        this.setPosition( data.position );
-        this.setOrientation( data.orientation );
+        this.setPosition( new Vector3( data.position ) );
+        this.setOrientation( new Vector3( data.orientation ) );
         this.setScale( data.scale );
         var l = data.children.length;
         while( l-- ) {

@@ -211,5 +211,8 @@ Vector3.prototype = {
     },
     set z ( value ) {
         this.data[ 2 ] = value;
+    },
+    toString: function() {
+        return '[' + [ this.data[ 0 ], this.data[ 1 ], this.data[ 2 ] ] + ']';
     }
 };
