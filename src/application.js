@@ -1,10 +1,11 @@
 /*global
-    Camera         :  false,
-    Exporter       :  false,
-    Importer       :  false,
-    RenderManager  :  false,
-    Scene          :  false,
-    Vector3        :  false
+    Camera         : false,
+    Exporter       : false,
+    Importer       : false,
+    RenderManager  : false,
+    Scene          : false,
+    Vector3        : false,
+    InputHandler    : false
 */
 
 /**
@@ -54,6 +55,11 @@ function Application() {
      * @type Exporter
      */
     this.exporter = new Exporter( 'resources' );
+
+    /**
+     * @type InputHandler
+     */
+    this.input = new InputHandler();
 
     /**
      * The default input handler.

@@ -49,6 +49,11 @@ geometry/cube.js
 geometry/rectangle.js
 geometry/sphere.js
 
+input/inputdevice.js
+input/keyboard.js
+input/mouse.js
+input/inputhandler.js
+
 rendermanager.js
 application.js
 
