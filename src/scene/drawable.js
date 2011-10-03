@@ -55,10 +55,10 @@ Drawable.prototype = {
     setImportData: function( importer, data ) {
         this.Node_setImportData( importer, data.parent );
         var self = this;
-        importer.alsoLoad( data.mesh, function( mesh ) {
+        importer.load( data.mesh, function( mesh ) {
             self.mesh = mesh;
         } );
-        importer.alsoLoad( data.material, function( material ) {
+        importer.load( data.material, function( material ) {
             self.material = material;
         } );
     }

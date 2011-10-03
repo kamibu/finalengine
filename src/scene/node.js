@@ -309,7 +309,7 @@ Node.prototype = {
         this.setScale( data.scale );
         var l = data.children.length;
         while( l-- ) {
-            importer.alsoLoad( data.children[ l ], this.appendChild.bind( this ) );
+            importer.load( data.children[ l ], this.appendChild.bind( this ) );
         }
     }
 };

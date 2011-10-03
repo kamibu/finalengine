@@ -7,7 +7,6 @@
 function OBJLoader() {
     this.ready = true;
     var self = this;
-    var im = new Importer( 'resources' );
     this.mtlCache = {};
     this.objCache = {};
     this.pending = [];
@@ -116,7 +115,7 @@ OBJLoader.prototype = {
      * @param {String} url The complete url to the .obj file
      * @param {Function} callback Called when loading is finished with the node tree as a parameter.
      */
-    loadOBJ: function( url, callback ) {
+    load: function( url, importer, callback ) {
         /*WRAPPER FUNCTIONS*/
             if ( !this.ready ) {
                 this.pending.push( arguments );
@@ -333,3 +332,5 @@ OBJLoader.prototype = {
         vReq.send();
     }
 };
+
+Importer.setLoader( 'obj', new OBJLoader() );

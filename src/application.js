@@ -16,6 +16,8 @@
  * child class.
  */
 function Application() {
+    var self = this;
+
     /**
      * The render manager used for rendering the scene.
      * Its {@link RenderManager#renderScene} method is called in a loop.
@@ -38,10 +40,14 @@ function Application() {
     this.camera = new Camera().setPosition( new Vector3( [ 0, 0, 10 ] ) );
 
     /**
-     * The default importer. Imports from "resources" folder.
+     * The default importer.
+     *
+     * Imports from "resources" folder. If no callback is passed, the default callback adds the loaded node to the application's scene.
      * @type Importer
      */
-    this.importer = new Importer( 'resources' );
+    this.importer = new Importer( 'resources', function( node ) {
+        self.scene.appendChild( node );
+    } );
 
     /**
      * The default exporter. Exports to "resources" folder.
@@ -60,7 +66,6 @@ function Application() {
     var canvas = this.renderManager.renderer.canvas;
     this.setupCanvas( canvas );
 
-    var self = this;
     this._nextFrame = null;
     this.capFPS( 60 );
 
