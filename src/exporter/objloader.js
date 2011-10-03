@@ -1,27 +1,13 @@
-/*global EventWaiter: true, Importer: true, Texture: true, Node: true, Buffer: true, VertexAttribute: true, Drawable: true, Mesh: true */
+/*global EventWaiter: false, Importer: false, Texture: false, Node: false, Buffer: false, VertexAttribute: false, Drawable: false, Mesh: false, TexturedMaterial: false, BasicMaterial: false, Vector3: false */
 
 /**
  * @class
  * Loads .obj files.
  */
 function OBJLoader() {
-    this.ready = false;
+    this.ready = true;
     var self = this;
     var im = new Importer( 'resources' );
-    var waiter = new EventWaiter();
-    waiter.waitMore();
-    this.texturedMaterial = null;
-    
-    im.load( 'textured', function( textured ) {
-        self.texturedMaterial = textured;
-        waiter.waitLess();
-    } );
-    waiter.on( 'complete', function() {
-        self.ready = true;
-        if ( self.pending.length > 0 ) {
-            self.loadOBJ.apply( self, self.pending.pop() );
-        }
-    } );
     this.mtlCache = {};
     this.objCache = {};
     this.pending = [];
@@ -32,7 +18,7 @@ OBJLoader.prototype = {
     loadMtl: function( url, callback ) {
         var that = this;
         
-        if ( this.mtlCache[ url ] !== undefined ) {
+        if ( this.mtlCache[ url ] !== undefined && false ) {
             // cache hit
             callback( this.mtlCache[ url ] );
             return;
@@ -89,11 +75,13 @@ OBJLoader.prototype = {
                     }
                 }
                 var textureCache = {};
+                
+                console.log( 'setting material parameters' );
 
                 for ( var material in materials ) {
                     if ( materials[ material ].diffuseTexture !== undefined ) {
                         var texture = materials[ material ].diffuseTexture;
-                        materials[ material ] = that.texturedMaterial.clone();
+                        materials[ material ] = new TexturedMaterial();
                         materials[ material ].name = material;
                         
                         var tex;
@@ -103,15 +91,18 @@ OBJLoader.prototype = {
                         else {
                             var img = new Image();
                             img.src = texture;
-                            tex = textureCache[ texture ] = new Texture().setImage( img );
+                            tex = textureCache[ texture ] = new Texture().setImage( img ).setWrapS( Texture.REPEAT ).setWrapT( Texture.REPEAT );
                         }
 
-                        materials[ material ].setParameter( 'texture', tex );
+                        console.log( tex );
+                        
+                        materials[ material ].setParameter( 'texture', { data: tex } );
                     }
                     else {
-                        materials[ material ] = that.texturedMaterial.clone();
+                        var diffuse = materials[ material ].diffuse;
+                        materials[ material ] = new BasicMaterial();
                         materials[ material ].name = material;
-                        materials[ material ].setParameter( 'texture', new Texture() );
+                        materials[ material ].setParameter( 'Diffuse', new Vector3( diffuse ) );
                     }
                 }
                 that.mtlCache[ url ] = materials; // memoize
@@ -137,6 +128,8 @@ OBJLoader.prototype = {
                 for ( var material in objectsByMaterial ) {
                     var d = new Drawable();
                     var obj = objectsByMaterial[ material ];
+
+                    console.log( obj.material );
 
                     var vertices = new Buffer( Buffer.DATA_BUFFER, Buffer.STATIC );
                     vertices.setData( obj.vertices );

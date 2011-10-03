@@ -60,9 +60,9 @@ Quaternion.prototype = {
         var a = this.data,
             temp = TempVars.getVector3();
         temp.set( axis ).normalize().scale( Math.sin( angle ) );
-        a[ 0 ] = temp[ 0 ];
-        a[ 1 ] = temp[ 1 ];
-        a[ 2 ] = temp[ 2 ];
+        a[ 0 ] = temp.data[ 0 ];
+        a[ 1 ] = temp.data[ 1 ];
+        a[ 2 ] = temp.data[ 2 ];
         a[ 3 ] = Math.cos( angle );
         TempVars.release();
         return this;

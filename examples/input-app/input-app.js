@@ -43,7 +43,7 @@ function InputApp() {
     window.rotateRight = function() {
         console.log( 'rotate right called' );
         rInterval = setInterval( function() {
-            character.rotate( [ 0, 1, 0 ], -0.1 );
+            character.rotate( new Vector3( [ 0, 1, 0 ] ), -0.1 );
         }, 30 );
     };
 
@@ -51,7 +51,7 @@ function InputApp() {
         console.log( 'Loaded' );
         window.character = node;
         self.scene.appendChild( character.setScale( 0.2 ) );
-        character.setOrientation( [ 0, 1, 0, 0 ] );
+        // character.setOrientation( new Quaternion( [ 0, 1, 0, 0 ] ) );
         character.name = 'woman_Low';
 
         /*
@@ -67,10 +67,10 @@ function InputApp() {
         } );
         */
 
-        var handler = new FirstPersonHandler( character );
+        //var handler = new FirstPersonHandler( character );
     } );
 
-    this.camera.setPosition( [ 0, 2, 4 ] );
+    this.camera.setPosition( new Vector3( [ 0, 2, 4 ] ) );
 }
 InputApp.extend( Application );
 

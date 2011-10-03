@@ -43,6 +43,7 @@ animation/animation.js
 
 material/material.js
 material/basicmaterial.js
+material/texturedmaterial.js
 
 geometry/cube.js
 geometry/rectangle.js
