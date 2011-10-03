@@ -47,7 +47,7 @@ Importer.prototype = {
 
         // make sure you check cache after adding extension to avoid misses.
         if ( Importer.cache[ asset ] ) {
-            callback( asset );
+            callback( Importer.cache[ asset ], asset );
             return;
         }
 

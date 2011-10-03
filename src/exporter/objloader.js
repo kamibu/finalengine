@@ -75,8 +75,6 @@ OBJLoader.prototype = {
                 }
                 var textureCache = {};
                 
-                console.log( 'setting material parameters' );
-
                 for ( var material in materials ) {
                     if ( materials[ material ].diffuseTexture !== undefined ) {
                         var texture = materials[ material ].diffuseTexture;
@@ -93,8 +91,6 @@ OBJLoader.prototype = {
                             tex = textureCache[ texture ] = new Texture().setImage( img ).setWrapS( Texture.REPEAT ).setWrapT( Texture.REPEAT );
                         }
 
-                        console.log( tex );
-                        
                         materials[ material ].setParameter( 'texture', { data: tex } );
                     }
                     else {
@@ -127,8 +123,6 @@ OBJLoader.prototype = {
                 for ( var material in objectsByMaterial ) {
                     var d = new Drawable();
                     var obj = objectsByMaterial[ material ];
-
-                    console.log( obj.material );
 
                     var vertices = new Buffer( Buffer.DATA_BUFFER, Buffer.STATIC );
                     vertices.setData( obj.vertices );
