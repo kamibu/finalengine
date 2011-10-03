@@ -67,12 +67,12 @@ Keyboard.prototype = {
             if ( action.endCallback ) {
                 hasEndCallback = true;
             }
-        } );
 
-        // no need to do autorepeat checks if no endcallback
-        if ( !hasEndCallback ) {
-            return;
-        }
+            if ( action.repeat ) {
+                console.log( 'setting repeat' );
+                action.repeatInterval = setInterval( action.callback, action.speed );
+            }
+        } );
 
         // we believe it is an autorepeat until we get a keyup
         this.setPressed( e.keyCode );
@@ -100,6 +100,10 @@ Keyboard.prototype = {
             if ( action.endCallback ) {
                 action.endCallback( e );
             }
+            if ( action.repeatInterval ) {
+                clearInterval( action.repeatInterval );
+                action.repeatInterval = false;
+            }
         } );
 
         // clear intervals and set to 0 so that we know we can set them again
@@ -120,7 +124,9 @@ Keyboard.prototype = {
         }
         var action = {
             callback: options.callback || function() {},
-            endCallback: options.endCallback || null
+            endCallback: options.endCallback || null,
+            repeat: options.repeat,
+            speed: options.speed || 10
         };
         if ( !this.actions[ key ] ) {
             this.actions[ key ] = [ action ];
