@@ -111,6 +111,9 @@ Application.prototype = {
         this.resize( window.innerWidth, window.innerHeight );
         return this;
     },
+    /**
+     * Resize canvas.
+     */
     resize: function( width, height ) {
         this.renderManager.resize( width, height );
         var camera = this.camera;
@@ -120,12 +123,17 @@ Application.prototype = {
         return this;
     },
     /**
+     * Set the application title (alters the <title> tag).
+     */
+    setTitle: function( title ) {
+        document.title = title;
+    },
+    /**
      * Override this method to update your application before rendering.
      * The render loop uses requestAnimationFrame.
      * @param dt milliseconds since the previous onBeforeRender.
      */
     onBeforeRender: function( dt ) {
-
     },
     /**
      * Override this method to update your application on every iteration of the main loop.
