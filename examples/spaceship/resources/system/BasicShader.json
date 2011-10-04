@@ -1,0 +1,74 @@
+{
+    "library": {
+        "BasicShader": {
+            "class": "Shader",
+            "data": {
+                "vertexSource": [
+                    "attribute vec3 Position;",
+                    "uniform mat4 WorldViewProjectionMatrix;",
+
+                    "#ifdef HARDWARE_SKINNING",
+                        "#define NUM_BONES 70",
+                        "attribute vec3 BoneWeights;",
+                        "attribute ivec3 BoneIndices;",
+                        "uniform vec4 JointPositionsAndScales[ NUM_BONES ];",
+                        "uniform vec4 JointOrientations[ NUM_BONES ];",
+
+                        "vec4 skinVertex() {",
+                            "ivec3 index = BoneIndices;",
+                            "vec3 weight = BoneWeights;",
+                            "vec4 pos = vec4( 0.0 );",
+
+                            "for ( float i = 0.0; i < 3.0; i += 1.0 ) {",
+                                "vec4 positionAndScale = JointPositionsAndScales[ index.x ];",
+                                "vec4 orientation = JointOrientations[ index.x ];",
+                                "float x2 = orientation.x + orientation.x;",
+                                "float y2 = orientation.y + orientation.y;",
+                                "float z2 = orientation.z + orientation.z;",
+                                "float xx = orientation.x * x2;",
+                                "float xy = orientation.x * y2;",
+                                "float xz = orientation.x * z2;",
+                                "float yy = orientation.y * y2;",
+                                "float yz = orientation.y * z2;",
+                                "float zz = orientation.z * z2;",
+                                "float wx = orientation.w * x2;",
+                                "float wy = orientation.w * y2;",
+                                "float wz = orientation.w * z2;",
+                                "float scale = positionAndScale.w;",
+                                "mat4 skinMat = mat4(",
+                                    "( 1.0 - ( yy + zz ) ) * scale , ( xy + wz ) * scale           , ( xz - wy ) * scale           , 0.0,",
+                                    "( xy - wz ) * scale           , ( 1.0 - ( xx + zz ) ) * scale , ( yz + wx ) * scale           , 0.0,",
+                                    "( xz + wy ) * scale           , ( yz - wx ) * scale           , ( 1.0 - ( xx + yy ) ) * scale , 0.0,",
+                                    "positionAndScale.x            , positionAndScale.y            , positionAndScale.z            , 1.0",
+                                ");",
+
+                                "pos += weight.x * ( skinMat * vec4( Position, 1.0 ) );",
+                                "index = index.yzx;",
+                                "weight = weight.yzx;",
+                            "}",
+                            "return pos;",
+                        "}",
+                    "#endif",
+
+                    "void main() {",
+                        "#ifdef HARDWARE_SKINNING",
+                            "gl_Position = WorldViewProjectionMatrix * skinVertex();",
+                        "#else",
+                            "gl_Position = WorldViewProjectionMatrix * vec4( Position, 1.0 );",
+                        "#endif",
+                    "}"
+                ],
+                "fragmentSource": [
+                    "precision highp float;",
+                    "uniform vec3 Diffuse;",
+
+                    "void main(){",
+                        "vec3 diffuse = Diffuse;",
+                        "gl_FragColor = vec4( diffuse, 1.0 );",
+                    "}"
+                ]
+            }
+        }
+    },
+    "object": "BasicShader"
+}

@@ -1,0 +1,1 @@
+{"library":{"blinn3SG_drawable":{"class":"Drawable","data":{"parent":{"position":[0,0,0],"orientation":[0,0,0,1],"scale":1,"name":"blinn3SG_drawable","children":[]},"mesh":"blinn3SG_mesh","material":"blinn3SG"}}},"object":"blinn3SG_drawable"}
