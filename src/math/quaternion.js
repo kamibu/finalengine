@@ -87,16 +87,26 @@ Quaternion.prototype = {
             dest = new Vector3();
         }
         if ( a[ 0 ] || a[ 1 ] || a[ 2 ] ) {
-            dest[ 0 ] = a[ 0 ];
-            dest[ 1 ] = a[ 1 ];
-            dest[ 2 ] = a[ 2 ];
+            dest.data[ 0 ] = a[ 0 ];
+            dest.data[ 1 ] = a[ 1 ];
+            dest.data[ 2 ] = a[ 2 ];
             dest.normalize();
         }
         else {
-            dest[ 0 ] = 0;
-            dest[ 1 ] = 0;
-            dest[ 2 ] = 1;
+            dest.data[ 0 ] = 0;
+            dest.data[ 1 ] = 0;
+            dest.data[ 2 ] = 1;
         }
+        return dest;
+    },
+    getAxisAngle: function( dest ) {
+        var d = this.data;
+        if ( !dest ) {
+            dest = new Vector3();
+        }
+        dest.data[ 0 ] = Math.atan2( 2 * ( d[ 3 ] * d[ 0 ] + d[ 1 ] * d[ 2 ] ), 1 - 2 * (d[1]*d[1] + d[2]*d[2] ) );
+        dest.data[ 1 ] = Math.asin( 2 * ( d[ 3 ] * d[ 1 ] - d[ 2 ] * d[ 0 ] ) );
+        dest.data[ 2 ] = Math.atan2( 2 * ( d[ 3 ] * d[ 2 ] + d[ 0 ] * d[ 1 ] ), 1 - 2 * ( d[ 1 ] * d[ 1 ] + d[ 2 ] * d[ 2 ] ) );
         return dest;
     },
     inverse: function() {
@@ -235,6 +245,46 @@ Quaternion.prototype = {
         b[ 15 ] = 1;
 
         return dest;
+    },
+    dot: function( quaternion ) {
+        return this.data[ 0 ] * quaternion.data[ 0 ] +
+               this.data[ 1 ] * quaternion.data[ 1 ] +
+               this.data[ 2 ] * quaternion.data[ 2 ] +
+               this.data[ 3 ] * quaternion.data[ 3 ];
+    },
+    slerp: function( to, by ) {
+        if ( this.data[ 0 ] == to.data[ 0 ] && this.data[ 1 ] == to.data[ 1 ] && this.data[ 2 ] == to.data[ 2 ] && this.data[ 3 ] == to.data[ 3 ] ) {
+            return this;
+        }
+
+        var dot = this.dot( to );
+
+        if ( dot < 0 ) {
+            to = new Quaternion( [ -to.data[ 0 ], -to.data[ 1 ], -to.data[ 2 ], -to.data[ 3 ] ] );
+            dot -= dot;
+        }
+
+        if ( 1 - dot < 0.001 ) { // too close
+            return this;
+        }
+
+        var scale0 = 1 - by;
+        var scale1 = by;
+
+        if ( ( 1 - dot ) > 0.1 ) {
+            var theta = Math.acos( dot );
+            var invSinTheta = 1 / Math.sin( theta );
+
+            scale0 = Math.sin( ( 1 - by ) * theta ) * invSinTheta;
+            scale1 = Math.sin( ( by * theta ) ) * invSinTheta;
+        }
+
+        this.data[ 0 ] = ( scale0 * this.data[ 0 ] ) + ( scale1 * to.data[ 0 ] );
+        this.data[ 1 ] = ( scale0 * this.data[ 1 ] ) + ( scale1 * to.data[ 1 ] );
+        this.data[ 2 ] = ( scale0 * this.data[ 2 ] ) + ( scale1 * to.data[ 2 ] );
+        this.data[ 3 ] = ( scale0 * this.data[ 3 ] ) + ( scale1 * to.data[ 3 ] );
+
+        return this;
     },
     clone: function() {
         return new Quaternion( this );
