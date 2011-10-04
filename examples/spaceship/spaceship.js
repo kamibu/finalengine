@@ -1,96 +1,86 @@
-var app = new Application();
+function Spaceship( modelfile, importer, input ) {
+    var self = this;
 
-app.camera.setPosition( new Vector3( [ 0, 5, 20 ] ) );
+    Node.call( this );
 
-var spaceship = new Node();
-window.spaceship = spaceship;
-app.scene.appendChild( spaceship );
+    this.bullets = [];
+    this.velocity = 0.5;
 
-var orientation = spaceship.getOrientation(),
-    base = new Quaternion( [ 0, 0, 0, 1 ] ),
-    left = new Quaternion( [ 0, 0, 0.707, 0.707 ] ),
-    right = new Quaternion( [ 0, 0, -0.707, 0.707 ] ),
-    targetOrientation = base;
+    importer.load( modelfile, function( model ) {
+        self.onModelLoad( model );
+    } );
 
-var yAngle = 0;
+    this.zOrientation = this.getOrientation();
+    this.base = new Quaternion( [ 0, 0, 0, 1 ] );
+    this.left = new Quaternion( [ 0, 0, 0.707, 0.707 ] );
+    this.right = new Quaternion( [ 0, 0, -0.707, 0.707 ] );
+    this.targetOrientation = this.base;
+    this.yAngle = 0;
 
-app.input.onKey( 'D', {
-    callback: function() {
-        targetOrientation = right;
-        yAngle -= 0.01;
-    },
-    endCallback: function() {
-        targetOrientation = base;
-    },
-    repeat: true
-} );
+    input.onKey( 'D', {
+        callback: function() {
+            self.targetOrientation = self.right;
+            self.yAngle -= 0.01;
+        },
+        endCallback: function() {
+            self.targetOrientation = self.base;
+        },
+        repeat: true
+    } );
 
-app.input.onKey( 'A', {
-    callback: function() {
-        targetOrientation = left;
-        yAngle += 0.01;
-    },
-    endCallback: function() {
-        targetOrientation = base;
-    },
-    repeat: true
-} );
+    input.onKey( 'A', {
+        callback: function() {
+            self.targetOrientation = self.left;
+            self.yAngle += 0.01;
+        },
+        endCallback: function() {
+            self.targetOrientation = self.base;
+        },
+        repeat: true
+    } );
 
-var bullets = [];
-
-app.input.onKey( 'SPACE', function() {
-    var bl = new Sphere();
-    bl.setPosition( new Vector3( [ 3, 0, 0 ] ) );
-    bl.setScale( 0.5 );
-    bl.combineWith( spaceship );
-    bl.material.setParameter( 'Diffuse', new Vector3( [ 1, 1, 0 ] ) );
-    bl.yAngle = yAngle;
-    app.scene.appendChild( bl );
-
-    var br = new Sphere();
-    br.setPosition( new Vector3( [ -3, 0, 0 ] ) );
-    br.setScale( 0.5 );
-    br.combineWith( spaceship );
-    br.material.setParameter( 'Diffuse', new Vector3( [ 1, 1, 0 ] ) );
-    br.yAngle = yAngle;
-    app.scene.appendChild( br );
-
-    bullets.push( bl );
-    bullets.push( br );
-} );
-
-app.update = function( dt ) {
-    var turnSpeed = targetOrientation == base ? 1 : 1;
-    var velocity = 0.5;
-    var angle = orientation.getAxisAngle().data[ 2 ];
-    yAngle = yAngle % 360;
-
-    spaceship.setOrientation( orientation.slerp( targetOrientation, turnSpeed * dt / 1000 ) );
-    spaceship.rotate( new Vector3( [ 0, 1, 0 ] ), yAngle );
-    spaceship.move( new Vector3( [ -velocity * Math.sin( yAngle ), 0, -velocity * Math.cos( yAngle ) ] ) );
-
-    for ( var i = 0; i < bullets.length; ++i ) {
-        bullets[ i ].move( new Vector3( [ -1 * Math.sin( bullets[ i ].yAngle ), 0, -1 * Math.cos( bullets[ i ].yAngle ) ] ) );
-    }
-    // spaceship.move( new Vector3( [ velocity * Math.sin( angle ), 0, velocity ] ) );
-};
-
-function onModelLoad( spaceshipModel ) {
-    spaceshipModel.rotate( new Vector3( [ 1, 0, 0 ] ), -Math.PI / 2 );
-    spaceship.appendChild( spaceshipModel );
+    input.onKey( 'SPACE', function() {
+        self.shoot();
+    } );
 }
 
-app.importer.load( 'spaceship.obj', onModelLoad );
+Spaceship.prototype = {
+    constructor: Spaceship,
+    onModelLoad: function( model ) {
+        model.rotate( new Vector3( [ 1, 0, 0 ] ), -Math.PI / 2 ); // fix orientation
+        this.appendChild( model );
+    },
+    shoot: function() {
+        var leftBullet = new Bullet( this.yAngle );
+        leftBullet.setPosition( new Vector3( [ -3, 0, 0 ] ) );
+        leftBullet.combineWith( this );
+        this.parent.appendChild( leftBullet );
+        this.bullets.push( leftBullet );
 
-// -----------------------------------------
+        var rightBullet = new Bullet( this.yAngle );
+        rightBullet.setPosition( new Vector3( [ 3, 0, 0 ] ) );
+        rightBullet.combineWith( this );
+        this.parent.appendChild( rightBullet );
+        this.bullets.push( rightBullet );
+    },
+    update: function( dt ) {
+        if ( !dt ) {
+            return this.Node_update.call( this );
+        }
 
-/*
-var app = new Application();
-app.scene.appendChild( new Cube() );
-*/
+        var turnSpeed = this.targetOrientation == this.base ? 1 : 1;
 
-// ----------------------------------------
+        //console.log( this.zOrientation, this.targetOrientation, turnSpeed, dt );
+        this.setOrientation( this.zOrientation.slerp( this.targetOrientation, turnSpeed * dt / 1000 ) );
+        //console.log( this.zOrientation, this.targetOrientation, turnSpeed, dt );
+        //console.log( '---' );
+        this.rotate( new Vector3( [ 0, 1, 0 ] ), this.yAngle );
+        this.move( new Vector3( [ -this.velocity * Math.sin( this.yAngle ), 0, -this.velocity * Math.cos( this.yAngle ) ] ) );
 
-/*
-new Application().importer.load( 'spaceship.obj' );
-*/
+        for ( var i = 0; i < this.bullets.length; ++i ) {
+            this.bullets[ i ].update( dt );
+        }
+    }
+};
+
+Spaceship.extend( Node );
