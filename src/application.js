@@ -78,12 +78,19 @@ function Application() {
     var t = Date.now();
     function renderLoop() {
         var now = Date.now();
-        self.onBeforeRender( t - now );
+        self.onBeforeRender( now - t );
         t = now;
         self.renderManager.renderScene( self.scene, self.camera );
         // console.log( self._nextFrame );
         self._nextFrame( renderLoop );
     }
+
+    var tUpdate = Date.now();
+    setInterval( function() {
+        var now = Date.now();
+        self.update( now - tUpdate );
+        tUpdate = now;
+    }, 1000 / 60 );
 
     // it is necessary to call this asynchronously because the inheriting
     // developer may override the constructor and will call the parent constructor
