@@ -61,16 +61,16 @@ Skeleton.prototype = {
         fillBucket( node );
         return bucket;
     },
-    onChildAdded: function( node, nodeAdded ) {
-        this.Node_onChildAdded( node, nodeAdded );
+    onChildAdded: function( nodeAdded ) {
+        this.Node_onChildAdded( nodeAdded );
         var joints = this.findJoints( nodeAdded );
         var l = joints.length;
         while ( l-- ) {
             this.jointSlots[ l ] = joints[ l ];
         }
     },
-    onChildRemoved: function( node, nodeRemoved ) {
-        this.Node_onChildRemoved( node, nodeRemoved );
+    onChildRemoved: function( nodeRemoved ) {
+        this.Node_onChildRemoved( nodeRemoved );
         var joints = this.findJoints( nodeRemoved );
         var l = joints.length;
         while ( l-- ) {

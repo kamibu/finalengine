@@ -38,13 +38,13 @@ Scene.prototype = {
         }
         return bucket;
     },
-    onChildAdded: function( node, nodeAdded ) {
-        this.Node_onChildAdded( node, nodeAdded );
+    onChildAdded: function( nodeAdded ) {
+        this.Node_onChildAdded( nodeAdded );
         var drawables = this.findClass( nodeAdded, Drawable );
         this.drawableList.push.apply( this.drawableList, drawables );
     },
-    onChildRemoved: function( node, nodeRemoved ) {
-        this.Node_onChildRemoved( node, nodeRemoved );
+    onChildRemoved: function( nodeRemoved ) {
+        this.Node_onChildRemoved( nodeRemoved );
         var drawables = this.findClass( nodeRemoved, Drawable );
         var l = drawables.length;
         while ( l-- ) {

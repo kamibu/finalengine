@@ -209,7 +209,7 @@ Node.prototype = {
         this.children.push( node );
         node.invalidate();
 
-        this.onChildAdded( this, node );
+        this.onChildAdded( node );
         return this;
     },
     /**
@@ -232,7 +232,7 @@ Node.prototype = {
         node.parent = Node.Origin;
         node.invalidate();
         children.splice( children.indexOf( node ), 1 );
-        this.onChildRemoved( node, this );
+        this.onChildRemoved( node );
 
         return this;
     },
@@ -241,9 +241,9 @@ Node.prototype = {
      * @params {Node} node The node that wars removed from the tree.
      * @params {Node} parentNode The previous parent of the node.
      */
-    onChildRemoved: function( node, parentNode ) {
+    onChildRemoved: function( node ) {
         if ( this !== Node.Origin ) {
-            this.parent.onChildRemoved( node, parentNode );
+            this.parent.onChildRemoved( node );
         }
     },
     /**
