@@ -289,30 +289,6 @@ Quaternion.prototype = {
     clone: function() {
         return new Quaternion( this );
     },
-    get 0 () {
-        throw 'Do not fucking use it';
-    },
-    set 0 ( value ) {
-        throw 'Do not fucking use it';
-    },
-    get 1 () {
-        throw 'Do not fucking use it';
-    },
-    set 1 ( value ) {
-        throw 'Do not fucking use it';
-    },
-    get 2 () {
-        throw 'Do not fucking use it';
-    },
-    set 2 ( value ) {
-        throw 'Do not fucking use it';
-    },
-    get 3 () {
-        throw 'Do not fucking use it';
-    },
-    set 3 ( value ) {
-        throw 'Do not fucking use it';
-    },
     get x () {
         return this.data[ 0 ];
     },
