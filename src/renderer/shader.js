@@ -1,6 +1,6 @@
 /*global UUID:true*/
 
-/** @public */
+/** @constructor */
 function Shader() {
     this.uid = Shader.uid++;
     this.uuid = UUID.generateCanonicalForm();
