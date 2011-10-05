@@ -142,7 +142,7 @@ Application.prototype = {
     /**
      * Override this method to update your application on every iteration of the main loop.
      * The main loop is an interval called around 60 times per second.
-     * @param dt milliseconds since the previous update 
+     * @param dt milliseconds since the previous update
      */
     update: function ( dt ) {
         // override me
