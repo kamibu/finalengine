@@ -104,7 +104,7 @@ Quaternion.prototype = {
         if ( !dest ) {
             dest = new Vector3();
         }
-        dest.data[ 0 ] = Math.atan2( 2 * ( d[ 3 ] * d[ 0 ] + d[ 1 ] * d[ 2 ] ), 1 - 2 * (d[1]*d[1] + d[2]*d[2] ) );
+        dest.data[ 0 ] = Math.atan2( 2 * ( d[ 3 ] * d[ 0 ] + d[ 1 ] * d[ 2 ] ), 1 - 2 * (d[ 0 ]*d[ 0 ] + d[ 1 ] * d[ 1 ] ) );
         dest.data[ 1 ] = Math.asin( 2 * ( d[ 3 ] * d[ 1 ] - d[ 2 ] * d[ 0 ] ) );
         dest.data[ 2 ] = Math.atan2( 2 * ( d[ 3 ] * d[ 2 ] + d[ 0 ] * d[ 1 ] ), 1 - 2 * ( d[ 1 ] * d[ 1 ] + d[ 2 ] * d[ 2 ] ) );
         return dest;
@@ -261,7 +261,7 @@ Quaternion.prototype = {
 
         if ( dot < 0 ) {
             to = new Quaternion( [ -to.data[ 0 ], -to.data[ 1 ], -to.data[ 2 ], -to.data[ 3 ] ] );
-            dot -= dot;
+            dot = -dot;
         }
 
         if ( 1 - dot < 0.001 ) { // too close
