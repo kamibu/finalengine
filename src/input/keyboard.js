@@ -69,7 +69,6 @@ Keyboard.prototype = {
             }
 
             if ( action.repeat ) {
-                console.log( 'setting repeat' );
                 action.repeatInterval = setInterval( action.callback, action.speed );
             }
         } );
