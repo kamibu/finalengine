@@ -17,7 +17,7 @@ function Spaceship( modelfile, importer, input ) {
     this.targetOrientation = this.base;
     this.yAngle = 0;
 
-    input.onKey( 'D', {
+    input.onKey( 'RIGHT_ARROW', {
         callback: function() {
             self.targetOrientation = self.right;
             self.yAngle -= 0.01;
@@ -28,7 +28,7 @@ function Spaceship( modelfile, importer, input ) {
         repeat: true
     } );
 
-    input.onKey( 'A', {
+    input.onKey( 'LEFT_ARROW', {
         callback: function() {
             self.targetOrientation = self.left;
             self.yAngle += 0.01;
