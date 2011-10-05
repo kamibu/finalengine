@@ -7,10 +7,14 @@
  *
  * A fast implementation of 4x4 transformation matrixes.
  *
- * It is used as an array of length 16 in row-major order
- * (e.g. you can use the [] operator to access elements).
+ * It has a Float32Array .data property that is an array of length 16 in row-major order.
  */
 function Matrix4( data ) {
+    /**
+     * @public
+     * @type Float32Array
+     * @default Identity matrix
+     */
     this.data = new Float32Array( 16 );
     if ( data ) {
         if ( data.data ) {

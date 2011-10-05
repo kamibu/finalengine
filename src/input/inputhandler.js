@@ -116,14 +116,25 @@ InputHandler.prototype.onKeyUp = function( key, action ) {
     return this.addAction( this.keyboard, Keyboard[ 'KEY_' + key ], action );
 };
 
+/**
+ * Register mousemove
+ * @see Mouse
+ */
 InputHandler.prototype.onMouseMove = function( action ) {
     this.addAction( this.mouse, Mouse.MOUSE_MOVE, action );
 };
 
+/**
+ * Register mousewheel movement
+ * @see Mouse
+ */
 InputHandler.prototype.onMouseWheel = function( action ) {
     this.addAction( this.mouse, Mouse.MOUSE_WHEEL, action );
 };
 
+/**
+ * Add device.
+ */
 InputHandler.prototype.addDevice = function( device ) {
     if ( this.devices.indexOf( device ) != -1 ) {
         throw "Device name already in use";
@@ -134,6 +145,9 @@ InputHandler.prototype.addDevice = function( device ) {
     return this;
 };
 
+/**
+ * Remove devices.
+ */
 InputHandler.prototype.removeDevice = function( device ) {
     this.devices.splice( this.devices.indexOf( device ), 1 );
     return this;

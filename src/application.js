@@ -11,10 +11,8 @@
 /**
  * @class
  *
- * Abstract application class that initializes basic modules and starts the main loop.
+ * The main object of a game. Initializes basic modules and starts the main loop.
  *
- * Extend this class to write your own initialization code on the constructor of a
- * child class.
  */
 function Application() {
     var self = this;
@@ -35,7 +33,7 @@ function Application() {
     /**
      * The default camera.
      *
-     * Its original position is at (0, 0, 10). Setting this property to another camera does not affect the rendering.
+     * Its original position is at (0, 0, 10). To change the camera used for rendering, change the scene, not this property.
      * @type Camera
      */
     this.camera = new Camera().setPosition( new Vector3( [ 0, 0, 10 ] ) );
@@ -113,6 +111,9 @@ Application.prototype = {
     },
     /**
      * Resize canvas.
+     * @param {Number} width
+     * @param {Number} height
+     * @returns this
      */
     resize: function( width, height ) {
         this.renderManager.resize( width, height );
@@ -124,9 +125,12 @@ Application.prototype = {
     },
     /**
      * Set the application title (alters the <title> tag).
+     * @param {String} title
+     * @returns this
      */
     setTitle: function( title ) {
         document.title = title;
+        return this;
     },
     /**
      * Override this method to update your application before rendering.
@@ -138,10 +142,15 @@ Application.prototype = {
     /**
      * Override this method to update your application on every iteration of the main loop.
      * The main loop is an interval called around 60 times per second.
-     * @param dt milliseconds since the previous update */
+     * @param dt milliseconds since the previous update 
+     */
     update: function ( dt ) {
         // override me
     },
+    /**
+     * Limit rendering frames per second.
+     * @param {Number} fps
+     */
     capFPS: function( fps ) {
         if ( fps >= 60 ) {
             this._nextFrame = window.requestAnimationFrame.bind( window );

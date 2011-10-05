@@ -2,7 +2,7 @@
 
 /**
  * @class
- * Loads .obj files.
+ * Loads .obj files into a tree of {@link Node} instances.
  */
 function OBJLoader() {
     this.ready = true;

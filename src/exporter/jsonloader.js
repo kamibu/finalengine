@@ -1,6 +1,18 @@
 /*global Request: false, Importer: false */
 
-var JSONLoader = {
+/**
+ * @class
+ *
+ * Loads JSON objects exported with the {@link Exporter} class.
+ */
+function JSONLoader() {
+}
+
+JSONLoader.prototype = {
+    constructor: JSONLoader,
+    /**
+     * @public
+     */
     load: function( path, importer, callback ) {
         var self = this;
         Request.get( path, {}, function( data ) {
@@ -23,4 +35,4 @@ var JSONLoader = {
     }
 };
 
-Importer.setLoader( 'json', JSONLoader );
+Importer.setLoader( 'json', new JSONLoader() );

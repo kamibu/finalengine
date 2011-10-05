@@ -15,15 +15,15 @@ function Drawable() {
     Node.call( this );
     /**
      * @public
-     * @type {Mesh}
+     * @type Mesh
      * @default null
      */
     this.mesh = null;
 
     /**
      * @public
-     * @type {Material}
-     * @default {BasicMaterial}
+     * @type Material
+     * @default Instance of BasicMaterial
      */
     this.material = new BasicMaterial();
 }
@@ -33,6 +33,8 @@ Drawable.prototype = {
     onBeforeRender: function( camera ) {
     },
     /**
+     * Set the material to be used for rendering this drawable.
+     *
      * @param {Material} material
      * @returns this
      */

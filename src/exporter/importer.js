@@ -4,7 +4,7 @@
 /**
  * @class
  *
- * Imports objects from JSON format.
+ * Imports assets into the game.
  */
 function Importer( resourcePath, defaultCallback ) {
     if ( resourcePath[ resourcePath.length - 1 ] !== '/' ) {
@@ -26,6 +26,9 @@ Importer.prototype = {
     constructor: Importer,
     /**
      * Loads an asset.
+     *
+     * Determines the loader to be used from the extension of the filename of the asset.
+     * If no extension is recongnized, JSON extension is assumed.
      *
      * @param {String} asset The path to the asset relative to resourcePath. If no extension is given (or not recognized), .json extension is assumed.
      * @param {Function} callback Callback that is called with the loaded object as a parameter.
@@ -60,6 +63,12 @@ Importer.prototype = {
 
 /**
  * Set the loader to be used for a given extension.
+ *
+ * The loader must have a load method that gets three parameters:
+ *  * the path to the asset
+ *  * the importer instance being used
+ *  * a callback
+ * and calls the third parameter (callback) with the loaded object.
  */
 Importer.setLoader = function( extension, loader ) {
     extension = extension.toLowerCase();

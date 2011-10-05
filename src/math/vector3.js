@@ -2,8 +2,10 @@
  *
  * A 3-element vector.
  *
- * Uses Float32Array internally.
- * Most methods alter the object whose method were called for performance reasons.
+ * It's elements are accessed via a .data property that is a Float32Array
+ * or with .x .y .z getters (which are slow and not recommended).
+ *
+ * Most methods alter the object whose method was called for performance reasons.
  */
 function Vector3( data ) {
     this.data = new Float32Array( 3 );

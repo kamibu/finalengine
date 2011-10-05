@@ -7,6 +7,11 @@
  * A fast mplementation of 3x3 rotation matrixes.
  */
 function Matrix3( data ) {
+    /**
+     * @public
+     * @type Float32Array
+     * @default Identity matrix
+     */
     this.data = new Float32Array( 9 );
     if ( data ) {
         if ( data.data ) {
