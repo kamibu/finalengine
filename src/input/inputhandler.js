@@ -89,7 +89,11 @@ InputHandler.prototype.onKey = function( key, action ) {
     if ( Array.isArray( key ) ) {
         for ( var i in key ) {
             // create copies of objects to avoid multiple references
-            this.onKey( key[ i ], { callback: action.callback } );
+            var act = {};
+            for ( var j in action ) {
+                act[ j ] = action[ j ];
+            }
+            this.onKey( key[ i ], act );
         }
         return;
     }
@@ -108,7 +112,11 @@ InputHandler.prototype.onKeyUp = function( key, action ) {
     }
     if ( Array.isArray( key ) ) {
         for ( var i in key ) {
-            this.onKeyUp( key[ i ], { endCallback: action.endCallback } );
+            var act = {};
+            for ( var j in action ) {
+                act[ j ] = action[ j ];
+            }
+            this.onKeyUp( key[ i ], act );
         }
         return;
     }
