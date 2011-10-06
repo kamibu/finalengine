@@ -13,7 +13,7 @@ function Transform() {
     this.position = new Vector3();
     this.orientation = new Quaternion();
     this.scale = 1;
-    this.invalidate();
+    this._invalidate();
     this.matrix = new Matrix4();
 }
 
@@ -23,7 +23,7 @@ Transform.prototype = {
         this.position.set( transform.position );
         this.orientation.set( transform.orientation );
         this.scale = transform.scale;
-        return this.invalidate();
+        return this._invalidate();
     },
     /**
      * @param {Vector3} position The new position as a vector.
@@ -31,7 +31,7 @@ Transform.prototype = {
      */
     setPosition: function( position ) {
         this.position.set( position );
-        return this.invalidate();
+        return this._invalidate();
     },
     /**
      * @param {Vector3} orientation The new orientation as a quaternion.
@@ -39,7 +39,7 @@ Transform.prototype = {
      */
     setOrientation: function( orientation ) {
         this.orientation.set( orientation );
-        return this.invalidate();
+        return this._invalidate();
     },
     /**
      * Scales the object uniformly.
@@ -48,7 +48,7 @@ Transform.prototype = {
      */
     setScale: function( scale ) {
         this.scale = scale;
-        return this.invalidate();
+        return this._invalidate();
     },
     /**
      * Returns a copy of the position vector.
@@ -86,7 +86,7 @@ Transform.prototype = {
         this.position.data.set( [ 0, 0, 0 ] );
         this.orientation.data.set( [ 0, 0, 0, 1 ] );
         this.scale = 1;
-        return this.invalidate();
+        return this._invalidate();
     },
     /**
      * Combines this transform with another and stores the result to this transform.
@@ -100,7 +100,7 @@ Transform.prototype = {
         this.orientation.preMultiply( transform.orientation );
         TempVars.release();
 
-        return this.invalidate();
+        return this._invalidate();
     },
     /**
      * Returns a transformation matrix.
@@ -111,8 +111,8 @@ Transform.prototype = {
         if ( !dest ) {
             dest = new Matrix4();
         }
-        if ( this.needsUpdate ) {
-            this.update();
+        if ( this._needsUpdate ) {
+            this._update();
         }
         return dest.set( this.matrix );
     },
@@ -137,7 +137,7 @@ Transform.prototype = {
         this.orientation.fromMatrix3( mat.toMatrix3( TempVars.getMatrix3() ) );
         TempVars.release();
 
-        return this.invalidate();
+        return this._invalidate();
     },
     /**
      * @param {Matrix4} [dest] Alter dest instead of creating a new Matrix4
@@ -147,8 +147,8 @@ Transform.prototype = {
         if ( !dest ) {
             dest = new Matrix4();
         }
-        if ( this.needsUpdate  ) {
-            this.update();
+        if ( this._needsUpdate  ) {
+            this._update();
         }
         this.orientation.toMatrix4( dest ).transpose();
         //Translation part rotated by the transposed 3x3 matrix
@@ -163,7 +163,7 @@ Transform.prototype = {
         a[ 14 ] = x * a[ 2 ] + y * a[ 6 ] + z * a[ 10 ];
         return dest;
     },
-    update: function() {
+    _update: function() {
         var mat = this.matrix,
             a = mat.data;
         this.orientation.toMatrix4( mat );
@@ -183,11 +183,11 @@ Transform.prototype = {
         a[ 12 ] = pos[ 0 ];
         a[ 13 ] = pos[ 1 ];
         a[ 14 ] = pos[ 2 ];
-        this.needsUpdate = false;
+        this._needsUpdate = false;
         return this;
     },
-    invalidate: function() {
-        this.needsUpdate = true;
+    _invalidate: function() {
+        this._needsUpdate = true;
         return this;
     }
 };

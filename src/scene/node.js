@@ -51,7 +51,7 @@ Node.prototype = {
         if ( !dest ) {
             dest = new Vector3();
         }
-        this.update();
+        this._update();
         return dest.set( this.worldTransform.position );
     },
     /**
@@ -72,7 +72,7 @@ Node.prototype = {
             this.position.scale( 1 / s );
         }
         TempVars.release();
-        return this.invalidate();
+        return this._invalidate();
     },
     /**
      * @param {Quaternion} [dest] Alter dest instead of creating new quaternion.
@@ -82,7 +82,7 @@ Node.prototype = {
         if ( !dest ) {
             dest = new Quaternion();
         }
-        this.update();
+        this._update();
         return this.worldTransform.getOrientation( dest );
     },
     /**
@@ -94,13 +94,13 @@ Node.prototype = {
         this.worldTransform.setOrientation( orientation );
         this.orientation.set( this.parent.getAbsoluteOrientation( TempVars.getQuaternion() ).inverse().preMultiply( orientation ) );
         TempVars.release();
-        return this.invalidate();
+        return this._invalidate();
     },
     /**
      * @returns {Number} scale
      */
     getAbsoluteScale: function() {
-        this.update();
+        this._update();
         return this.worldTransform.getScale();
     },
     /**
@@ -110,7 +110,7 @@ Node.prototype = {
     setAbsoluteScale: function( scale ) {
         this.worldTransform.setScale( scale );
         this.scale = scale / this.parent.getAbsoluteScale();
-        return this.invalidate();
+        return this._invalidate();
     },
     /**
      * Rotates node around itself or another object.
@@ -173,7 +173,7 @@ Node.prototype = {
         this.orientation.preMultiply( rot );
 
         TempVars.release();
-        return this.invalidate();
+        return this._invalidate();
     },
     /**
      * Moves node relative to its current position or the position of another node.
@@ -198,7 +198,7 @@ Node.prototype = {
         else {
             this.position.add( vector );
         }
-        return this.invalidate();
+        return this._invalidate();
     },
     appendChild: function( node ) {
         if ( node.parent !== Node.Origin ) {
@@ -207,7 +207,7 @@ Node.prototype = {
 
         node.parent = this;
         this.children.push( node );
-        node.invalidate();
+        node._invalidate();
 
         this.onChildAdded( node );
         return this;
@@ -230,7 +230,7 @@ Node.prototype = {
         var l = children.length;
 
         node.parent = Node.Origin;
-        node.invalidate();
+        node._invalidate();
         children.splice( children.indexOf( node ), 1 );
         this.onChildRemoved( node );
 
@@ -255,7 +255,7 @@ Node.prototype = {
         if ( !dest ) {
             dest = new Matrix4();
         }
-        this.update();
+        this._update();
         return dest.set( this.worldTransform.getMatrix() );
     },
     /**
@@ -267,23 +267,23 @@ Node.prototype = {
         if ( !dest ) {
             dest = new Matrix4();
         }
-        this.update();
+        this._update();
         return dest.set( this.worldTransform.getInverseMatrix() );
     },
-    update: function() {
-        if ( this.needsUpdate ) {
-            this.Transform_update();
+    _update: function() {
+        if ( this._needsUpdate ) {
+            this.Transform__update();
             var parent = this.parent;
-            parent.update();
+            parent._update();
             this.worldTransform.set( this ).combineWith( parent.worldTransform );
         }
         return this;
     },
-    invalidate: function() {
-        this.Transform_invalidate();
+    _invalidate: function() {
+        this.Transform__invalidate();
         var l = this.children.length;
         while ( l-- ) {
-            this.children[ l ].invalidate();
+            this.children[ l ]._invalidate();
         }
         return this;
     },
