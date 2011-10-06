@@ -54,6 +54,8 @@ input/keyboard.js
 input/mouse.js
 input/inputhandler.js
 
+ui/uicomponent.js
+
 rendermanager.js
 application.js
 

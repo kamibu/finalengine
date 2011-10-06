@@ -1,11 +1,12 @@
 /*global
-    Camera         : false,
-    Exporter       : false,
-    Importer       : false,
-    RenderManager  : false,
-    Scene          : false,
-    Vector3        : false,
-    InputHandler    : false
+    Camera          : false,
+    Exporter        : false,
+    Importer        : false,
+    RenderManager   : false,
+    Scene           : false,
+    Vector3         : false,
+    InputHandler    : false,
+    UIComponent     : false
 */
 
 /**
@@ -58,6 +59,11 @@ function Application() {
      * @type InputHandler
      */
     this.input = new InputHandler();
+
+    /**
+     * @type UIComponent
+     */
+    this.ui = new UIComponent();
 
     /**
      * The default input handler.
