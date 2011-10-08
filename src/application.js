@@ -6,7 +6,8 @@
     Scene           : false,
     Vector3         : false,
     InputHandler    : false,
-    UIComponent     : false
+    UIComponent     : false,
+    SoundManager    : false
 */
 
 /**
@@ -56,6 +57,7 @@ function Application() {
     this.exporter = new Exporter( 'resources' );
 
     /**
+     * The default input handler.
      * @type {InputHandler}
      */
     this.input = new InputHandler();
@@ -64,6 +66,11 @@ function Application() {
      * @type {UIComponent}
      */
     this.ui = new UIComponent();
+
+    /**
+     * @type SoundManager
+     */
+    this.soundManager = new SoundManager( this.scene );
 
     this.scene.appendChild( this.camera );
 
@@ -86,6 +93,7 @@ function Application() {
     var tUpdate = Date.now();
     setInterval( function() {
         var now = Date.now();
+        self.soundManager.update( now - tUpdate );
         self.update( now - tUpdate );
         tUpdate = now;
     }, 1000 / 60 );

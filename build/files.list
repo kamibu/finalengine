@@ -54,9 +54,15 @@ input/inputhandler.js
 ui/uicomponent.js
 
 rendermanager.js
-application.js
 
 exporter/exporter.js
 exporter/importer.js
 exporter/jsonloader.js
 exporter/objloader.js
+
+sound/soundloader.js
+sound/soundasset.js
+sound/soundsource.js
+sound/soundmanager.js
+
+application.js
