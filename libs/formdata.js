@@ -23,16 +23,16 @@
         var body = "";
         this._fields.forEach( function( field ) {
             body += "--" + boundary + "\r\n";
-            // file upload
-            if (field[1].name) {
-                var file = field[1];
-                body += "Content-Disposition: form-data; name=\""+ field[0] +"\"; filename=\""+ file.name +"\"\r\n";
-                body += "Content-Type: "+ file.type +"\r\n\r\n";
-                body += file.getAsBinary() + "\r\n";
-            } else {
+//            // file upload
+//            if (field[1].name) {
+//                var file = field[1];
+//                body += "Content-Disposition: form-data; name=\""+ field[0] +"\"; filename=\""+ file.name +"\"\r\n";
+//                body += "Content-Type: "+ file.type +"\r\n\r\n";
+//                body += file.getAsBinary() + "\r\n";
+//            } else {
                 body += "Content-Disposition: form-data; name=\""+ field[0] +"\";\r\n\r\n";
                 body += field[1] + "\r\n";
-            }
+//            }
         } );
         body += "--" + boundary +"--";
         return body;

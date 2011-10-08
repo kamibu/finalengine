@@ -1,6 +1,6 @@
 /**
- * @class
- * @extends InputDevice
+ * @constructor
+ * @implements InputDevice
  */
 function Mouse() {
     this.down = {};
@@ -10,13 +10,13 @@ function Mouse() {
 
     this.actions = {};
 
-    window.addEventListener( 'mousedown', this.handleMouseDown.bind( this ) );
-    window.addEventListener( 'mouseup', this.handleMouseUp.bind( this ) );
-    window.addEventListener( 'mousemove', this.handleMouseMove.bind( this ) );
-    window.addEventListener( 'mousewheel', this.handleMouseWheel.bind( this ) );
+    window.addEventListener( 'mousedown', Mouse.prototype.handleMouseDown.bind( this ), false );
+    window.addEventListener( 'mouseup', Mouse.prototype.handleMouseUp.bind( this ), false );
+    window.addEventListener( 'mousemove', Mouse.prototype.handleMouseMove.bind( this ), false );
+    window.addEventListener( 'mousewheel', Mouse.prototype.handleMouseWheel.bind( this ), false );
 
     // firefox:
-    window.addEventListener( 'DOMMouseScroll', this.handleMouseWheel.bind( this ) );
+    window.addEventListener( 'DOMMouseScroll', Mouse.prototype.handleMouseWheel.bind( this ), false );
 }
 
 Mouse.prototype = {
@@ -109,13 +109,13 @@ Mouse.prototype = {
     }
 };
 
-/** @public */
+/** @static */
 Mouse.BUTTON_LEFT = 0;
-/** @public */
+/** @static */
 Mouse.BUTTON_MIDDLE = 1;
-/** @public */
+/** @static */
 Mouse.BUTTON_RIGHT = 2;
-/** @public */
+/** @static */
 Mouse.MOUSE_WHEEL = 3;
-/** @public */
+/** @static */
 Mouse.MOUSE_MOVE = 4;

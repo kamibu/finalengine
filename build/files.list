@@ -32,16 +32,11 @@ renderer/framebuffer.js
 bounding/boundingsphere.js
 bounding/boundingbox.js    
 
-scene/node.js
+scene/scenenode.js
 scene/camera.js
 scene/drawable.js
 scene/lights/light.js
 scene/scene.js
-
-animation/animable.js
-animation/joint.js
-animation/skeleton.js
-animation/animation.js
 
 material/material.js
 material/basicmaterial.js
@@ -70,8 +65,4 @@ sound/soundasset.js
 sound/soundsource.js
 sound/soundmanager.js
 
-
 application.js
-
-test/testcase.js
-test/browser/testview.js

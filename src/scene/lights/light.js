@@ -1,8 +1,14 @@
-// extern
-var Node;
+/*global
+    SceneNode : false
+*/
 
+
+/**
+ * @constructor
+ * @extends SceneNode
+ */
 function Light(){
-    Node.call( this );
+    SceneNode.call( this );
 }
 
-Light.extend( Node );
+Light.extend( SceneNode );

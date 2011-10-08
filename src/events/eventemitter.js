@@ -1,5 +1,5 @@
 /**
- * @class
+ * @constructor
  * Abstract class for objects that fire events.
  *
  * Similar API to the node.js EventEmitter.
@@ -12,8 +12,8 @@ EventEmitter.prototype = {
     constructor: EventEmitter,
     /**
      * Register listener to an event.
-     * @param {String} name The name of the event.
-     * @param {Function} listener
+     * @param {string} name The name of the event.
+     * @param {Function} action
      */
     on: function( name, action ) {
         if ( !( name in this._events_ ) ) {
@@ -23,8 +23,8 @@ EventEmitter.prototype = {
     },
     /**
      * Like {@link EventEmitter.on} but callback is called only the first time.
-     * @param {String} name The name of the event
-     * @param {Function} callback
+     * @param {string} name The name of the event
+     * @param {Function} action
      * @see EventEmitter.on
      */
     once: function( name, action ) {
@@ -33,7 +33,7 @@ EventEmitter.prototype = {
     },
     /**
      * Remove all listeners registered to an event.
-     * @param {String} name The event name.
+     * @param {string} name The event name.
      */
     clearListeners: function( name ) {
         this._events_[ name ] = [];
@@ -42,7 +42,7 @@ EventEmitter.prototype = {
      * Fires an event.
      *
      * Calls all listeners registered for this event.
-     * @param {String} name The event name.
+     * @param {string} name The event name.
      */
     emit: function( name ) {
         var params = Array.prototype.slice.call( arguments, 1 );
@@ -67,8 +67,8 @@ EventEmitter.prototype = {
     },
     /**
      * Remove a specific listener from an event.
-     * @param {String} name The event name.
-     * @param {Function} listener
+     * @param {string} name The event name.
+     * @param {Function} callback
      */
     removeListener: function( name, callback ) {
         if ( !this._events_[ name ] ) {

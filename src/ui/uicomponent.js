@@ -1,5 +1,12 @@
-/*global UUID: false, Request: false */
+/*global
+    UUID: false,
+    Request: false
+*/
 
+/**
+ * @constructor
+ *
+ */
 function UIComponent() {
     this.id = UUID.generateCanonicalForm();
 }

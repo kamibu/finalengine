@@ -1,15 +1,15 @@
 /*global
     Drawable  :  false,
-    Node      :  false
+    SceneNode      :  false
 */
 
 /**
- * @class
+ * @constructor
  * The tree of nodes to be rendered.
- * @extends Node
+ * @extends SceneNode
  */
 function Scene() {
-    Node.call( this );
+    SceneNode.call( this );
     this.drawableList = [];
 }
 
@@ -17,7 +17,7 @@ Scene.prototype = {
     constructor: Scene,
     /**
      * Returns the nodes in the tree below a given node that are instances of theClass.
-     * @param {Node} node
+     * @param {SceneNode} node
      * @param theClass
      * @returns {Array} An array of nodes.
      */
@@ -38,13 +38,19 @@ Scene.prototype = {
         }
         return bucket;
     },
+    /**
+     * @override
+     */
     onChildAdded: function( nodeAdded ) {
-        this.Node_onChildAdded( nodeAdded );
+        this.SceneNode_onChildAdded( nodeAdded );
         var drawables = this.findClass( nodeAdded, Drawable );
         this.drawableList.push.apply( this.drawableList, drawables );
     },
+    /**
+     * @override
+     */
     onChildRemoved: function( nodeRemoved ) {
-        this.Node_onChildRemoved( nodeRemoved );
+        this.SceneNode_onChildRemoved( nodeRemoved );
         var drawables = this.findClass( nodeRemoved, Drawable );
         var l = drawables.length;
         while ( l-- ) {
@@ -53,4 +59,4 @@ Scene.prototype = {
     }
 };
 
-Scene.extend( Node );
+Scene.extend( SceneNode );

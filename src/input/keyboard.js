@@ -1,17 +1,17 @@
 /*global InputDevice:true */
 
 /**
- * @class
- * @extends InputDevice
+ * @constructor
+ * @implements InputDevice
  */
 function Keyboard() {
     this.actions = {};
     this.keyData = {};
     this.pressed = {};
 
-    window.addEventListener( 'keydown', this.handleKeyDown.bind( this ) );
-    window.addEventListener( 'keyup', this.handleKeyUp.bind( this ) );
-    document.addEventListener( 'mouseout', this.handleMouseOut.bind( this ), false );
+    window.addEventListener( 'keydown', Keyboard.prototype.handleKeyDown.bind( this ), false );
+    window.addEventListener( 'keyup', Keyboard.prototype.handleKeyUp.bind( this ), false );
+    document.addEventListener( 'mouseout', Keyboard.prototype.handleMouseOut.bind( this ), false );
 }
 Keyboard.prototype = {
     getKeyData: function( keyCode ) {
@@ -170,73 +170,69 @@ Keyboard.prototype = {
 
 Keyboard.extend( InputDevice );
 
-/**#@+
- * @const
- */
-
-/** @public */
+/** @static */
 Keyboard.KEY_LEFT_ARROW = 37;
-/** @public */
+/** @static */
 Keyboard.KEY_UP_ARROW = 38;
-/** @public */
+/** @static */
 Keyboard.KEY_RIGHT_ARROW = 39;
-/** @public */
+/** @static */
 Keyboard.KEY_DOWN_ARROW = 40;
-/** @public */
+/** @static */
 Keyboard.KEY_SPACE = 32;
-/** @public */
+/** @static */
 Keyboard.KEY_ENTER = 13;
-/** @public */
+/** @static */
 Keyboard.KEY_ESCAPE = 27;
-/** @public */
+/** @static */
 Keyboard.KEY_A = 65;
-/** @public */
+/** @static */
 Keyboard.KEY_B = 66;
-/** @public */
+/** @static */
 Keyboard.KEY_C = 67;
-/** @public */
+/** @static */
 Keyboard.KEY_D = 68;
-/** @public */
+/** @static */
 Keyboard.KEY_E = 69;
-/** @public */
+/** @static */
 Keyboard.KEY_F = 70;
-/** @public */
+/** @static */
 Keyboard.KEY_G = 71;
-/** @public */
+/** @static */
 Keyboard.KEY_H = 72;
-/** @public */
+/** @static */
 Keyboard.KEY_I = 73;
-/** @public */
+/** @static */
 Keyboard.KEY_J = 74;
-/** @public */
+/** @static */
 Keyboard.KEY_K = 75;
-/** @public */
+/** @static */
 Keyboard.KEY_L = 76;
-/** @public */
+/** @static */
 Keyboard.KEY_M = 77;
-/** @public */
+/** @static */
 Keyboard.KEY_N = 78;
-/** @public */
+/** @static */
 Keyboard.KEY_O = 79;
-/** @public */
+/** @static */
 Keyboard.KEY_P = 80;
-/** @public */
+/** @static */
 Keyboard.KEY_Q = 81;
-/** @public */
+/** @static */
 Keyboard.KEY_R = 82;
-/** @public */
+/** @static */
 Keyboard.KEY_S = 83;
-/** @public */
+/** @static */
 Keyboard.KEY_T = 84;
-/** @public */
+/** @static */
 Keyboard.KEY_U = 85;
-/** @public */
+/** @static */
 Keyboard.KEY_V = 86;
-/** @public */
+/** @static */
 Keyboard.KEY_W = 87;
-/** @public */
+/** @static */
 Keyboard.KEY_X = 88;
-/** @public */
+/** @static */
 Keyboard.KEY_Y = 89;
-/** @public */
+/** @static */
 Keyboard.KEY_Z = 90;

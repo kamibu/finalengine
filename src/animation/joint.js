@@ -1,14 +1,19 @@
-// extern
-var Node, Transform;
+/*global
+    Transform : false,
+    SceneNode     : false,
+*/
 
+/**
+ * @constructor
+ */
 function Joint() {
     this.jointUid = 0;
     this.inverseBindTransform = new Transform();
-    Node.call( this );
+    SceneNode.call( this );
 }
 
 Joint.prototype = {
     constructor: Joint
 };
 
-Joint.extend( Node );
+Joint.extend( SceneNode );

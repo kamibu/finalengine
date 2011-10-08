@@ -1,6 +1,14 @@
-// extern
-var Buffer, Drawable, Mesh, VertexAttribute;
+/*global
+    Buffer           :  false,
+    Drawable         :  false,
+    Mesh             :  false,
+    VertexAttribute  :  false
+*/
 
+/**
+ * @constructor
+ * @extends Drawable
+ */
 function Cube() {
     Drawable.call( this );
     var vertices = [

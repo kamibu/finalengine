@@ -4,6 +4,10 @@ function assert( condition, description ) {
     }
 }
 
+
+/**
+ * @param {...*} value
+ */
 function assertIn( value ) {
     for ( var i = 1; i < arguments.length - 1; ++i ) {
         if ( value == arguments[ i ] ) {

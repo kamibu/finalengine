@@ -1,3 +1,6 @@
+/**
+ * @constructor
+ */
 function Animation( name ) {
     this.name = name;
     this.keyframes = [];

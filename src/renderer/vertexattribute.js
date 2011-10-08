@@ -1,6 +1,13 @@
-// extern
-var assert, Buffer, UUID;
+/*global
+    assert : false,
+    Buffer : false,
+    UUID   : false
+*/
 
+/**
+ * @constructor
+ * @param {string=} semantic The semantics of the Vertexattrubute
+ */
 function VertexAttribute( semantic ) {
     this.uuid = UUID.generateCanonicalForm();
     this.name = this.uuid;

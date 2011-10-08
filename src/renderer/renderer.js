@@ -1,14 +1,26 @@
-// extern
-var assert, Framebuffer, Buffer, Mesh, Shader, Texture, debug;
+/*global
+    assert       :  false,
+    Framebuffer  :  false,
+    Buffer       :  false,
+    Mesh         :  false,
+    Shader       :  false,
+    Texture      :  false,
+    debug        :  false
+*/
 
-/*
+/**
+ * @constructor
+ *
  * Renderer is the central point of the graphics library.
  * It abstracts the underlying API in some simple methods.
  * All the drawing should be made with calls to the renderer
  * and not directly. Also this is the only place that WebGL
  * calls should exist.
+ *
+ * @param {HTMLCanvasElement=} canvas The canvas element to draw to. (optional)
+ * @param {number=} width The width of the canvas. (optional)
+ * @param {number=} height The height of the canvas. (optional)
  */
-
 var Renderer = function( canvas, width, height ) {
     /*
         As the renderer is running, several objects are copyied to the
@@ -138,9 +150,11 @@ var Renderer = function( canvas, width, height ) {
 };
 
 
-
+/** @const */
 Renderer.MAX_FRAGMENT_TEXTURE_UNITS = 1;
+/** @const */
 Renderer.MAX_VERTEX_TEXTURE_UNITS = 2;
+/** @const */
 Renderer.FLOAT_TEXTURE = 3;
 
 Renderer.prototype = {
@@ -255,7 +269,7 @@ Renderer.prototype = {
             }
             this.gl.bindBuffer( type, this.bufferObjects[ buffer.uid ] );
             this.gl.bufferSubData( type, 0, buffer.data );
-            this.gl.bindbuffer( type, null );
+            this.gl.bindBuffer( type, null );
         }
         buffer.needsUpdate = false;
 	},
@@ -534,7 +548,7 @@ Renderer.prototype = {
                     textureObject.bindPosition = position;
 
                     gl.activeTexture( gl.TEXTURE0 + position.index );
-                    gl.bindTexture( gl.TEXTURE_CUBEMAP, textureObject );
+                    gl.bindTexture( gl.TEXTURE_CUBE_MAP, textureObject );
                 }
                 if ( position.previous ) {
                     if ( position.next ) {
@@ -886,9 +900,6 @@ Renderer.prototype = {
                 break;
             case Mesh.TRIANGLE_STRIP:
                 mode = gl.TRIANGLE_STRIP;
-                break;
-            case Mesh.TRIANGLE_LOOP:
-                mode = gl.TRIANGLE_LOOP;
                 break;
         }
 

@@ -1,6 +1,12 @@
-//extern
-var assert, Texture;
+/*global
+    assert  : false,
+    Texture : false
+*/
 
+/**
+ * @constructor
+ *
+ */
 function Framebuffer( width, height ) {
     this.uid = Framebuffer.uid++;
 

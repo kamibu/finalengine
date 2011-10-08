@@ -2,17 +2,17 @@
     assert         :  false,
     BasicMaterial  :  false,
     Material       :  false,
-    Node           :  false
+    SceneNode      :  false
 */
 
 /**
- * @class
+ * @constructor
  * A node with a 3D representation.
  *
- * @extends Node
+ * @extends SceneNode
  */
 function Drawable() {
-    Node.call( this );
+    SceneNode.call( this );
     /**
      * @public
      * @type Mesh
@@ -47,7 +47,7 @@ Drawable.prototype = {
     },
     getExportData: function( exporter ) {
         var ret = {};
-        ret.parent = this.Node_getExportData( exporter );
+        ret.parent = this.SceneNode_getExportData( exporter );
         ret.mesh = this.mesh.name;
         ret.material = this.material.name;
         exporter.alsoSave( this.mesh );
@@ -55,7 +55,7 @@ Drawable.prototype = {
         return ret;
     },
     setImportData: function( importer, data ) {
-        this.Node_setImportData( importer, data.parent );
+        this.SceneNode_setImportData( importer, data.parent );
         var self = this;
         importer.load( data.mesh, function( mesh ) {
             self.mesh = mesh;
@@ -66,4 +66,4 @@ Drawable.prototype = {
     }
 };
 
-Drawable.extend( Node );
+Drawable.extend( SceneNode );

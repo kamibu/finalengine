@@ -4,13 +4,24 @@
  */
 
 function makeRequestAnimationFrame() {
-    return window.webkitRequestAnimationFrame ||
-           window.mozRequestAnimationFrame    ||
-           window.oRequestAnimationFrame      ||
-           window.msRequestAnimationFrame     ||
-           function( callback ) {
-               window.setTimeout( callback, 1000 / 60 );
-           };
+    if ( typeof window.webkitRequestAnimationFrame !== 'undefined' ) {
+        return window.webkitRequestAnimationFrame;
+    }
+    if ( typeof window.mozRequestAnimationFrame !== 'undefined' ) {
+        return window.mozRequestAnimationFrame;
+    }
+    if ( typeof window.oRequestAnimationFrame !== 'undefined' ) {
+        return window.oRequestAnimationFrame;
+    }
+    if ( typeof window.msRequestAnimationFrame !== 'undefined' ) {
+        return window.msRequestAnimationFrame;
+    }
+
+    function fallback( callback ) {
+       window.setTimeout( callback, 1000 / 60 );
+    }
+
+    return fallback;
 }
 
 if ( !window.requestAnimationFrame ) {

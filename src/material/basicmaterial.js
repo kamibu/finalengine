@@ -4,6 +4,10 @@
     Vector3   :  false
 */
 
+/**
+ * @constructor
+ * @extends Material
+ */
 function BasicMaterial() {
     Material.call( this );
     this.name = 'BasicMaterial';

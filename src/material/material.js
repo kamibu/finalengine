@@ -9,7 +9,7 @@
 */
 
 /**
- * @class
+ * @constructor
  */
 function Material() {
     this.uuid = UUID.generateCanonicalForm();

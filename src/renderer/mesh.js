@@ -1,25 +1,26 @@
 /*global assert:true, assertIn: true, Buffer: true, UUID: true, VertexAttribute: true, TempVars: true*/
 
 /**
- * @class
+ * @constructor
  *
  * The 3D representation of a {@link Drawable}.
  *
  * <p>This is the representation object that the lower-level {@link Renderer} class can use to render 3D objects.</p>
  */
 function Mesh() {
-    /* @public */
+    /** @public */
     this.uuid = UUID.generate();
 
-    /* @public */
+    /** @public */
     this.name = this.uuid;
 
-    /* @public */
+    /** @public */
     this.mode = Mesh.TRIANGLES;
 
-    /* @public */
+    /** @public */
     this.vertexAttributes = {};
 
+    /** @public */
 	this.indexBuffer = null;
 }
 
@@ -135,7 +136,7 @@ Mesh.prototype = {
         }
         TempVars.release();
         var fNormals = [];
-        for ( j, i = 0; i < normals.length; ++i ) {
+        for ( i = 0; i < normals.length; ++i ) {
             if ( normals[ i ].length === 0 ) {
                 fNormals.push( 0, 0, 1 );
                 continue;
@@ -177,20 +178,17 @@ Mesh.prototype = {
     }
 };
 
-/**#@+
- * @const
- */
-/** @public */
+/** @const */
 Mesh.POINTS = 1;
-/** @public */
+/** @const */
 Mesh.LINES = 2;
-/** @public */
+/** @const */
 Mesh.LINE_LOOP = 3;
-/** @public */
+/** @const */
 Mesh.LINE_STRIP = 4;
-/** @public */
+/** @const */
 Mesh.TRIANGLES = 5;
-/** @public */
+/** @const */
 Mesh.TRIANGLE_STRIP = 6;
-/** @public */
+/** @const */
 Mesh.TRIANGLE_FAN = 7;

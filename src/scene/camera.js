@@ -1,15 +1,19 @@
-/*global Matrix4: true, Node: true*/
+/*global
+    Matrix4    : false,
+    SceneNode  : false
+*/
 
 /**
- * @class
+ * @constructor
  *
  * Basic camera class.
  *
  * Add a camera to a {@link Scene} to render with this camera.
  * The Application scene has a camera added by default.
+ * @extends SceneNode
  */
 function Camera() {
-    Node.call( this );
+    SceneNode.call( this );
 
     /**
      * @public
@@ -60,14 +64,15 @@ Camera.prototype = {
     constructor: Camera,
 
     /**
+     * @public
      * Updates perspective projection matrix based on the camera properties.
      */
     setPerspective: function () {
         Matrix4.perspective( this.fieldOfView, this.width / this.height, this.zNear, this.zFar, this.projectionMatrix );
         this.ratio = this.width / this.height;
-        this.horizCosFOV = Math.cos( Math.atan( this.tanFOV * this.ratio ) );
-        this.horizTanFOV = this.tanFOV * this.ratio;
+        this.horizontalCosFielfOfView = Math.cos( Math.atan( this.tanFieldOfView * this.ratio ) );
+        this.horizontalTanFieldOfView = this.tanFieldOfView * this.ratio;
     }
 };
 
-Camera.extend( Node );
+Camera.extend( SceneNode );

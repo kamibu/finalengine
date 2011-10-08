@@ -1,7 +1,7 @@
 /*global Request: false, Importer: false */
 
 /**
- * @class
+ * @constructor
  *
  * Loads JSON objects exported with the {@link Exporter} class.
  */
