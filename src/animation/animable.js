@@ -1,6 +1,12 @@
-// extern
-var Drawable, Node, TempVars;
+/*global
+    Drawable : false,
+    SceneNode     : false,
+    TempVars : false
+*/
 
+/**
+ * @constructor
+ */
 function Animable(){
     Drawable.call( this );
     this.skeleton = null;

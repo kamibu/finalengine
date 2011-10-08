@@ -1,6 +1,12 @@
-// extern
-var assertIn, UUID;
+/*global
+    assertIn : false,
+    UUID     : false
+*/
 
+/**
+ * @constructor
+ * @param {number=} type The type of the texture to create (optional)
+ */
 function Texture( type ) {
     this.uid = Texture.uid++;
     this.uuid = UUID.generateCanonicalForm();
@@ -27,29 +33,47 @@ function Texture( type ) {
 }
 
 Texture.uid = 0;
+
+/** @const */
 Texture.IMAGE = 1;
+/** @const */
 Texture.CUBEMAP = 2;
 
+/** @const */
 Texture.NEAREST = 1;
+/** @const */
 Texture.LINEAR = 2;
 
+/** @const */
 Texture.NEAREST_MIPMAP_NEAREST = 3;
+/** @const */
 Texture.LINEAR_MIPMAP_NEAREST = 4;
 
+/** @const */
 Texture.NEAREST_MIPMAP_LINEAR = 5;
+/** @const */
 Texture.LINEAR_MIPMAP_LINEAR = 6;
 
+/** @const */
 Texture.REPEAT = 1;
+/** @const */
 Texture.MIRROR_REPEAT = 2;
+/** @const */
 Texture.CLAMP_TO_EDGE = 3;
 
+/** @const */
 Texture.LOWER_LEFT_CORNER = 1;
+/** @const */
 Texture.UPPER_LEFT_CORNER = 2;
 
+/** @const */
 Texture.RGB = 1;
+/** @const */
 Texture.RGBA = 2;
 
+/** @const */
 Texture.UNSIGNED_BYTE = 1;
+/** @const */
 Texture.FLOAT = 2;
 
 Texture.prototype = {

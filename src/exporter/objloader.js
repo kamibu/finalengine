@@ -1,8 +1,8 @@
-/*global EventWaiter: false, Importer: false, Texture: false, Node: false, Buffer: false, VertexAttribute: false, Drawable: false, Mesh: false, TexturedMaterial: false, BasicMaterial: false, Vector3: false */
+/*global EventWaiter: false, Importer: false, Texture: false, SceneNode: false, Buffer: false, VertexAttribute: false, Drawable: false, Mesh: false, TexturedMaterial: false, BasicMaterial: false, Vector3: false */
 
 /**
- * @class
- * Loads .obj files into a tree of {@link Node} instances.
+ * @constructor
+ * Loads .obj files into a tree of {@link SceneNode} instances.
  */
 function OBJLoader() {
     this.ready = true;
@@ -107,8 +107,8 @@ OBJLoader.prototype = {
         matReq.send();
     },
     /**
-     * Generates a node tree (an instance of {@link Node}) that can be added to a scene for rendering.
-     * @param {String} url The complete url to the .obj file
+     * Generates a node tree (an instance of {@link SceneNode}) that can be added to a scene for rendering.
+     * @param {string} url The complete url to the .obj file
      * @param {Function} callback Called when loading is finished with the node tree as a parameter.
      */
     load: function( url, importer, callback ) {
@@ -119,7 +119,7 @@ OBJLoader.prototype = {
             }
             var myCallback = callback;
             callback = function( objectsByMaterial ) {
-                var node = new Node();
+                var node = new SceneNode();
                 for ( var material in objectsByMaterial ) {
                     var d = new Drawable();
                     var obj = objectsByMaterial[ material ];

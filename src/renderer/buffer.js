@@ -1,6 +1,13 @@
-// extern
-var assertIn, UUID;
+/*global
+    assertIn : false,
+    UUID     : false
+*/
 
+/**
+ * @constructor
+ * @param {number=} type The type of the buffer (optional)
+ * @param {number=} usage The type of the buffer (optional)
+ */
 function Buffer( type, usage ) {
     this.uuid = UUID.generateCanonicalForm();
     this.name = this.uuid;
@@ -15,10 +22,15 @@ function Buffer( type, usage ) {
 
 Buffer.uid = 0;
 
+/** @const */
 Buffer.STATIC = 1;
+/** @const */
 Buffer.DYNAMIC = 2;
+/** @const */
 Buffer.STREAM = 3;
+/** @const */
 Buffer.DATA_BUFFER = 4;
+/** @const */
 Buffer.ELEMENT_BUFFER = 5;
 
 

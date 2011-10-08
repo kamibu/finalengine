@@ -1,7 +1,7 @@
 /*global Matrix4:true, Renderer:true, Drawable:true, Framebuffer:true, Mesh:true, Buffer:true, VertexAttribute:true, Light:true, Texture:true*/
 
 /**
- * @class
+ * @constructor
  */
 function RenderManager() {
     this.renderer = new Renderer();

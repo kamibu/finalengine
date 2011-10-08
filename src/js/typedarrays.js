@@ -3,6 +3,9 @@
  * serialization of buffers into JSON.
  */
 Object.defineProperty( Float32Array.prototype, "toArray", {
+    /**
+     * @this {Float32Array}
+     */
     value: function() {
         var l = this.length;
         var ret = [];
@@ -14,6 +17,9 @@ Object.defineProperty( Float32Array.prototype, "toArray", {
 } );
 
 Object.defineProperty( Uint16Array.prototype, "toArray", {
+    /**
+     * @this {Uint16Array}
+     */
     value: function() {
         var l = this.length;
         var ret = [];

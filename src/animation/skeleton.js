@@ -1,8 +1,14 @@
-//extern
-var Joint, Node, Transform;
+/*global
+    Joint  : false,
+    SceneNode      : false,
+    Transform : false
+*/
 
+/**
+ * @constructor
+ */
 function Skeleton() {
-    Node.call( this );
+    SceneNode.call( this );
     this.jointPositionsAndScales = [];
     this.jointOrientations = [];
 
@@ -61,16 +67,22 @@ Skeleton.prototype = {
         fillBucket( node );
         return bucket;
     },
+    /**
+     * @override
+     */
     onChildAdded: function( nodeAdded ) {
-        this.Node_onChildAdded( nodeAdded );
+        this.SceneNode_onChildAdded( nodeAdded );
         var joints = this.findJoints( nodeAdded );
         var l = joints.length;
         while ( l-- ) {
             this.jointSlots[ l ] = joints[ l ];
         }
     },
+    /**
+     * @override
+     */
     onChildRemoved: function( nodeRemoved ) {
-        this.Node_onChildRemoved( nodeRemoved );
+        this.SceneNode_onChildRemoved( nodeRemoved );
         var joints = this.findJoints( nodeRemoved );
         var l = joints.length;
         while ( l-- ) {
@@ -86,4 +98,4 @@ Skeleton.prototype = {
     }
 };
 
-Skeleton.extend( Node );
+Skeleton.extend( SceneNode );

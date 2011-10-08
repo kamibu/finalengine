@@ -1,6 +1,11 @@
-// extern
-var EventEmitter;
+/*global
+    EventEmitter : false
+*/
 
+/**
+ * @constructor
+ * @extends EventEmitter
+ */
 function EventWaiter() {
     this._waitingList = [];
     EventEmitter.call( this );

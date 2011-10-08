@@ -3,6 +3,10 @@
     Vector3   :  false
 */
 
+
+/**
+ * @constructor
+ */
 function BoundingBox() {
     this.halfExtent = new Vector3();
 }

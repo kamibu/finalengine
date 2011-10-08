@@ -4,6 +4,10 @@
     Vector3   :  false
 */
 
+/**
+ * @constructor
+ * @param {Array|Quaternion=} data A Javascript array with the initializing data (optional)
+ */
 function Quaternion( data ) {
     this.data = new Float32Array( 4 );
     if ( data ) {

@@ -10,7 +10,7 @@
 */
 
 /**
- * @class
+ * @constructor
  *
  * The main object of a game. Initializes basic modules and starts the main loop.
  *
@@ -21,13 +21,13 @@ function Application() {
     /**
      * The render manager used for rendering the scene.
      * Its {@link RenderManager#renderScene} method is called in a loop.
-     * @type RenderManager
+     * @type {RenderManager}
      */
     this.renderManager = new RenderManager();
 
     /**
      * The scene to be rendered. Change this property if you need to render some other scene object.
-     * @type Scene
+     * @type {Scene}
      */
     this.scene = new Scene();
 
@@ -35,7 +35,7 @@ function Application() {
      * The default camera.
      *
      * Its original position is at (0, 0, 10). To change the camera used for rendering, change the scene, not this property.
-     * @type Camera
+     * @type {Camera}
      */
     this.camera = new Camera().setPosition( new Vector3( [ 0, 0, 10 ] ) );
 
@@ -43,7 +43,7 @@ function Application() {
      * The default importer.
      *
      * Imports from "resources" folder. If no callback is passed, the default callback adds the loaded node to the application's scene.
-     * @type Importer
+     * @type {Importer}
      */
     this.importer = new Importer( 'resources', function( node ) {
         self.scene.appendChild( node );
@@ -51,25 +51,19 @@ function Application() {
 
     /**
      * The default exporter. Exports to "resources" folder.
-     * @type Exporter
+     * @type {Exporter}
      */
     this.exporter = new Exporter( 'resources' );
 
     /**
-     * @type InputHandler
+     * @type {InputHandler}
      */
     this.input = new InputHandler();
 
     /**
-     * @type UIComponent
+     * @type {UIComponent}
      */
     this.ui = new UIComponent();
-
-    /**
-     * The default input handler.
-     * @type InputHandler
-     */
-//    this.input = new InputHandler();
 
     this.scene.appendChild( this.camera );
 
@@ -117,8 +111,8 @@ Application.prototype = {
     },
     /**
      * Resize canvas.
-     * @param {Number} width
-     * @param {Number} height
+     * @param {number} width
+     * @param {number} height
      * @returns this
      */
     resize: function( width, height ) {
@@ -131,7 +125,7 @@ Application.prototype = {
     },
     /**
      * Set the application title (alters the <title> tag).
-     * @param {String} title
+     * @param {string} title
      * @returns this
      */
     setTitle: function( title ) {
@@ -155,7 +149,7 @@ Application.prototype = {
     },
     /**
      * Limit rendering frames per second.
-     * @param {Number} fps
+     * @param {number} fps
      */
     capFPS: function( fps ) {
         if ( fps >= 60 ) {

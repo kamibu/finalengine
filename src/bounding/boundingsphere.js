@@ -3,6 +3,9 @@
     TempVars        :  false
 */
 
+/**
+ * @constructor
+ */
 function BoundingSphere() {
     this.radius = 1;
 }

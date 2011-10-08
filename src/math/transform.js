@@ -1,12 +1,12 @@
 /*global
     Matrix4     :  false,
-    Node        :  false,
+    SceneNode        :  false,
     Quaternion  :  false,
     TempVars    :  false,
     Vector3     :  false
 */
 
-/** @class
+/** @constructor
  * Represents a transformation in 3D space (position, orientation, scale).
  */
 function Transform() {
@@ -27,15 +27,15 @@ Transform.prototype = {
     },
     /**
      * @param {Vector3} position The new position as a vector.
-     * @returns {Transform} this
+     * @returns this
      */
     setPosition: function( position ) {
         this.position.set( position );
         return this._invalidate();
     },
     /**
-     * @param {Vector3} orientation The new orientation as a quaternion.
-     * @returns {Transform} this
+     * @param {Quaternion} orientation The new orientation as a quaternion.
+     * @returns this
      */
     setOrientation: function( orientation ) {
         this.orientation.set( orientation );
@@ -43,8 +43,8 @@ Transform.prototype = {
     },
     /**
      * Scales the object uniformly.
-     * @param {Number} scale The new scale as a scalar.
-     * @returns {Transform} this
+     * @param {number} scale The new scale as a scalar.
+     * @returns this
      */
     setScale: function( scale ) {
         this.scale = scale;
@@ -73,7 +73,7 @@ Transform.prototype = {
         return dest.set( this.orientation );
     },
     /**
-     * @returns {Number}
+     * @returns {number}
      */
     getScale: function() {
         return this.scale;
@@ -90,7 +90,7 @@ Transform.prototype = {
     },
     /**
      * Combines this transform with another and stores the result to this transform.
-     * @returns {Transform} this
+     * @returns this
      */
     // TODO: further documenting
     combineWith: function( transform ) {
@@ -119,7 +119,7 @@ Transform.prototype = {
     /**
      * Sets position, orientation and scale to match a transformation matrix.
      * @param {Matrix4} matrix
-     * @returns {Transform} this
+     * @returns this
      */
     setMatrix: function( matrix ) {
         var a = matrix.data;
@@ -134,7 +134,7 @@ Transform.prototype = {
 
         TempVars.lock();
         var mat = TempVars.getMatrix4().set( a );
-        this.orientation.fromMatrix3( mat.toMatrix3( TempVars.getMatrix3() ) );
+        this.orientation.fromMatrix3( mat.getRotationMatrix( TempVars.getMatrix3() ) );
         TempVars.release();
 
         return this._invalidate();
@@ -163,6 +163,9 @@ Transform.prototype = {
         a[ 14 ] = x * a[ 2 ] + y * a[ 6 ] + z * a[ 10 ];
         return dest;
     },
+    /**
+     * @protected
+     */
     _update: function() {
         var mat = this.matrix,
             a = mat.data;
@@ -186,6 +189,9 @@ Transform.prototype = {
         this._needsUpdate = false;
         return this;
     },
+    /**
+     * @protected
+     */
     _invalidate: function() {
         this._needsUpdate = true;
         return this;

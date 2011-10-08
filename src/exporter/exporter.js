@@ -1,7 +1,8 @@
-/*global Request: true */
+/*global
+    Request: false
+*/
 
 /**
- * @class
  *
  * Exports objects to JSON format.
  *
@@ -9,7 +10,7 @@
  * You need to run the exporter nodejs script on the resourcePath folder for exporting to work.</p>
  *
  * @constructor
- * @param {String} resourcePath The path to the folder to use for exports.
+ * @param {string} resourcePath The path to the folder to use for exports.
  */
 function Exporter( resourcePath ) {
     if ( resourcePath[ resourcePath.length - 1 ] !== '/'  ){
@@ -19,14 +20,14 @@ function Exporter( resourcePath ) {
     /**
      * @public
      * Resource export path.
-     * @type {String}
+     * @type {string}
      */
     this.resourcePath = resourcePath;
 
     /**
      * @public
      * @default false
-     * @type {Boolean}
+     * @type {boolean}
      */
     this.isSaving = false;
 

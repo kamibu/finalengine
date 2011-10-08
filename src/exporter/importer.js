@@ -2,9 +2,10 @@
 /*global Request: true, EventWaiter: true */
 
 /**
- * @class
+ * @constructor
  *
  * Imports assets into the game.
+ * @param {function([*])=} defaultCallback (optional)
  */
 function Importer( resourcePath, defaultCallback ) {
     if ( resourcePath[ resourcePath.length - 1 ] !== '/' ) {
@@ -30,7 +31,7 @@ Importer.prototype = {
      * Determines the loader to be used from the extension of the filename of the asset.
      * If no extension is recongnized, JSON extension is assumed.
      *
-     * @param {String} asset The path to the asset relative to resourcePath. If no extension is given (or not recognized), .json extension is assumed.
+     * @param {string} asset The path to the asset relative to resourcePath. If no extension is given (or not recognized), .json extension is assumed.
      * @param {Function} callback Callback that is called with the loaded object as a parameter.
      */
     load: function( asset, callback ) {

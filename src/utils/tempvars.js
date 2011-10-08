@@ -1,76 +1,89 @@
-/*global Matrix4:true, Quaternion:true, Vector3:true, Matrix3:true */
+/*global
+    Matrix4      :  false,
+    Quaternion   :  false,
+    Vector3      :  false,
+    Matrix3      :  false
+*/
 
-/** @class
+/**
+ * @constructor
  *
- * TempVars are preinstantiated objects that can be used for temporary results,
+ * TempVars are preinstantiated objects that can be used for temporary results;
  * to avoid the performance costs of instantiating new objects in javascript.
  */
-var TempVars = {
-    /**
-     * Make sure the tempvars used are not overwritten.
-     * Call lock on every method before getting any tempvars.
-     */
-    lock: function() {
-        this.vector3ReleasePoints.push( this.vector3Counter );
-        this.matrix4ReleasePoints.push( this.matrix4Counter );
-        this.matrix3ReleasePoints.push( this.matrix3Counter );
-        this.quaternionReleasePoints.push( this.quaternionCounter );
-    },
-    /**
-     * Allow locked tempvars to be overwritten again.
-     * Call release after a method is done using its tempvars.
-     */
-    release: function() {
-        this.vector3Counter = this.vector3ReleasePoints.pop();
-        this.matrix4Counter = this.matrix4ReleasePoints.pop();
-        this.matrix3Counter = this.matrix3ReleasePoints.pop();
-        this.quaternionCounter = this.quaternionReleasePoints.pop();
-    },
-    vector3ReleasePoints: [],
-    vector3Counter: 0,
-    vector3Stack: [],
-    /** @public */
-    getVector3: function() {
-        var ret = this.vector3Stack[ this.vector3Counter++ ];
-        if ( !ret ) {
-            ret = this.vector3Stack[ this.vector3Counter - 1 ] = new Vector3();
-        }
-        return ret;
-    },
+function TempVars() {
+}
 
-    matrix4ReleasePoints: [],
-    matrix4Counter: 0,
-    matrix4Stack: [],
-    /** @public */
-    getMatrix4: function() {
-        var ret = this.matrix4Stack[ this.matrix4Counter++ ];
-        if ( !ret ) {
-            ret = this.matrix4Stack[ this.matrix4Counter - 1 ] = new Matrix4();
-        }
-        return ret;
-    },
+/**
+ * Make sure the tempvars used are not overwritten.
+ * Call lock on every method before getting any tempvars.
+ */
+TempVars.lock = function() {
+    TempVars.vector3ReleasePoints.push( TempVars.vector3Counter );
+    TempVars.matrix4ReleasePoints.push( TempVars.matrix4Counter );
+    TempVars.matrix3ReleasePoints.push( TempVars.matrix3Counter );
+    TempVars.quaternionReleasePoints.push( TempVars.quaternionCounter );
+};
 
-    matrix3ReleasePoints: [],
-    matrix3Counter: 0,
-    matrix3Stack: [],
-    /** @public */
-    getMatrix3: function() {
-        var ret = this.matrix3Stack[ this.matrix3Counter++ ];
-        if ( !ret ) {
-            ret = this.matrix3Stack[ this.matrix3Counter - 1 ] = new Matrix3();
-        }
-        return ret;
-    },
+/**
+ * Allow locked tempvars to be overwritten again.
+ * Call release after a method is done using its tempvars.
+ */
+TempVars.release = function() {
+    TempVars.vector3Counter = TempVars.vector3ReleasePoints.pop();
+    TempVars.matrix4Counter = TempVars.matrix4ReleasePoints.pop();
+    TempVars.matrix3Counter = TempVars.matrix3ReleasePoints.pop();
+    TempVars.quaternionCounter = TempVars.quaternionReleasePoints.pop();
+};
 
-    quaternionReleasePoints: [],
-    quaternionCounter: 0,
-    quaternionStack: [],
-    /** @public */
-    getQuaternion: function() {
-        var ret = this.quaternionStack[ this.quaternionCounter++ ];
-        if ( !ret ) {
-            ret = this.quaternionStack[ this.quaternionCounter - 1 ] = new Quaternion();
-        }
-        return ret;
+TempVars.vector3ReleasePoints = [];
+TempVars.vector3Counter = 0;
+TempVars.vector3Stack = [];
+
+/** @public */
+TempVars.getVector3 = function() {
+    var ret = TempVars.vector3Stack[ TempVars.vector3Counter++ ];
+    if ( !ret ) {
+        ret = TempVars.vector3Stack[ TempVars.vector3Counter - 1 ] = new Vector3();
     }
+    return ret;
+};
+
+TempVars.matrix4ReleasePoints = [];
+TempVars.matrix4Counter = 0;
+TempVars.matrix4Stack = [];
+
+/** @public */
+TempVars.getMatrix4 = function() {
+    var ret = TempVars.matrix4Stack[ TempVars.matrix4Counter++ ];
+    if ( !ret ) {
+        ret = TempVars.matrix4Stack[ TempVars.matrix4Counter - 1 ] = new Matrix4();
+    }
+    return ret;
+};
+
+TempVars.matrix3ReleasePoints = [];
+TempVars.matrix3Counter = 0;
+TempVars.matrix3Stack = [];
+
+/** @public */
+TempVars.getMatrix3 = function() {
+    var ret = TempVars.matrix3Stack[ TempVars.matrix3Counter++ ];
+    if ( !ret ) {
+        ret = TempVars.matrix3Stack[ TempVars.matrix3Counter - 1 ] = new Matrix3();
+    }
+    return ret;
+};
+
+TempVars.quaternionReleasePoints = [];
+TempVars.quaternionCounter = 0;
+TempVars.quaternionStack = [];
+
+/** @public */
+TempVars.getQuaternion = function() {
+    var ret = TempVars.quaternionStack[ TempVars.quaternionCounter++ ];
+    if ( !ret ) {
+        ret = TempVars.quaternionStack[ TempVars.quaternionCounter - 1 ] = new Quaternion();
+    }
+    return ret;
 };

@@ -1,7 +1,7 @@
 /*global Keyboard: true, Mouse: true*/
 
 /**
- * @class
+ * @constructor
  * Higher level API for input devices and grouping of input actions.
  *
  * <p>It has a keyboard and a mouse device attached by default for convenience.</p>
@@ -56,7 +56,7 @@ InputHandler.prototype.isEnabled = function() {
 
 /**
  * @param {InputDevice} device
- * @param {Number} eventId
+ * @param {number} eventId
  * @param {Object} action An object describing the action to be called.
  * @see InputDevice#addAction
  */

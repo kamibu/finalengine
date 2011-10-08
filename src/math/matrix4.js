@@ -3,11 +3,12 @@
     Vector3  :  false
 */
 
-/** @class
+/** @constructor
  *
  * A fast implementation of 4x4 transformation matrixes.
  *
  * It has a Float32Array .data property that is an array of length 16 in row-major order.
+ * @param {Array|Matrix4=} data A Javascript array with the initializing data (optional)
  */
 function Matrix4( data ) {
     /**
@@ -225,7 +226,7 @@ Matrix4.prototype = {
     /**
      * Multiply with a Vector3 and store the value to the vector.
      * @param {Vector3} vector A vector or array-like object to multiply with.
-     * @returns {Vector4} The vector.
+     * @returns {Vector3} The vector.
      */
     multiplyVector3: function( vector ) {
         var a = this.data,
@@ -236,24 +237,6 @@ Matrix4.prototype = {
         b[ 0 ] = a[ 0 ] * x + a[ 4 ] * y + a[ 8 ] * z + a[ 12 ];
         b[ 1 ] = a[ 1 ] * x + a[ 5 ] * y + a[ 9 ] * z + a[ 13 ];
         b[ 2 ] = a[ 2 ] * x + a[ 6 ] * y + a[ 10 ] * z + a[ 14 ];
-        return vector;
-    },
-    /**
-     * Multiply with a Vector4 and store the value to the vector.
-     * @param {Vector4} vector A vector or array-like object to multiply with.
-     * @returns {Vector4} The vector.
-     */
-    multiplyVector4: function( vector ) {
-        var a = this.data,
-            b = vector.data;
-
-        var x = b[ 0 ], y = b[ 1 ], z = b[ 2 ], w = b[ 3 ];
-
-        b[ 0 ] = a[ 0 ] * x + a[ 4 ] * y + a[ 8 ] * z + a[ 12 ] * w;
-        b[ 1 ] = a[ 1 ] * x + a[ 5 ] * y + a[ 9 ] * z + a[ 13 ] * w;
-        b[ 2 ] = a[ 2 ] * x + a[ 6 ] * y + a[ 10 ] * z + a[ 14 ] * w;
-        b[ 3 ] = a[ 3 ] * x + a[ 7 ] * y + a[ 11 ] * z + a[ 15 ] * w;
-
         return vector;
     },
     /**

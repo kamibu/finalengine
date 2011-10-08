@@ -32,16 +32,11 @@ renderer/framebuffer.js
 bounding/boundingsphere.js
 bounding/boundingbox.js    
 
-scene/node.js
+scene/scenenode.js
 scene/camera.js
 scene/drawable.js
 scene/lights/light.js
 scene/scene.js
-
-animation/animable.js
-animation/joint.js
-animation/skeleton.js
-animation/animation.js
 
 material/material.js
 material/basicmaterial.js
@@ -65,6 +60,3 @@ exporter/exporter.js
 exporter/importer.js
 exporter/jsonloader.js
 exporter/objloader.js
-
-test/testcase.js
-test/browser/testview.js

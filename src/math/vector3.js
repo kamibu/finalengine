@@ -1,4 +1,4 @@
-/** @class
+/** @constructor
  *
  * A 3-element vector.
  *
@@ -6,6 +6,7 @@
  * or with .x .y .z getters (which are slow and not recommended).
  *
  * Most methods alter the object whose method was called for performance reasons.
+ * @param {Array|Vector3=} data A Javascript array with the initializing data (optional)
  */
 function Vector3( data ) {
     this.data = new Float32Array( 3 );
@@ -47,7 +48,7 @@ Vector3.prototype = {
     },
     /**
      * Adds the values of a vector to this object.
-     * @param {Array} vector Array-like object to add.
+     * @param {Vector3} vector Array-like object to add.
      * @returns {Vector3} this
      */
     add: function( vector ) {
@@ -60,7 +61,7 @@ Vector3.prototype = {
     },
     /**
      * Subtracts the values of a vector from this object.
-     * @param {Array} vector Array-like object to subtract.
+     * @param {Vector3} vector Array-like object to subtract.
      * @returns {Vector3} this
      */
     subtract: function( vector ) {
@@ -84,7 +85,7 @@ Vector3.prototype = {
     },
     /**
      * Scales this vector uniformly.
-     * @param {Number} factor
+     * @param {number} factor
      * @returns {Vector3} this
      */
     scale: function( factor ) {
@@ -119,7 +120,7 @@ Vector3.prototype = {
      * Computes the cross product of this vector with another.
      * The value is stored in this object.
      *
-     * @param {Array} vector
+     * @param {Vector3} vector
      * @returns {Vector3} this
      */
     cross: function( vector ) {
@@ -135,7 +136,7 @@ Vector3.prototype = {
     },
     /**
      * Returns the length (norm) of this vector.
-     * @returns {Number}
+     * @returns {number}
      */
     length: function() {
         var a = this.data;
@@ -152,7 +153,7 @@ Vector3.prototype = {
     },
     /**
      * Returns the dot product of this vector with another.
-     * @returns {Number}
+     * @returns {number}
      */
     dot: function( vector ) {
         var a = this.data,

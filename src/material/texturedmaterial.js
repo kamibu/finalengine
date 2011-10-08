@@ -4,6 +4,11 @@
     Vector3   :  false
 */
 
+/**
+ * @constructor
+ * @extends Material
+ *
+ */
 function TexturedMaterial() {
     Material.call( this );
     this.name = 'TexturedMaterial';
