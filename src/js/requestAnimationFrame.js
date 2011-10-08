@@ -19,7 +19,7 @@ function makeRequestAnimationFrame() {
 
     function fallback( callback ) {
        window.setTimeout( callback, 1000 / 60 );
-    };
+    }
 
     return fallback;
 }

@@ -1,5 +1,5 @@
 function Spaceship( modelfile, importer ) {
-    Node.call( this );
+    SceneNode.call( this );
 
     this.bullets = [];
     this.velocity = 0.5;
@@ -25,7 +25,7 @@ Spaceship.prototype = {
     },
     update: function( dt ) {
         if ( !dt ) {
-            return this.Node_update.call( this );
+            return this.SceneNode_update.call( this );
         }
     
         this.yAngle += this.targetRoll / 4500;
@@ -41,4 +41,4 @@ Spaceship.prototype = {
     }
 };
 
-Spaceship.extend( Node );
+Spaceship.extend( SceneNode );
