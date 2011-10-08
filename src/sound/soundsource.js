@@ -2,11 +2,12 @@
 
 /**
  * @class
- * @extends Node
  *
  * A node in the scene representing a source of sound.
  *
  * This can be thought of as a speaker that can play different SoundSources.
+ *
+ * @extends Node
  */
 function SoundSource() {
     Node.call( this );
