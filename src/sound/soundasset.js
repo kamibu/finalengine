@@ -1,6 +1,20 @@
-function SoundAsset( data ) {
+/**
+ * @class
+ * @constructor
+ */
+function SoundAsset( url ) {
     this.uid = SoundAsset.uid++;
-    this.data = data;
+    this.url = url;
+
+    /*
+    if ( data instanceof ArrayBuffer ) {
+        this.data = data;
+    }
+    else if ( data instanceof HTMLElement ) {
+        this.tag = data;
+    }
+    */
+
     /*
     this.tag = document.createElement( 'audio' );
     var sourceTag = document.createElement( 'source' );

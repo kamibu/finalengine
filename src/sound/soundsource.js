@@ -1,4 +1,4 @@
-/*global Node: false */
+/*global SceneNode: false */
 
 /**
  * @class
@@ -7,16 +7,19 @@
  *
  * This can be thought of as a speaker that can play different SoundSources.
  *
- * @extends Node
+ * @extends SceneNode
+ *
+ * @constructor
  */
 function SoundSource() {
-    Node.call( this );
+    SceneNode.call( this );
 
     /**
      * The asset currently playing.
      * @default null
      */
     this.nowPlaying = null;
+    this.uid = SoundSource.uid++;
 }
 
 SoundSource.prototype = {
@@ -25,10 +28,10 @@ SoundSource.prototype = {
      */
     play: function( asset ) {
         this.nowPlaying = asset;
-        this.onPlaying( asset );
     },
     onPlaying: function() {
     }
 };
 
-SoundSource.extend( Node );
+SoundSource.extend( SceneNode );
+SoundSource.uid = 0;
