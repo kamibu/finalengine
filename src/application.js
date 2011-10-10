@@ -70,7 +70,7 @@ function Application() {
     /**
      * @type SoundManager
      */
-    this.soundManager = new SoundManager( this.scene );
+    this.soundManager = new SoundManager( this.scene, this.camera );
 
     this.scene.appendChild( this.camera );
 

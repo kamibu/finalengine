@@ -5,7 +5,8 @@
     TempVars        :  false,
     Transform       :  false,
     UUID            :  false,
-    Vector3         :  false
+    Vector3         :  false,
+    EventEmitter    :  false
 */
 
 /**
@@ -39,6 +40,7 @@ function SceneNode() {
     this.name = this.uuid;
     this.boundingVolume = new BoundingSphere();
     Transform.call( this );
+    EventEmitter.call( this );
 }
 
 SceneNode.prototype = {
@@ -228,6 +230,7 @@ SceneNode.prototype = {
      * @params {SceneNode} node The node that was added to the tree.
      */
     onChildAdded: function( node ) {
+        this.emit( 'childadded', node );
         if ( this !== SceneNode.Origin ) {
             this.parent.onChildAdded( node );
         }
@@ -256,6 +259,7 @@ SceneNode.prototype = {
      * @params {SceneNode} parentNode The previous parent of the node.
      */
     onChildRemoved: function( node ) {
+        this.emit( 'childremoved', node );
         if ( this !== SceneNode.Origin ) {
             this.parent.onChildRemoved( node );
         }
@@ -334,6 +338,7 @@ SceneNode.prototype = {
 };
 
 SceneNode.extend( Transform );
+SceneNode.extend( EventEmitter );
 
 SceneNode.Origin = new SceneNode();
 SceneNode.Origin.parent = SceneNode.Origin; // god

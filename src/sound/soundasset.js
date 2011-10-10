@@ -1,28 +1,44 @@
+/*global EventEmitter: false */
+
 /**
  * @class
  * @constructor
+ * @param url
+ * @param loadMetadata
  */
 function SoundAsset( url ) {
+    var self = this;
+    EventEmitter.call( this );
+
     this.uid = SoundAsset.uid++;
     this.url = url;
+    this.duration = NaN;
 
-    /*
-    if ( data instanceof ArrayBuffer ) {
-        this.data = data;
-    }
-    else if ( data instanceof HTMLElement ) {
-        this.tag = data;
-    }
-    */
-
-    /*
     this.tag = document.createElement( 'audio' );
-    var sourceTag = document.createElement( 'source' );
-    sourceTag.src = src;
-    sourceTag.type = 'audio/mp3';
-    this.tag.appendChild( sourceTag );
-    */
+    this.tag.src = url;
+    this.tag.addEventListener( 'loadedmetadata', function() {
+        self.duration = this.duration;
+        self.emit( 'loadedmetadata' );
+    } );
+
+    document.body.appendChild( this.tag );
 }
 
-SoundAsset.uid = 0;
+SoundAsset.prototype = {
+    constructor: SoundAsset,
+    getMetadata: function( callback ) {
+        var self = this;
+        if ( this.duration ) {
+            callback( { duration: this.duration } );
+        }
+        else {
+            this.on( 'loadedmetadata', function() {
+                callback( { duration: self.duration } );
+            } );
+        }
+    }
+};
 
+SoundAsset.extend( EventEmitter );
+
+SoundAsset.uid = 0;

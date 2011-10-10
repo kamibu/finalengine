@@ -42,6 +42,7 @@ Scene.prototype = {
      * @override
      */
     onChildAdded: function( nodeAdded ) {
+        console.log( 'scene child added', nodeAdded );
         this.SceneNode_onChildAdded( nodeAdded );
         var drawables = this.findClass( nodeAdded, Drawable );
         this.drawableList.push.apply( this.drawableList, drawables );
