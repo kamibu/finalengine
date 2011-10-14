@@ -187,6 +187,7 @@ IO = {
 	 * @type string
 	 */
 	readFile: function(/**string*/ path) {
+        print( "reading:" + path );
 		if (!IO.exists(path)) {
 			throw "File doesn't exist there: "+path;
 		}

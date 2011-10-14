@@ -15,14 +15,14 @@ function Drawable() {
     SceneNode.call( this );
     /**
      * @public
-     * @type Mesh
+     * @type {Mesh}
      * @default null
      */
     this.mesh = null;
 
     /**
      * @public
-     * @type Material
+     * @type {Material}
      * @default Instance of BasicMaterial
      */
     this.material = new BasicMaterial();

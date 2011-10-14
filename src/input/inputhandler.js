@@ -63,7 +63,6 @@ InputHandler.prototype.isEnabled = function() {
 InputHandler.prototype.addAction = function( device, eventId, action ) {
     var self = this;
 
-    // keep callback reference
     var cbk = action.callback || function() {};
     action.callback = function( e ) {
         if ( self.enabled ) {
@@ -79,7 +78,7 @@ InputHandler.prototype.addAction = function( device, eventId, action ) {
 /**
  * Register a keypress.
  * @param {String} key The key name e.g. 'A' or 'ESCAPE'.
- * @param {Object} action An object or callback function describing the action to be called.
+ * @param {Object} action
  * @see Keyboard
  */
 InputHandler.prototype.onKey = function( key, action ) {
@@ -103,7 +102,7 @@ InputHandler.prototype.onKey = function( key, action ) {
 /**
  * Register a keyup.
  * @param {String} key The key name e.g. 'A' or 'ESCAPE'.
- * @param {Object} action An object or callback function describing the action to be called.
+ * @param {Object} action
  * @see Keyboard
  */
 InputHandler.prototype.onKeyUp = function( key, action ) {

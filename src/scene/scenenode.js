@@ -27,7 +27,7 @@ function SceneNode() {
     /**
      * @public
      * @default SceneNode.Origin
-     * */
+     */
     this.parent = SceneNode.Origin;
 
     /**

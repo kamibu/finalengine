@@ -16,25 +16,60 @@ function SoundSource() {
 
     /**
      * The asset currently playing.
+     * @type {SoundAsset}
      * @default null
      */
     this.nowPlaying = null;
 
-    this.velocity = new Vector3();
-    this.uid = SoundSource.uid++;
+    /**
+     * Whether the next song will be played when a song ends.
+     * @type Number
+     */
+    this.playUntilLast = false;
+
+    /**
+     * The index of the asset that is played now or will be played next.
+     */
     this.currentTrack = 0;
+
+    /**
+     * The velocity of this source.
+     */
+    this.velocity = new Vector3();
+
+    /**
+     * A unique identifier (local)
+     */
+    this.uid = SoundSource.uid++;
+
+    /**
+     * @default SoundSource.LOOP_NONE
+     */
     this.loop = SoundSource.LOOP_NONE;
-    this.playAll = false;
 
     this.assets = [];
 }
 
+/**
+ * Don't loop songs.
+ */
 SoundSource.LOOP_NONE = 0;
+
+/**
+ * Repeat the song being played infinately.
+ */
 SoundSource.LOOP_ONE = 1;
+
+/**
+ * If playing all songs, restart playing all songs when the last one is played.
+ */
 SoundSource.LOOP_ALL = 2;
 
 SoundSource.prototype = {
     constructor: SoundSource,
+    /**
+     * Add sound to asset list.
+     */
     addSound: function( asset ) {
         this.assets.push( asset );
         this.emit( 'soundadded', asset );
@@ -54,6 +89,7 @@ SoundSource.prototype = {
     },
     /**
      * Play a SoundSource asset.
+     * @param asset It can be a SoundAsset, the index of the asset in the list of assets, or no parameters to play the asset pointed by currentTrack property.
      */
     play: function( asset ) {
         if ( !( asset instanceof SoundAsset ) ) {
@@ -76,9 +112,13 @@ SoundSource.prototype = {
                 return false;
             }
         }
-        this.playAll = false;
+        this.playUntilLast = false;
         this._play( asset );
     },
+    /**
+     * Play all assets until the last one.
+     * @param startTrack The index of the asset to start from.
+     */
     playAll: function( startTrack ) {
         startTrack = startTrack || 0;
         if ( startTrack >= this.assets.length ) {
@@ -89,28 +129,37 @@ SoundSource.prototype = {
         if ( this.loop == SoundSource.LOOP_ONE ) {
             this.loop = SoundSource.LOOP_NONE;
         }
-        this.playAll = true;
+        this.playUntilLast = true;
         this._play( this.assets[ this.currentTrack ] );
     },
+    /**
+     * Set the sound source velocity.
+     * Set this to change the sound according to the doppler effect.
+     */
     setVelocity: function( v ) {
         this.velocity = v;
     },
+    /**
+     * Get the sound source velocity.
+     */
     getVelocity: function() {
         return this.velocity;
     },
     ended: function() {
         this.emit( 'ended', this.nowPlaying );
 
+        if ( this.playUntilLast ) {
+            this.currentTrack = ( this.currentTrack + 1 ) % this.assets.length;
+        }
+
         switch ( this.loop ) {
             case SoundSource.LOOP_NONE:
-                this.currentTrack = ( this.currentTrack + 1 ) % this.assets.length;
                 this.nowPlaying = null;
                 break;
             case SoundSource.LOOP_ONE:
                 this.play( this.nowPlaying );
                 break;
             case SoundSource.LOOP_ALL:
-                this.currentTrack = ( this.currentTrack + 1 ) % this.assets.length;
                 if ( this.currentTrack > 0 ) {
                     this._play( this.assets[ this.currentTrack ] );
                 }

@@ -4,9 +4,12 @@
 */
 
 /**
- * @constructor
- * The tree of nodes to be rendered.
+ * @class
  * @extends SceneNode
+ *
+ * The tree of nodes to be rendered.
+ *
+ * @constructor
  */
 function Scene() {
     SceneNode.call( this );
@@ -19,7 +22,7 @@ Scene.prototype = {
      * Returns the nodes in the tree below a given node that are instances of theClass.
      * @param {SceneNode} node
      * @param theClass
-     * @returns {Array} An array of nodes.
+     * @returns Array An array of nodes.
      */
     findClass: function( node, theClass ) {
         var bucket = [], bucketIndex = 0,
@@ -42,7 +45,6 @@ Scene.prototype = {
      * @override
      */
     onChildAdded: function( nodeAdded ) {
-        console.log( 'scene child added', nodeAdded );
         this.SceneNode_onChildAdded( nodeAdded );
         var drawables = this.findClass( nodeAdded, Drawable );
         this.drawableList.push.apply( this.drawableList, drawables );
