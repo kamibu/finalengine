@@ -53,7 +53,57 @@ OBJLoader.prototype = {
                             break;
                         case 'map_Kd':
                             /*A diffuse texture map. Store the url pointing to the image*/
-                            materials[ currentMaterial ].diffuseTexture = baseUrl + line[ 1 ];
+                            var path = "", options = { blenu: true, blenv: true };
+                            for ( var j = 1; j < line.length; ++j ) {
+                                paramNumber = 0;
+                                switch ( line[ j ] ) {
+                                    case "-blenu":
+                                       options.blenu = line[ j + 1 ] == "on";
+                                       paramNumber = 1;
+                                       break;
+                                    case "-blenv":
+                                        options.blenv = line[ j + 1 ] == "on";
+                                        paramNumber = 1;
+                                        break;
+                                    case "-bm"
+                                        options.bm = parseFloat( line[ j + 1 ] );
+                                        paramNumber = 1;
+                                        break;
+                                    case "-boost":
+                                        options.boost = parseFloat( line[ j + 1 ] );
+                                        paramNumber = 1;
+                                        break;
+                                    case "-cc":
+                                        options.cc = line[ j + 1 ] == "on";
+                                        paramNumber = 1;
+                                        break;
+                                    case "-clamp":
+                                        options.clamp = line[ j + 1 ] == "on";
+                                        paramNumber = 1;
+                                        break;
+                                    case "-mm":
+                                        options.mm = [ parseFloat( line[ j + 1 ] ), parseFloat( line[ j + 2 ] ) ];
+                                        paramNumber = 2;
+                                        break;
+                                    case "-o":
+                                        options.o = [ parseFloat( line[ j + 1 ] ), parseFloat( line[ j + 1 ] ), parseFloat( line[ j + 3 ] ) ];
+                                        paramNumber = 3;
+                                        break;
+                                    case "-s":
+                                        options.s = [ parseFloat( line[ j + 1 ] ), parseFloat( line[ j + 1 ] ), parseFloat( line[ j + 3 ] ) ];
+                                        paramNumber = 3;
+                                        break;
+                                }
+                                if ( paramNumber ) {
+                                    j += paramNumber;
+                                }
+                                else {
+                                    path = line.slice( j ).join( ' ' );
+                                    break;
+                                }
+                            }
+                            materials[ currentMaterial ].diffuseTexture = baseUrl + path;
+                            materials[ currentMaterial ].diffuseTextureOptions = options;
                             break;
                         case 'Ka':
                             /*The material's ambient color*/

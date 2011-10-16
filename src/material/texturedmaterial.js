@@ -1,7 +1,8 @@
 /*global
     Importer  :  false,
     Material  :  false,
-    Vector3   :  false
+    Vector3   :  false,
+    Texture   :  false
 */
 
 /**
@@ -9,7 +10,7 @@
  * @extends Material
  *
  */
-function TexturedMaterial() {
+function TexturedMaterial( texture ) {
     Material.call( this );
     this.name = 'TexturedMaterial';
 
@@ -22,6 +23,14 @@ function TexturedMaterial() {
         WorldViewProjectionMatrix: true,
         WorldViewMatrix: true
     };
+
+    if ( typeof texture == "string" ) {
+        var textureURL = texture;
+        var img = new Image();
+        img.src = textureURL;
+        texture = new Texture().setImage( img );
+        this.setParameter( 'texture', { data: texture } );
+    }
 }
 
 TexturedMaterial.extend( Material );

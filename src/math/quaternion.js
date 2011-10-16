@@ -5,6 +5,7 @@
 */
 
 /**
+ * @class
  * @constructor
  * @param {Array|Quaternion=} data A Javascript array with the initializing data (optional)
  */

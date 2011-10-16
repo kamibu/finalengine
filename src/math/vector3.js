@@ -1,4 +1,7 @@
-/** @constructor
+/**
+ * @class
+ *
+ * @constructor
  *
  * A 3-element vector.
  *

@@ -11,7 +11,7 @@
     SoundSource     : false
 */
 
-/** 
+/**
  * @class
  * The main object of a game. Initializes basic modules and starts the main loop.
  *
@@ -27,7 +27,7 @@
  * var app = new Application();
  *
  * var character = null;
- * 
+ *
  * app.importer.load( "character", function( ch ) {
  *      character = ch;
  *      app.scene.appendChild( character );
@@ -42,7 +42,7 @@
  *     }
  * };
  * </pre>
- *       
+ *
  * You can get access to the instantiated application from any part of your code by calling the static method <a href="#getInstance">Application.getInstance()</a>.</p>
  *
  * <h3>Extending Application</h3>
@@ -52,11 +52,11 @@
  * <pre class="sh_javascript">
  * function MyApplication() {
  *    Application.call( this );
- * 
+ *
  *    this.cube = new Cube();
  *    this.scene.appendChild( this.cube );
  * }
- * 
+ *
  * MyApplication.extend( Application );
  *
  * // in the main file:
