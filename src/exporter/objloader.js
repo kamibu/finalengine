@@ -53,7 +53,7 @@ OBJLoader.prototype = {
                             break;
                         case 'map_Kd':
                             /*A diffuse texture map. Store the url pointing to the image*/
-                            var path = "", options = { blenu: true, blenv: true };
+                            var path = "", options = { blenu: true, blenv: true }, paramNumber = 0;
                             for ( var j = 1; j < line.length; ++j ) {
                                 paramNumber = 0;
                                 switch ( line[ j ] ) {
@@ -65,7 +65,7 @@ OBJLoader.prototype = {
                                         options.blenv = line[ j + 1 ] == "on";
                                         paramNumber = 1;
                                         break;
-                                    case "-bm"
+                                    case "-bm":
                                         options.bm = parseFloat( line[ j + 1 ] );
                                         paramNumber = 1;
                                         break;

@@ -18,8 +18,7 @@ function Texture( type ) {
     this.magFilter = Texture.LINEAR;
     this.type = type || Texture.IMAGE;
 
-    this.wrapS = Texture.CLAMP_TO_EDGE;
-    this.wrapT = Texture.CLAMP_TO_EDGE;
+    this.setRepeat( true );
 
     this.format = Texture.RGB;
 
@@ -103,6 +102,16 @@ Texture.prototype = {
         this.magFilter = filter;
         return this;
     },
+    setRepeat: function( setting ) {
+        if ( setting ) {
+            this.setWrapS( Texture.REPEAT );
+            this.setWrapT( Texture.REPEAT );
+        }
+        else {
+            this.setWrapS( Texture.CLAMP_TO_EDGE );
+            this.setWrapT( Texture.CLAMP_TO_EDGE );
+        }
+    },
     setWrapS: function( wrap ) {
         /*DEBUG*/
             assertIn( wrap, Texture.REPEAT, Texture.MIRROR_REPEAT, Texture.CLAMP_TO_EDGE, 'Unsupported wrapping. ' + wrap );
@@ -146,6 +155,9 @@ Texture.prototype = {
         }
         this.source = source;
         this.setDimentions( this.source.width, this.source.height );
+        if ( !source.width.isPowerOfTwo() || !source.height.isPowerOfTwo() ) {
+            this.setRepeat( false );
+        }
         this.needsUpdate = true;
         return this;
     },
