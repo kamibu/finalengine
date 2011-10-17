@@ -1,3 +1,5 @@
+/*global assert: false */
+
 /**
  * @constructor
  * Abstract class for objects that fire events.
@@ -16,6 +18,9 @@ EventEmitter.prototype = {
      * @param {Function} action
      */
     on: function( name, action ) {
+        /*DEBUG*/
+            assert( typeof action == "function", 'Tried to add a listener that is not a function' );
+        /*DEBUG_END*/
         if ( !( name in this._events_ ) ) {
             this._events_[ name ] = [];
         }
@@ -55,6 +60,9 @@ EventEmitter.prototype = {
         // due to the splice on removeListener
         for ( var i in events ) {
             var action = events[ i ];
+            console.log( name );
+            console.log( action );
+            console.log( action.apply );
             action.apply( this, params );
             if ( action.once ) {
                 events.splice( i, 1 );
