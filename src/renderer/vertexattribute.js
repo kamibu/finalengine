@@ -34,6 +34,24 @@ VertexAttribute.prototype = {
         }
         return dest;
     },
+    setElement: function( n, src ) {
+        var s = this.size;
+        var d = this.buffer.data;
+        var stride = this.stride || this.size;
+        for ( var i = 0; i < s; ++i ) {
+            d[ this.offset + n * stride + i ] = src[ i ];
+        }
+    },
+    scale: function( factor ) {
+        var f = new Float32Array( this.size );
+        for ( var i = 0; i < this.length; ++i ) {
+            this.getElement( i, f );
+            for ( var j = 0; j < f.length; ++j ) {
+                f[ j ] *= factor;
+            }
+            this.setElement( i, f );
+        }
+    },
     setSize: function( size ) {
         this.size = size | 0;
         return this.updateLength();

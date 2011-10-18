@@ -31,6 +31,10 @@ function TexturedMaterial( texture ) {
         texture = new Texture().setImage( img );
         this.setParameter( 'texture', { data: texture } );
     }
+    else if ( typeof texture != 'undefined' ) {
+        // texture is a texture object
+        this.setParameter( 'texture', { data: texture } );
+    }
 }
 
 TexturedMaterial.extend( Material );

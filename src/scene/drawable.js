@@ -45,6 +45,9 @@ Drawable.prototype = {
         this.material = material;
         return this;
     },
+    repeatTexture: function( times ) {
+        this.mesh.vertexAttributes.UVCoord.scale( times );
+    },
     getExportData: function( exporter ) {
         var ret = {};
         ret.parent = this.SceneNode_getExportData( exporter );
