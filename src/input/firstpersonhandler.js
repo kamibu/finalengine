@@ -1,4 +1,4 @@
-var InputHandler;
+/*global InputHandler: false, Vector3: false */
 
 function FirstPersonHandler( node, camera ) {
     InputHandler.call( this );
@@ -9,8 +9,6 @@ function FirstPersonHandler( node, camera ) {
     this.angularVelocity = 0.1;
 
     if ( camera ) {
-        camera.setPosition( [ 0, 28, 60 ] );
-        camera.setOrientation( [ 0, 1, 0, 0 ] );
         node.appendChild( camera );
     }
 
@@ -24,7 +22,7 @@ function FirstPersonHandler( node, camera ) {
 
 FirstPersonHandler.prototype = {
     getAngle: function() {
-        var a, c = this.node.orientation[ 3 ];
+        var a, c = this.node.orientation.data[ 3 ];
         if ( c < -1 ) {
             a = 2 * Math.PI;
         }
@@ -34,11 +32,12 @@ FirstPersonHandler.prototype = {
         else {
             a = Math.acos( c ) * 2;
         }
-        if ( Math.abs( this.node.orientation[ 1 ] - 1 ) > 1 ) {
+        if ( Math.abs( this.node.orientation.data[ 1 ] - 1 ) > 1 ) {
             a = 2 * Math.PI - a;
         }
         if ( isNaN( a ) ) {
-            throw "NaN firstpersonhandler angle";
+            // throw "NaN firstpersonhandler angle";
+            return 0;
         }
         return a;
     },
@@ -54,26 +53,27 @@ FirstPersonHandler.prototype = {
         var self = this;
         this.walkInterval = setInterval( function() {
             var angle = self.getAngle();
-            self.node.move( [ self.velocity * Math.sin( angle ), 0, self.velocity * Math.cos( angle ) ] );
+            console.log( angle );
+            self.node.move( new Vector3( [ self.velocity * Math.sin( angle ), 0, self.velocity * Math.cos( angle ) ] ) );
         }, 17 );
     },
     moveBackward: function() {
         var self = this;
         this.walkInterval = setInterval( function() {
             var angle = self.getAngle();
-            self.node.move( [ -self.velocity * Math.sin( angle ), 0, -self.velocity * Math.cos( angle ) ] );
+            self.node.move( new Vector3( [ -self.velocity * Math.sin( angle ), 0, -self.velocity * Math.cos( angle ) ] ) );
         }, 30 );
     },
     rotateLeft: function() {
         var self = this;
         this.rotateInterval = setInterval( function() {
-            self.node.rotate( [ 0, 1, 0 ], self.angularVelocity );
+            self.node.rotate( new Vector3( [ 0, 1, 0 ] ), self.angularVelocity );
         }, 30 );
     },
     rotateRight: function() {
         var self = this;
         this.rotateInterval = setInterval( function() {
-            self.node.rotate( [ 0, 1, 0 ], -self.angularVelocity );
+            self.node.rotate( new Vector3( [ 0, 1, 0 ] ), -self.angularVelocity );
         }, 30 );
     }
 };

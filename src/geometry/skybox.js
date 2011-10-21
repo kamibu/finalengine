@@ -3,7 +3,9 @@
 // extern
 var Buffer, Drawable, Mesh, VertexAttribute;
 
-function Skybox( sources ) {
+function Skybox( sources, scale ) {
+    scale = scale || 500;
+
     Drawable.call( this );
 
     console.log( sources );
@@ -79,6 +81,14 @@ function Skybox( sources ) {
     m.setIndexBuffer( indices );
 
     this.mesh = m;
+    this.setScale( scale );
 }
+
+Skybox.prototype = {
+    constructor: Skybox,
+    onBeforeRender: function( camera ) {
+        this.setPosition( camera.getPosition() );
+    }
+};
 
 Skybox.extend( Drawable );

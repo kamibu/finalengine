@@ -188,6 +188,9 @@ SceneNode.prototype = {
         TempVars.release();
         return this._invalidate();
     },
+    rotateToEuler: function( yaw, pitch, roll ) {
+        this.setOrientation( new Quaternion().setEuler( yaw, pitch, roll ) );
+    },
     /**
      * @public
      * Moves node relative to its current position or the position of another node.

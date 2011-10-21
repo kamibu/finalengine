@@ -116,7 +116,7 @@ RenderManager.prototype = {
             var currentDrawable = drawableList[ l ];
             currentDrawable.onBeforeRender( camera );
             currentDrawable.getAbsoluteMatrix( g.WorldMatrix );
-            
+
             g.WorldViewMatrix.set( g.ViewMatrix ).multiply( g.WorldMatrix );
             g.WorldViewProjectionMatrix.set( g.ViewProjectionMatrix ).multiply( g.WorldMatrix );
 

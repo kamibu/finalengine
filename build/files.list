@@ -52,6 +52,7 @@ input/inputdevice.js
 input/keyboard.js
 input/mouse.js
 input/inputhandler.js
+input/firstpersonhandler.js
 
 ui/uicomponent.js
 

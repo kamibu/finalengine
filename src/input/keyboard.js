@@ -122,6 +122,9 @@ Keyboard.prototype = {
         if ( typeof options == "function" ) {
             options = { callback: options };
         }
+        if ( typeof options.repeat == "undefined" ) {
+            options.repeat = true;
+        }
         var action = {
             callback: options.callback || function() {},
             endCallback: options.endCallback || null,

@@ -28,7 +28,7 @@ function CubemapMaterial( sources ) {
         WorldViewMatrix: true
     };
 
-    var texture = new Texture( Texture.CUBEMAP ).setRepeat( true );
+    var texture = new Texture( Texture.CUBEMAP ).setRepeat( false );
     texture.source = [];
     texture.origin = Texture.LOWER_LEFT_CORNER;
     sources.forEach( function( source, i ) {
@@ -38,6 +38,7 @@ function CubemapMaterial( sources ) {
         texture.source[ i ] = img;
     } );
     this.setParameter( 'texture', { data: texture } );
+    this.texture = texture;
 }
 
 CubemapMaterial.extend( Material );
