@@ -1,8 +1,10 @@
 /*global EventWaiter: false, Importer: false, Texture: false, SceneNode: false, Buffer: false, VertexAttribute: false, Drawable: false, Mesh: false, TexturedMaterial: false, BasicMaterial: false, Vector3: false */
 
 /**
- * @constructor
+ * @class
  * Loads .obj files into a tree of {@link SceneNode} instances.
+ *
+ * @constructor
  */
 function OBJLoader() {
     this.ready = true;
@@ -16,28 +18,28 @@ OBJLoader.prototype = {
     constructor: OBJLoader,
     loadMtl: function( url, callback ) {
         var that = this;
-        
+
         if ( this.mtlCache[ url ] !== undefined && false ) {
             // cache hit
             callback( this.mtlCache[ url ] );
             return;
         }
-        
+
         /*Find the base url in order to construct the path for the texture maps*/
         var baseUrl = url.substring( 0, url.lastIndexOf( '/' ) + 1 );
-        
+
         var matReq = new XMLHttpRequest();
         matReq.open( 'GET', url );
         matReq.onreadystatechange = function() {
             if ( matReq.readyState == 4 ) {
                 //This map will hold an object for each material found in the mtl file
                 var materials = {};
-                
+
                 /*Get the response and put each line in an array*/
                 var lines = matReq.responseText.split( '\n' );
-                
+
                 var i, line, l = lines.length, currentMaterial;
-                
+
                 /*Parse the file line by line*/
                 for ( i = 0; i < l; i++ ) {
                     /*Trim each line and split it in parts with whitespace as separator*/
@@ -124,13 +126,13 @@ OBJLoader.prototype = {
                     }
                 }
                 var textureCache = {};
-                
+
                 for ( var material in materials ) {
                     if ( materials[ material ].diffuseTexture !== undefined ) {
                         var texture = materials[ material ].diffuseTexture;
                         materials[ material ] = new TexturedMaterial();
                         materials[ material ].name = material;
-                        
+
                         var tex;
                         if ( textureCache[ texture ] ) {
                             tex = textureCache[ texture ];
@@ -157,8 +159,8 @@ OBJLoader.prototype = {
         matReq.send();
     },
     /**
-     * Generates a node tree (an instance of {@link SceneNode}) that can be added to a scene for rendering.
-     * @param {string} url The complete url to the .obj file
+     * Generates a {@link SceneNode} that can be added to a scene for rendering.
+     * @param {String} url The complete url to the .obj file
      * @param {Function} callback Called when loading is finished with the node tree as a parameter.
      */
     load: function( url, importer, callback ) {
@@ -212,13 +214,13 @@ OBJLoader.prototype = {
             };
         /*----*/
         var that = this;
-        
+
         if ( this.objCache[ url ] !== undefined ) {
             // cache hit
             callback( this.objCache[ url ] );
             return;
         }
-        
+
         var baseUrl = url.substring( 0, url.lastIndexOf( '/' ) + 1 );
         var vReq = new XMLHttpRequest();
         vReq.open( 'GET', url );
@@ -227,11 +229,11 @@ OBJLoader.prototype = {
                 var data = vReq.responseText;
                 var lines = data.split( "\n" );
                 var i, j, line, activeMaterial, indicesIndex;
-                
+
                 var vList = [];
                 var nList = [];
                 var tList = [];
-                
+
                 var ret = {};
                 var materialsLoaded = true;
                 var materialCallback = function( materials ) {
@@ -244,7 +246,7 @@ OBJLoader.prototype = {
                     that.objCache[ url ] = ret; // memoize
                     callback( ret );
                 };
-                
+
                 ret[ 'default' ] = {
                     vertices: [],
                     normals: [],
@@ -254,7 +256,7 @@ OBJLoader.prototype = {
                     indexIndex: 0 //lol
                 };
                 activeMaterial = ret[ 'default' ];
-                
+
                 var lineCount = lines.length, hit;
                 for ( i = 0; i < lineCount; ++i ){
                     line = lines[ i ].trim().split( /\s+/ );
@@ -293,7 +295,7 @@ OBJLoader.prototype = {
                                 vertexIndex = ( words[ 0 ] - 1 ) * 3;
                                 uvIndex = ( words[ 1 ] - 1 ) * 2;
                                 normalIndex = ( words[ 2 ] - 1 ) * 3;
-                                
+
                                 hit = activeMaterial.uberObject[ line[ j ] ];
                                 if ( hit ) {
                                     activeMaterial.indices.push( hit );
@@ -306,7 +308,7 @@ OBJLoader.prototype = {
 
                                     activeMaterial.uberObject[ line[ j ] ] = activeMaterial.indexIndex++;
                                 }
-                                
+
                             }
                             if ( line[ 4 ] !== undefined ) {
                                 vertexIndex = ( line[ 3 ].split( '/' )[ 0 ] - 1 ) * 3;
@@ -325,7 +327,7 @@ OBJLoader.prototype = {
 
                                     activeMaterial.uberObject[ line[ j ] ] = activeMaterial.indexIndex++;
                                 }
-                                
+
                                 vertexIndex = ( line[ 4 ].split( '/' )[ 0 ] - 1 ) * 3;
                                 uvIndex = ( line[ 4 ].split( '/' )[ 1 ] - 1 ) * 2;
                                 normalIndex = ( line[ 4 ].split( '/' )[ 2 ] - 1 ) * 3;
@@ -342,7 +344,7 @@ OBJLoader.prototype = {
 
                                     activeMaterial.uberObject[ line[ j ] ] = activeMaterial.indexIndex++;
                                 }
-                                
+
                                 vertexIndex = ( line[ 1 ].split( '/' )[ 0 ] - 1 ) * 3;
                                 uvIndex = ( line[ 1 ].split( '/' )[ 1 ] - 1 ) * 2;
                                 normalIndex = ( line[ 1 ].split( '/' )[ 2 ] - 1 ) * 3;

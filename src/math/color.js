@@ -1,11 +1,13 @@
 /*global Vector3: true*/
 
-/** @constructor
+/**
+ * @class
  *
- * Color representation as a Vector3.
+ * Color representation as a vector.
  *
  * @extends Vector3
- * @param {Array=} data A Javascript array with the initializing data (optional)
+ * @constructor
+ * @param {Array} data A Javascript array with the initializing data (optional)
  */
 function Color( data ) {
     return Vector3.call( this, data );
@@ -14,8 +16,8 @@ function Color( data ) {
 Color.prototype = {
     constructor: Color,
     /**
-     * Makes sure values are valid (0..1)
-     * @returns this
+     * Makes sure values are valid (e.g. 0 to 1)
+     * @returns Color
      */
     clip: function() {
         var a = this.data;
@@ -26,7 +28,7 @@ Color.prototype = {
     },
     /**
      * @param {Color} color The amount of color to add
-     * @returns this
+     * @returns Color
      */
     add: function( color ) {
         this.Vector3_add( color );
@@ -53,9 +55,9 @@ Color.prototype = {
     },
     /**
      * Defines the color using h, s, l:
-     * @param {number} h Color hue (0...2 pi)
-     * @param {number} s Color saturation (0...1)
-     * @param {number} l Color lightness (0...1)
+     * @param {Number} h Color hue (0...2 pi)
+     * @param {Number} s Color saturation (0...1)
+     * @param {Number} l Color lightness (0...1)
      */
     fromHSL: function( h, s, l ) {
         var a = this.data;

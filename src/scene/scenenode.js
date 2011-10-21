@@ -10,28 +10,32 @@
 */
 
 /**
- * @constructor
- * <p>An abstract 3 dimensional object with a location in space and a tree-like structure.</p>
+ * @class
+ * An abstract 3D object with a tree-like structure.
  *
  * <p>Inherited position, orientation and scale from Transform represent transformations in local coordinates, relative to the parent node. All transformations applied to a node are recursively applied to its children too.</p>
  *
+ * @constructor
  * @extends Transform
  */
 function SceneNode() {
     /**
      * @public
+     * @type String
      * @see UUID
      */
     this.uuid = UUID.generateCanonicalForm();
 
     /**
      * @public
+     * @type SceneNode
      * @default SceneNode.Origin
      */
     this.parent = SceneNode.Origin;
 
     /**
      * @public
+     * @type Array
      * @default []
      */
     this.children = [];
@@ -48,7 +52,7 @@ SceneNode.prototype = {
     /**
      * @public
      * @param {Vector3} [dest]
-     * @returns dest if specfied, a new Vector3 otherwise.
+     * @returns Vector3 dest if specfied, a new Vector3 otherwise.
      */
     getAbsolutePosition: function( dest ) {
         if ( !dest ) {
@@ -60,7 +64,7 @@ SceneNode.prototype = {
     /**
      * @public
      * @param {Vector3} position
-     * @returns this
+     * @returns SceneNode
      */
     setAbsolutePosition: function( position ) {
         TempVars.lock();
@@ -81,7 +85,7 @@ SceneNode.prototype = {
     /**
      * @public
      * @param {Quaternion} [dest] Alter dest instead of creating new quaternion.
-     * @returns dest if specified, new quaternion otherwise.
+     * @returns Quaternion dest if specified, new quaternion otherwise.
      */
     getAbsoluteOrientation: function( dest ) {
         if ( !dest ) {
@@ -93,7 +97,7 @@ SceneNode.prototype = {
     /**
      * @public
      * @param {Quaternion} orientation
-     * @returns this
+     * @returns SceneNode
      */
     setAbsoluteOrientation: function( orientation ) {
         TempVars.lock();
@@ -104,7 +108,7 @@ SceneNode.prototype = {
     },
     /**
      * @public
-     * @returns {number} scale
+     * @returns Number
      */
     getAbsoluteScale: function() {
         this._update();
@@ -112,8 +116,8 @@ SceneNode.prototype = {
     },
     /**
      * @public
-     * @param {number} scale
-     * @returns this
+     * @param Number scale
+     * @returns SceneNode
      */
     setAbsoluteScale: function( scale ) {
         this.worldTransform.setScale( scale );
@@ -123,10 +127,10 @@ SceneNode.prototype = {
     /**
      * Rotates node around itself or another object.
      * @public
-     * @param {Array} axis A 3-element vector representing the axis.
-     * @param {number} angle Angle to rotate in radians.
-     * @param {SceneNode=} node If specified, rotate around this node.
-     * @returns this
+     * @param Array axis A 3-element vector representing the axis.
+     * @param Number angle Angle to rotate in radians.
+     * @param SceneNode node If specified, rotate around this node.
+     * @returns SceneNode
      */
     rotate: function( axis, angle, node ) {
         TempVars.lock();
@@ -187,9 +191,9 @@ SceneNode.prototype = {
     /**
      * @public
      * Moves node relative to its current position or the position of another node.
-     * @param {Vector3} vector The position transformation vector.
-     * @param {SceneNode} [node] Move relatively to node instead of the current position.
-     * @returns this
+     * @param Vector3 vector The position transformation vector.
+     * @param SceneNode [node] Move relatively to node instead of the current position.
+     * @returns SceneNode
      */
     move: function( vector, node ) {
         if ( node ) {
@@ -212,6 +216,8 @@ SceneNode.prototype = {
     },
     /**
      * @public
+     * @param SceneNode node
+     * @returns SceneNode
      */
     appendChild: function( node ) {
         if ( node.parent !== SceneNode.Origin ) {
@@ -227,7 +233,7 @@ SceneNode.prototype = {
     },
     /**
      * Override this method to process the addition of a node anywhere in the tree below this node.
-     * @params {SceneNode} node The node that was added to the tree.
+     * @param SceneNode node The node that was added to the tree.
      */
     onChildAdded: function( node ) {
         this.emit( 'childadded', node );
@@ -239,7 +245,7 @@ SceneNode.prototype = {
      * @public
      * Removes child from list of children and reset child's parent reference to SceneNode.Origin
      * @param {SceneNode} node The node to remove.
-     * @returns this
+     * @returns SceneNode
      */
     removeChild: function( node ) {
         var children = this.children;
@@ -268,7 +274,7 @@ SceneNode.prototype = {
      * @public
      * Returns world-coordinate transformation matrix.
      * @param {Matrix4} [dest] Alter dest instead of creating a new matrix.
-     * @returns {Matrix4} dest if specified, a new matrix otherwise.
+     * @returns Matrix4 dest if specified, a new matrix otherwise.
      */
     getAbsoluteMatrix: function( dest ) {
         if ( !dest ) {
@@ -281,7 +287,7 @@ SceneNode.prototype = {
      * @public
      * Returns the inverse of world-coordinate transformation matrix.
      * @param {Matrix4} [dest] Alter dest instead of creating a new matrix.
-     * @returns {Matrix4} dest if specified, a new matrix otherwise.
+     * @returns Matrix4 dest if specified, a new matrix otherwise.
      */
     getAbsoluteInverseMatrix: function( dest ) {
         if ( !dest ) {
@@ -290,9 +296,6 @@ SceneNode.prototype = {
         this._update();
         return dest.set( this.worldTransform.getInverseMatrix() );
     },
-    /**
-     * @override
-     */
     _update: function() {
         if ( this._needsUpdate ) {
             this.Transform__update();

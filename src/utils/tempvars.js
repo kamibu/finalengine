@@ -6,10 +6,9 @@
 */
 
 /**
- * @constructor
+ * @class
  *
- * TempVars are preinstantiated objects that can be used for temporary results;
- * to avoid the performance costs of instantiating new objects in javascript.
+ * TempVars are preinstantiated objects that can be used for temporary results.
  */
 function TempVars() {
 }

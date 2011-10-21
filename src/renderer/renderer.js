@@ -9,14 +9,18 @@
 */
 
 /**
+ * @class
+ *
+ * An abstraction to WebGL calls.
+ *
+ * <p>Renderer is the central point of the graphics library.
+ * It abstracts the underlying API in some simple methods.</p>
+ *
+ * <p>All the drawing should be made with calls to the renderer
+ * and not directly. This is the only place that WebGL
+ * calls should exist.</p>
+ *
  * @constructor
- *
- * Renderer is the central point of the graphics library.
- * It abstracts the underlying API in some simple methods.
- * All the drawing should be made with calls to the renderer
- * and not directly. Also this is the only place that WebGL
- * calls should exist.
- *
  * @param {HTMLCanvasElement=} canvas The canvas element to draw to. (optional)
  * @param {number=} width The width of the canvas. (optional)
  * @param {number=} height The height of the canvas. (optional)
@@ -150,11 +154,20 @@ var Renderer = function( canvas, width, height ) {
 };
 
 
-/** @const */
+/**
+ * @const
+ * @static
+ */
 Renderer.MAX_FRAGMENT_TEXTURE_UNITS = 1;
-/** @const */
+/**
+ * @const
+ * @static
+ */
 Renderer.MAX_VERTEX_TEXTURE_UNITS = 2;
-/** @const */
+/**
+ * @const
+ * @static
+ */
 Renderer.FLOAT_TEXTURE = 3;
 
 Renderer.prototype = {
@@ -354,7 +367,7 @@ Renderer.prototype = {
                 dataType = gl.FLOAT;
                 break;
         }
-    
+
         switch ( texture.format ) {
             case Texture.RGB:
                 format = gl.RGB;
@@ -452,6 +465,7 @@ Renderer.prototype = {
         /*DEBUG*/
             assert( texture instanceof Texture, 'Invalid type. texture must be a Texture instance' );
         /*DEBUG_END*/
+        
         if ( typeof this.textureObjects[ texture.uid ] === 'undefined' ) {
             this.createTexture( texture );
             return;
@@ -533,7 +547,7 @@ Renderer.prototype = {
 
                     position.previous = null;
                     position.next = firstPosition;
-                    
+
                     firstPosition.previous = position;
                     this.firstTexture2DPosition = position;
                 }
@@ -562,7 +576,7 @@ Renderer.prototype = {
 
                     position.previous = null;
                     position.next = firstPosition;
-                    
+
                     firstPosition.previous = position;
                     this.firstTexture2DPosition = position;
                 }
@@ -611,13 +625,13 @@ Renderer.prototype = {
         this.bindTexture( framebuffer.colorTexture );
         framebufferObject.colorTexture = this.textureObjects[ framebuffer.colorTexture.uid ];
         gl.framebufferTexture2D( gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, framebufferObject.colorTexture, 0 );
-        
+
         var renderbufferObject = framebufferObject.renderbuffer = gl.createRenderbuffer();
         gl.bindRenderbuffer( gl.RENDERBUFFER, renderbufferObject );
         gl.renderbufferStorage( gl.RENDERBUFFER, gl.DEPTH_COMPONENT16, framebuffer.width, framebuffer.height );
         gl.framebufferRenderbuffer( gl.FRAMEBUFFER, gl.DEPTH_ATTACHMENT, gl.RENDERBUFFER, renderbufferObject );
         gl.bindRenderbuffer( gl.RENDERBUFFER, null );
-        
+
         /*DEBUG*/
             assert( gl.checkFramebufferStatus( gl.FRAMEBUFFER ) === gl.FRAMEBUFFER_COMPLETE, 'Framebuffer was not constructed correctly' );
         /*DEBUG_END*/

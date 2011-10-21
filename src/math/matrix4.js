@@ -3,12 +3,14 @@
     Vector3  :  false
 */
 
-/** @constructor
- *
+/**
+ * @class
  * A fast implementation of 4x4 transformation matrixes.
  *
  * It has a Float32Array .data property that is an array of length 16 in row-major order.
- * @param {Array|Matrix4=} data A Javascript array with the initializing data (optional)
+ *
+ * @constructor
+ * @param {Array} data A Javascript array with the initializing data (optional)
  */
 function Matrix4( data ) {
     /**
@@ -35,7 +37,7 @@ Matrix4.prototype = {
     /**
      * Copies the values of an other matrix to this matrix.
      * @param {Matrix4} src A Matrix4 object to copy from.
-     * @returns {Matrix4} this
+     * @returns Matrix4 this
      */
     set: function( src ) {
         if ( src instanceof Array ) {
@@ -47,7 +49,7 @@ Matrix4.prototype = {
     /**
      * Copies the values of this matrix to another matrix.
      * @param {Matrix4} dest A Matrix4 object to copy to.
-     * @returns {Matrix4} dest
+     * @returns Matrix4 dest
      */
     copyTo: function( dest ) {
         if ( dest instanceof Array ) {
@@ -57,7 +59,7 @@ Matrix4.prototype = {
         return dest;
     },
     /** Returns the translation vector of this matrix.
-     * @returns {Vector3}
+     * @returns Vector3
      */
     getTranslation: function( dest ) {
         if ( !dest ) {
@@ -73,7 +75,7 @@ Matrix4.prototype = {
     },
     /**
      * Returns the rotation matrix corresponding to this matrix.
-     * @returns {Matrix3}
+     * @returns Matrix3
      */
     getRotationMatrix: function( dest ) {
         if ( !dest ) {
@@ -97,7 +99,7 @@ Matrix4.prototype = {
     },
     /**
      * Sets this matrix to its transpose.
-     * @returns this
+     * @returns Matrix4
      */
     transpose: function() {
         var a = this.data;
@@ -123,7 +125,9 @@ Matrix4.prototype = {
         a[ 14 ] = a23;
         return this;
     },
-    /** Get the determinant of this matrix. */
+    /**
+     * Get the determinant of this matrix.
+     */
     getDeterminant: function() {
         var a = this.data;
         // Cache the matrix values (makes for huge speed increases!)
@@ -141,7 +145,7 @@ Matrix4.prototype = {
     },
     /**
      * Set this matrix to its inverse.
-     * @returns this
+     * @returns Matrix4
      */
     inverse: function() {
         var a = this.data;
@@ -226,7 +230,7 @@ Matrix4.prototype = {
     /**
      * Multiply with a Vector3 and store the value to the vector.
      * @param {Vector3} vector A vector or array-like object to multiply with.
-     * @returns {Vector3} The vector.
+     * @returns Vector3 The vector.
      */
     multiplyVector3: function( vector ) {
         var a = this.data,
@@ -241,7 +245,7 @@ Matrix4.prototype = {
     },
     /**
      * Returns a clone of this matrix.
-     * @returns {Matrix4}
+     * @returns Matrix4
      */
     clone: function() {
         return new Matrix4( this );
@@ -251,7 +255,7 @@ Matrix4.prototype = {
 /**
  * Generates an identity matrix.
  * @param {Matrix4} [dest] A matrix to reset to the identity matrix.
- * @returns{Matrix4} dest if specified, a new Matrix4 otherwise
+ * @returns Matrix4 dest if specified, a new Matrix4 otherwise
  */
 Matrix4.identity = function( dest ) {
     if ( !dest ) {
@@ -283,7 +287,7 @@ Matrix4.identity = function( dest ) {
 
 /**
  * Generates a frustrum matrix with the given bounds.
- * @returns {Matrix4} dest if specified, a new Matrix4 otherwise
+ * @returns Matrix4 dest if specified, a new Matrix4 otherwise
  */
 Matrix4.frustrum = function( left, right, bottom, top, near, far, dest ) {
     if ( !dest ) {
@@ -316,7 +320,7 @@ Matrix4.frustrum = function( left, right, bottom, top, near, far, dest ) {
 
 /**
  * Generates a perspective projection matrix with the given bounds.
- * @returns {Matrix4} dest if specified, a new Matrix4 otherwise
+ * @returns Matrix4 dest if specified, a new Matrix4 otherwise
  */
 Matrix4.perspective = function( fovy, aspect, near, far, dest ) {
     var top = near * Math.tan( fovy * Math.PI / 360.0 );
@@ -326,13 +330,13 @@ Matrix4.perspective = function( fovy, aspect, near, far, dest ) {
 
 /**
  * Generates an orthogonal projection matrix with the given bounds
- * returns {Matrix4} dest if specified, a new Matrix4 otherwise
+ * @returns Matrix4 dest if specified, a new Matrix4 otherwise
  */
 Matrix4.ortho = function( left, right, bottom, top, near, far, dest ) {
     if ( !dest ) {
         dest = new Matrix4();
     }
-    
+
     var a = dest.data;
 
     var rl = ( right - left );

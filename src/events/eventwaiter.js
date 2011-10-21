@@ -3,6 +3,25 @@
 */
 
 /**
+ * @class
+ *
+ * Handle waiting a group of events to finish.
+ *
+ * Consider the case that you need two wait for all the files to finish loading:
+ * <pre class="sh_javascript">
+ * loader.load( 'file1', callback );
+ * loader.load( 'file2', callback );
+ * </pre>
+ *
+ * You can use the EventWaiter to call a function when all files have finished loading.
+ * <pre class="sh_javascript">
+ * var w = new EventWaiter();
+ * loader.load( 'file1', w.callback() );
+ * loader.load( 'file2', w.callback() );
+ * w.on( 'complete', function() {
+ *     console.log( 'finished loading' );
+ * } );
+ * </pre>
  * @constructor
  * @extends EventEmitter
  */
@@ -13,16 +32,31 @@ function EventWaiter() {
 
 EventWaiter.prototype = {
     constructor: EventWaiter,
+    /*
+     * Check if the events have finished.
+     */
     isWaiting: function() {
         return this._waitingList.length;
     },
-	wait: function( obj, name, title ) {
+    /**
+     * Wait for an EventEmitter to fire an event.
+     * @param {EventEmitter} emitter
+     * @param {String} event
+     */
+	wait: function( emitter, name, title ) {
         this.waitMore( title );
         var that = this;
-        obj.once( name, function() {
+        emitter.once( name, function() {
             that.waitLess( title );
         } );
     },
+    /**
+     * Wait for a limited time.
+     * @param {EventEmitter} emitter
+     * @param {String} event
+     * @param {Number} time
+     * @param {String} title
+     */
 	waitTimed: function( obj, name, time, title ) {
         this.waitMore( title );
         var that = this;
@@ -36,6 +70,10 @@ EventWaiter.prototype = {
             }, 0 ); // be sure other callbacks are called first
         } );
     },
+    /**
+     * Create a callback that will wait to be called.
+     * @param {String} title
+     */
 	callback: function( title ) {
         this.waitMore( title );
         var that = this;
@@ -43,10 +81,16 @@ EventWaiter.prototype = {
             that.waitLess( title );
         };
     },
+    /**
+     * @param {String} title
+     */
 	waitMore: function( title ) {
         title = title || "";
         this._waitingList.push( title );
     },
+    /*
+     * @param {String} title
+     */
 	waitLess: function( title ) {
         var i = this._waitingList.indexOf( title );
         this._waitingList.splice( i, 1 );

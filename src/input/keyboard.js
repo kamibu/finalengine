@@ -1,8 +1,9 @@
 /*global InputDevice:true */
 
 /**
- * @constructor
  * @implements InputDevice
+ *
+ * @constructor
  */
 function Keyboard() {
     this.actions = {};

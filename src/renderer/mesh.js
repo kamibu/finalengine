@@ -1,11 +1,13 @@
 /*global assert:true, assertIn: true, Buffer: true, UUID: true, VertexAttribute: true, TempVars: true*/
 
 /**
- * @constructor
+ * @class
  *
  * The 3D representation of a {@link Drawable}.
  *
  * <p>This is the representation object that the lower-level {@link Renderer} class can use to render 3D objects.</p>
+ *
+ * @constructor
  */
 function Mesh() {
     /** @public */

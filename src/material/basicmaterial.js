@@ -5,8 +5,12 @@
 */
 
 /**
- * @constructor
+ * @class
  * @extends Material
+ *
+ * A material with a diffuse color.
+ *
+ * @constructor
  */
 function BasicMaterial() {
     Material.call( this );

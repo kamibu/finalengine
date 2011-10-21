@@ -3,11 +3,11 @@
 */
 
 /**
- *
+ * @class
  * Exports objects to JSON format.
  *
- * <p>Objects to be exported must define a getExportData method that returns the data to be saved.
- * You need to run the exporter nodejs script on the resourcePath folder for exporting to work.</p>
+ * <p>Objects to be exported must define a getExportData method that returns the data to be saved.</p>
+ * <p>You need to run the exporter nodejs script on the resourcePath folder for exporting to work.</p>
  *
  * @constructor
  * @param {string} resourcePath The path to the folder to use for exports.
@@ -16,18 +16,18 @@ function Exporter( resourcePath ) {
     if ( resourcePath[ resourcePath.length - 1 ] !== '/'  ){
         resourcePath += '/';
     }
-    
+
     /**
      * @public
      * Resource export path.
-     * @type {string}
+     * @type String
      */
     this.resourcePath = resourcePath;
 
     /**
      * @public
      * @default false
-     * @type {boolean}
+     * @type Boolean
      */
     this.isSaving = false;
 

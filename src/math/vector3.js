@@ -1,8 +1,6 @@
 /**
  * @class
  *
- * @constructor
- *
  * A 3-element vector.
  *
  * It's elements are accessed via a .data property that is a Float32Array
@@ -10,15 +8,46 @@
  *
  * Most methods alter the object whose method was called for performance reasons.
  * @param {Array|Vector3=} data A Javascript array with the initializing data (optional)
+ *
+ * @constructor
+ * @param {Number} x
+ * @param {Number} y
+ * @param {Number} z
+ *
+ * <p>The usual way to instantiate a Vector3 is to pass three numbers:</p>
+ *
+ * <pre class="sh_javascript">
+ * var v = new Vector3( 1, 2, 3 );
+ * </pre>
+ *
+ * <p>You can also pass an array with 3 elements:</p>
+ * <pre class="sh_javascript">
+ * var v = new Vector3( [ 1, 2, 3 ] );
+ * </pre>
+ *
+ * <p>Or another vector that will be copied:</p>
+ * <pre class="sh_javascript">
+ * var v = new Vector3( [ 1, 2, 3 ] );
+ * var v2 = new Vector3( v );
  */
-function Vector3( data ) {
+function Vector3( x, y, z ) {
+    /**
+     * @public
+     * A Float32Array with the 3 elements.
+     * @type Float32Array
+     */
     this.data = new Float32Array( 3 );
-    if ( data ) {
-        if ( data.data ) {
-            this.data.set( data.data );
+    if ( x ) {
+        if ( x.data ) {
+            this.data.set( x.data );
+        }
+        else if ( Array.isArray( x ) ) {
+            this.data.set( x );
         }
         else {
-            this.data.set( data );
+            this.data[ 0 ] = x;
+            this.data[ 1 ] = y;
+            this.data[ 2 ] = z;
         }
     }
 }
@@ -28,7 +57,7 @@ Vector3.prototype = {
     /**
      * Set the elements according to another vector.
      * @param {Vector3} src Vector to copy from.
-     * @returns {Vector3} this
+     * @returns Vector3
      */
     set: function( src ) {
         if ( src instanceof Array ) {
@@ -40,7 +69,7 @@ Vector3.prototype = {
     /**
      * Copies the values of this vector to another vector.
      * @param {Vector3} dest A Vector3 object to copy to.
-     * @returns {Vector3} dest
+     * @returns Vector3 dest
      */
     copyTo: function( dest ) {
         if ( dest instanceof Array ) {
@@ -52,7 +81,7 @@ Vector3.prototype = {
     /**
      * Adds the values of a vector to this object.
      * @param {Vector3} vector Array-like object to add.
-     * @returns {Vector3} this
+     * @returns Vector3
      */
     add: function( vector ) {
         var a = this.data,
@@ -65,7 +94,7 @@ Vector3.prototype = {
     /**
      * Subtracts the values of a vector from this object.
      * @param {Vector3} vector Array-like object to subtract.
-     * @returns {Vector3} this
+     * @returns Vector3 this
      */
     subtract: function( vector ) {
         var a = this.data,
@@ -77,7 +106,7 @@ Vector3.prototype = {
     },
     /**
      * Negates every element of the vector.
-     * @returns {Vector3} this
+     * @returns Vector3
      */
     negate: function() {
         var a = this.data;
@@ -88,8 +117,8 @@ Vector3.prototype = {
     },
     /**
      * Scales this vector uniformly.
-     * @param {number} factor
-     * @returns {Vector3} this
+     * @param {Number} factor
+     * @returns Vector3
      */
     scale: function( factor ) {
         var a = this.data;
@@ -99,7 +128,9 @@ Vector3.prototype = {
         return this;
     },
     /**
-     * @returns {Vector3} this
+     * Scales the vector so that it becomes a unit vector, unless it has zero length.
+     *
+     * @returns Vector3
      */
     normalize: function() {
         var a = this.data;
@@ -107,9 +138,6 @@ Vector3.prototype = {
         var len = Math.sqrt( x * x + y * y + z * z);
 
         if ( len === 0 ) {
-            a[ 0 ] = 0;
-            a[ 1 ] = 0;
-            a[ 2 ] = 0;
             return this;
         }
 
@@ -124,7 +152,7 @@ Vector3.prototype = {
      * The value is stored in this object.
      *
      * @param {Vector3} vector
-     * @returns {Vector3} this
+     * @returns Vector3 this
      */
     cross: function( vector ) {
         var a = this.data,
@@ -139,7 +167,7 @@ Vector3.prototype = {
     },
     /**
      * Returns the length (norm) of this vector.
-     * @returns {number}
+     * @returns Number
      */
     length: function() {
         var a = this.data;
@@ -148,6 +176,7 @@ Vector3.prototype = {
     },
     /**
      * Returns the length of this vector squared.
+     * @returns Number
      */
     length2: function() {
         var a = this.data;
@@ -156,7 +185,7 @@ Vector3.prototype = {
     },
     /**
      * Returns the dot product of this vector with another.
-     * @returns {number}
+     * @returns Number
      */
     dot: function( vector ) {
         var a = this.data,
@@ -164,7 +193,8 @@ Vector3.prototype = {
         return a[ 0 ] * b[ 0 ] + a[ 1 ] * b[ 1 ] + a[ 2 ] * b[ 2 ];
     },
     /**
-     * @returns {Vector3} this
+     * Changes the sign of all negative values.
+     * @returns Vector3
      */
     absolute: function() {
         var a = this.data;

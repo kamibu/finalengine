@@ -2,6 +2,8 @@
 
 /**
  * @class
+ * A sound effect, soundtrack song or any other sound asset.
+ *
  * @extends EventEmitter
  * @constructor
  * @param url
@@ -13,21 +15,25 @@ function SoundAsset( url ) {
 
     /**
      * A unique indentifer (local).
+     * @type String
      */
     this.uid = SoundAsset.uid++;
 
     /**
      * The url of this asset.
+     * @type String
      */
     this.url = url;
 
     /**
-     * The duration of this asset. If metadata is not yet loaded, it is NaN.
+     * The duration of this asset. If metadata is not yet loaded, it is null.
+     * @type Number
      */
-    this.duration = NaN;
+    this.duration = null;
 
     /**
      * An HTML audio element with this asset as a source.
+     * @type HTMLElement
      */
     this.tag = document.createElement( 'audio' );
     this.tag.src = url;

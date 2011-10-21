@@ -6,9 +6,13 @@
 */
 
 /**
- * @constructor
+ * @class
  * @extends Material
  *
+ * A material for objects with textures.
+ *
+ * @constructor
+ * @param {Texture} texture
  */
 function TexturedMaterial( texture ) {
     Material.call( this );

@@ -6,8 +6,13 @@
 */
 
 /**
- * @constructor
+ * @class
+ * A sphere.
  * @extends Drawable
+ * @constructor
+ * @param {Number} radius
+ * @param {Number} segmentsY
+ * @param {Number} segmentsX
  */
 function Sphere( radius, segmentsY, segmentsX ) {
     Drawable.call( this );
@@ -24,7 +29,7 @@ function Sphere( radius, segmentsY, segmentsX ) {
         vertices: [],
         indices: []
     };
-    
+
     var prev = function( x, m ) {
         if ( x === 0 ) {
             return ( m - 1 );
@@ -33,7 +38,7 @@ function Sphere( radius, segmentsY, segmentsX ) {
             return ( x -1 );
         }
     };
-    
+
     var y, x, z, r,cnt = 0, cnt2 = 0;
     for ( var i = 1; i < p-1; i++ ) { // end points are missing
         y = R*Math.sin( -Math.PI/2 + i*Math.PI/( p - 1 ) );
@@ -49,8 +54,8 @@ function Sphere( radius, segmentsY, segmentsX ) {
             cnt = cnt+3;
         }
         //make the triangle
-        
-        
+
+
         if ( i > 1 ) {
             var st = ( i - 2 )*m;
             for ( x = 0; x < m; x++ ) {
@@ -58,7 +63,7 @@ function Sphere( radius, segmentsY, segmentsX ) {
                 model.indices[ cnt2+1 ] = st + prev( x, m ) + m;
                 model.indices[ cnt2+2 ] = st + x + m;
                 cnt2  += 3;
-                
+
                 model.indices[ cnt2 ] = st + x;
                 model.indices[ cnt2+1 ] = st + prev( x, m );
                 model.indices[ cnt2+2 ] = st + prev( x, m ) + m;
@@ -66,7 +71,7 @@ function Sphere( radius, segmentsY, segmentsX ) {
             }
         }
     }
-    
+
     model.vertices[ cnt ] = 0;
     model.vertices[ cnt+1 ] = -R;
     model.vertices[ cnt+2 ] = 0;
@@ -76,14 +81,14 @@ function Sphere( radius, segmentsY, segmentsX ) {
     model.vertices[ cnt+1 ] = R;
     model.vertices[ cnt+2 ] = 0;
     cnt += 3;
-    
+
     var top = down + 1;
     for ( x = 0; x < m; x++ ) {
         model.indices[ cnt2 ] = down;
         model.indices[ cnt2+1 ] = prev( x, m );
         model.indices[ cnt2+2 ] = x;
         cnt2 += 3;
-        
+
         model.indices[ cnt2 ] = down - m + x;
         model.indices[ cnt2+1 ] = down - m + prev( x, m );
         model.indices[ cnt2+2 ] = top;

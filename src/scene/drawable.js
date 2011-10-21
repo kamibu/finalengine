@@ -6,23 +6,24 @@
 */
 
 /**
- * @constructor
- * A node with a 3D representation.
+ * @class
+ * A 3D object with a mesh and a material.
  *
  * @extends SceneNode
+ * @constructor
  */
 function Drawable() {
     SceneNode.call( this );
     /**
      * @public
-     * @type {Mesh}
+     * @type Mesh
      * @default null
      */
     this.mesh = null;
 
     /**
      * @public
-     * @type {Material}
+     * @type Material
      * @default Instance of BasicMaterial
      */
     this.material = new BasicMaterial();
@@ -36,7 +37,6 @@ Drawable.prototype = {
      * Set the material to be used for rendering this drawable.
      *
      * @param {Material} material
-     * @returns this
      */
     setMaterial: function( material ) {
         /*DEBUG*/

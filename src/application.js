@@ -74,6 +74,14 @@ function Application() {
     /**
      * @public
      *
+     * The application title. The default value is the HTML document's title.
+     * @type String
+     */
+    this.title = document.title;
+
+    /**
+     * @public
+     *
      * The render manager used for rendering the scene.
      * Its {@link RenderManager#renderScene} method is called in a loop.
      * @type RenderManager
@@ -90,7 +98,7 @@ function Application() {
      * @public
      * The default camera.
      *
-     * Its original position is at (0, 0, 10). To change the camera used for rendering, change the scene, not this property.
+     * Its original position is at (0, 0, 10).
      * @type Camera
      */
     this.camera = new Camera().setPosition( new Vector3( [ 0, 0, 10 ] ) );
@@ -119,16 +127,23 @@ function Application() {
 
     /**
      * @type UIComponent
+     *
+     * Adds ui elements to the application.
      */
     this.ui = new UIComponent();
 
     /**
      * @type SoundManager
+     *
+     * Manages sound sources added to the scene.
      */
     this.soundManager = new SoundManager( this.scene, this.camera );
 
     /**
      * @type SoundSource
+     *
+     * A sound source used for soundtrack or any other background music that
+     * doesn't have a specific location in space.
      */
     this.soundtrack = new SoundSource( this.scene );
     this.camera.appendChild( this.soundtrack );
@@ -193,6 +208,8 @@ Application.prototype = {
     },
     /**
      * Set the application title.
+     *
+     * This sets the {@link title} property and alters the HTML &lt;title&gt; tag.
      * @param {String} title
      * @returns String
      */

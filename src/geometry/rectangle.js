@@ -6,8 +6,16 @@
 */
 
 /**
- * @constructor
+ * @class
+ * A rectangle.
+ *
  * @extends Drawable
+ *
+ * @constructor
+ * @param {Number} x0
+ * @param {Number} z0
+ * @param {Number} x1
+ * @param {Number} z1
  */
 function Rectangle( x0, z0, x1, z1 ) {
     Drawable.call( this );

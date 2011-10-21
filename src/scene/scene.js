@@ -5,7 +5,6 @@
 
 /**
  * @class
- * @extends SceneNode
  *
  * The tree of nodes to be rendered.
  *
@@ -21,7 +20,7 @@ Scene.prototype = {
     /**
      * Returns the nodes in the tree below a given node that are instances of theClass.
      * @param {SceneNode} node
-     * @param theClass
+     * @param {Function} theClass
      * @returns Array An array of nodes.
      */
     findClass: function( node, theClass ) {

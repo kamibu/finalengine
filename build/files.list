@@ -41,10 +41,12 @@ scene/scene.js
 material/material.js
 material/basicmaterial.js
 material/texturedmaterial.js
+material/cubemapmaterial.js
 
 geometry/cube.js
 geometry/rectangle.js
 geometry/sphere.js
+geometry/skybox.js
 
 input/inputdevice.js
 input/keyboard.js
@@ -53,7 +55,7 @@ input/inputhandler.js
 
 ui/uicomponent.js
 
-rendermanager.js
+scene/rendermanager.js
 
 exporter/exporter.js
 exporter/importer.js

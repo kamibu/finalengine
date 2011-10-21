@@ -6,8 +6,11 @@
     Vector3     :  false
 */
 
-/** @constructor
+/**
+ * @class
  * Represents a transformation in 3D space (position, orientation, scale).
+ *
+ * @constructor
  */
 function Transform() {
     this.position = new Vector3();
@@ -27,7 +30,7 @@ Transform.prototype = {
     },
     /**
      * @param {Vector3} position The new position as a vector.
-     * @returns this
+     * @returns Transform
      */
     setPosition: function( position ) {
         this.position.set( position );
@@ -35,7 +38,7 @@ Transform.prototype = {
     },
     /**
      * @param {Quaternion} orientation The new orientation as a quaternion.
-     * @returns this
+     * @returns Transform
      */
     setOrientation: function( orientation ) {
         this.orientation.set( orientation );
@@ -44,7 +47,7 @@ Transform.prototype = {
     /**
      * Scales the object uniformly.
      * @param {number} scale The new scale as a scalar.
-     * @returns this
+     * @returns Transform
      */
     setScale: function( scale ) {
         this.scale = scale;
@@ -53,7 +56,7 @@ Transform.prototype = {
     /**
      * Returns a copy of the position vector.
      * @param {Vector3} [dest] Alter this variable instead of generating a new Vector3.
-     * @returns {Vector3} dest if specified, a new Vector3 otherwise.
+     * @returns Vector3 dest if specified, a new Vector3 otherwise.
      */
     getPosition: function( dest ) {
         if ( !dest ) {
@@ -64,7 +67,7 @@ Transform.prototype = {
     /**
      * Returns a copy of the orientation quaternion.
      * @param {Quaternion} [dest] Alter this variable instead of generating a new quaternion.
-     * @returns {Quaternion} dest if specified, a new quaternion otherwise.
+     * @returns Quaternion dest if specified, a new quaternion otherwise.
      */
     getOrientation: function( dest ) {
         if ( !dest ) {
@@ -73,14 +76,14 @@ Transform.prototype = {
         return dest.set( this.orientation );
     },
     /**
-     * @returns {number}
+     * @returns number
      */
     getScale: function() {
         return this.scale;
     },
     /**
      * Resets transform to default values.
-     * @returns {Transform} this
+     * @returns Transform this
      */
     setIdentity: function() {
         this.position.data.set( [ 0, 0, 0 ] );
@@ -105,7 +108,7 @@ Transform.prototype = {
     /**
      * Returns a transformation matrix.
      * @param {Matrix4} [dest] Alter dest object instead of creating a new matrix.
-     * @returns {Matrix4} dest if specified, a new matrix otherwise.
+     * @returns Matrix4 dest if specified, a new matrix otherwise.
      */
     getMatrix: function( dest ) {
         if ( !dest ) {
@@ -119,14 +122,14 @@ Transform.prototype = {
     /**
      * Sets position, orientation and scale to match a transformation matrix.
      * @param {Matrix4} matrix
-     * @returns this
+     * @returns Transform
      */
     setMatrix: function( matrix ) {
         var a = matrix.data;
 
         var m00 = a[ 0 ], m01 = a[ 1 ], m02 = a[ 2 ];
         this.scale = Math.sqrt( m00 * m00 + m01 * m01 + m02 * m02 );
-        
+
         var pos = this.position.data;
         pos[ 0 ] = a[ 12 ];
         pos[ 1 ] = a[ 13 ];
@@ -141,7 +144,7 @@ Transform.prototype = {
     },
     /**
      * @param {Matrix4} [dest] Alter dest instead of creating a new Matrix4
-     * @returns {Matrix4} dest if specified, a new matrix otherwise.
+     * @returns Matrix4 dest if specified, a new matrix otherwise.
      */
     getInverseMatrix: function( dest ) {
         if ( !dest ) {
@@ -163,9 +166,6 @@ Transform.prototype = {
         a[ 14 ] = x * a[ 2 ] + y * a[ 6 ] + z * a[ 10 ];
         return dest;
     },
-    /**
-     * @protected
-     */
     _update: function() {
         var mat = this.matrix,
             a = mat.data;
@@ -189,9 +189,6 @@ Transform.prototype = {
         this._needsUpdate = false;
         return this;
     },
-    /**
-     * @protected
-     */
     _invalidate: function() {
         this._needsUpdate = true;
         return this;

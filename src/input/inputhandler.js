@@ -1,15 +1,17 @@
 /*global Keyboard: true, Mouse: true*/
 
 /**
- * @constructor
- * Higher level API for input devices and grouping of input actions.
+ * @class
+ * Handling of input devices and grouping of input actions.
  *
  * <p>It has a keyboard and a mouse device attached by default for convenience.</p>
+ * @constructor
  */
 function InputHandler() {
     /**
      * Whether actions should be triggered or not
      * @default true
+     * @type Boolean
      */
     this.enabled = true;
 
@@ -25,6 +27,7 @@ function InputHandler() {
 
 /**
  * @public
+ * Enable handling of input events. This way, input handlers can be used for enabling groups of input events.
  */
 InputHandler.prototype.enable = function() {
     var i, l = this.actions.length;
@@ -37,6 +40,7 @@ InputHandler.prototype.enable = function() {
 
 /**
  * @public
+ * Disable handling of input events. This way, input handlers can be used for disabling groups of input events.
  */
 InputHandler.prototype.disable = function() {
     var i, l = this.actions.length;
@@ -49,6 +53,8 @@ InputHandler.prototype.disable = function() {
 
 /**
  * @public
+ * Returns a boolean indicating if this input handler is enabled.
+ * @returns boolean
  */
 InputHandler.prototype.isEnabled = function() {
     return this.enabled;

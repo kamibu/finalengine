@@ -1,9 +1,10 @@
 /*global Request: false, Importer: false */
 
 /**
- * @constructor
- *
+ * @class
  * Loads JSON objects exported with the {@link Exporter} class.
+ *
+ * @constructor
  */
 function JSONLoader() {
 }

@@ -1,13 +1,17 @@
 /**
- * @constructor
+ * @class
  *
+ * Class for convenient HTTP requests.
  */
 function Request() {
 }
 
 
 /**
- * @static
+ * @param {String} method
+ * @param {String} url
+ * @param {Object} data
+ * @param {Function} callback
  */
 Request.send = function( method, url, data, callback ) {
     if ( typeof data === 'function' ) {
@@ -33,14 +37,18 @@ Request.send = function( method, url, data, callback ) {
 };
 
 /**
- * @static
+ * @param {String} url
+ * @param {Object} data
+ * @param {Function} callback
  */
 Request.get = function( url, data, callback ) {
     Request.send( 'GET', url, data, callback );
 };
 
 /**
- * @static
+ * @param {String} url
+ * @param {Object} data
+ * @param {Function} callback
  */
 Request.post = function( url, data, callback ) {
     Request.send( 'POST', url, data, callback );

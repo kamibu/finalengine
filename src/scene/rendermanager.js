@@ -1,14 +1,26 @@
-/*global Matrix4:true, Renderer:true, Drawable:true, Framebuffer:true, Mesh:true, Buffer:true, VertexAttribute:true, Light:true, Texture:true*/
+/*global Matrix4:true, Renderer:true, Drawable:true, Framebuffer:true, Mesh:true, Buffer:true, VertexAttribute:true, Light:true, Texture:true, Skybox: true */
 
 /**
+ * @class
+ * Renders a Scene object.
+ *
  * @constructor
  */
 function RenderManager() {
+    /**
+     * The Renderer used for rendering.
+     * @type Renderer
+     */
     this.renderer = new Renderer();
+
     this.forcedMaterial = null;
 
     this.postProcess = false;
 
+    /**
+     * @type FrameBuffer
+     * The framebuffer used for post process effects.
+     */
     this.framebuffer = new Framebuffer( this.renderer.width, this.renderer.height );
 
     if ( this.renderer.getParameter( Renderer.FLOAT_TEXTURE ) ) {
@@ -36,6 +48,7 @@ RenderManager.prototype = {
     constructor: RenderManager,
     /**
      * @public
+     * @param {Material} material
      */
     addPostProcessEffect: function( material ) {
         this.postProcess = true;
@@ -103,6 +116,7 @@ RenderManager.prototype = {
             var currentDrawable = drawableList[ l ];
             currentDrawable.onBeforeRender( camera );
             currentDrawable.getAbsoluteMatrix( g.WorldMatrix );
+            
             g.WorldViewMatrix.set( g.ViewMatrix ).multiply( g.WorldMatrix );
             g.WorldViewProjectionMatrix.set( g.ViewProjectionMatrix ).multiply( g.WorldMatrix );
 
@@ -114,7 +128,7 @@ RenderManager.prototype = {
             this.renderer.useShader( material.getShader() );
             this.renderer.render( currentDrawable.mesh );
         }
-        
+
         if ( this.postProcess ) {
             this.applyPostProcessEffects();
         }

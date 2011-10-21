@@ -4,38 +4,96 @@
 */
 
 /**
+ * @class
+ *
+ * A buffer class used for storing vertex attribute data.
+ *
  * @constructor
- * @param {number=} type The type of the buffer (optional)
- * @param {number=} usage The type of the buffer (optional)
+ * @param {Number} type
+ * @param {Number} usage
  */
 function Buffer( type, usage ) {
+    /**
+     * @public
+     * A UUID generated for this Buffer.
+     * @type String
+     */
     this.uuid = UUID.generateCanonicalForm();
-    this.name = this.uuid;
 
+    this.name = this.uuid;
     this.uid = Buffer.uid++;
+
+    /**
+     * The data array. Initially null.
+     * @type Array
+     */
     this.data = null;
+
+    /**
+     * The length of data.
+     * @type Number
+     */
     this.length = 0;
+
+    /**
+     * Buffer.STATIC, Buffer.DYNAMIC, or Buffer.STREAM
+     * @type Number
+     */
     this.usage = usage || Buffer.STATIC;
+
+    /**
+     * Buffer.DATA_BUFFER or Buffer.ELEMENT_BUFFER
+     * @type Number
+     */
     this.type = type || Buffer.DATA_BUFFER;
     this.needsUpdate = true;
 }
 
 Buffer.uid = 0;
 
-/** @const */
+/**
+ * @const
+ * @type Number
+ * @static
+ */
 Buffer.STATIC = 1;
-/** @const */
+/**
+ * @const
+ * @type Number
+ * @static
+ */
 Buffer.DYNAMIC = 2;
-/** @const */
+/**
+ * @const
+ * @type Number
+ * @static
+ */
 Buffer.STREAM = 3;
-/** @const */
+/**
+ * @const
+ * @type Number
+ * @static
+ */
 Buffer.DATA_BUFFER = 4;
-/** @const */
+/**
+ * @const
+ * @type Number
+ * @static
+ */
 Buffer.ELEMENT_BUFFER = 5;
 
 
 Buffer.prototype = {
     constructor: Buffer,
+
+    /**
+     * Sets the buffer data and returns the Buffer instance.
+     *
+     * This alters {@link data} and {@link length} properties.
+     *
+     * @param {Array} data
+     * @returns Buffer
+     */
     setData: function( data ) {
         /*DEBUG*/
             assertIn( data.constructor, Array, Float32Array, Uint16Array, 'Invalid type. data must be an Array, Float32Array or Uint16Array' );

@@ -3,9 +3,12 @@
     Quaternaion  :  false
 */
 
-/** @constructor
+/**
+ * @class
  * A fast mplementation of 3x3 rotation matrixes.
- * @param {Array|Matrix3=} data A Javascript array with the initializing data (optional)
+ *
+ * @constructor
+ * @param {Array} data A Javascript array with the initializing data (optional)
  */
 function Matrix3( data ) {
     /**
@@ -42,7 +45,7 @@ Matrix3.prototype = {
     },
     /**
      * Reset matrix to identity matrix.
-     * @returns {Matrix3} this
+     * @returns Matrix3 this
      */
     setIdentity: function() {
         var a = this.data;
@@ -75,7 +78,7 @@ Matrix3.prototype = {
 //    },
     /**
      * Returns a clone of this matrix.
-     * @returns {Matrix3}
+     * @returns Matrix3
      */
     clone: function() {
         return new Matrix3( this );

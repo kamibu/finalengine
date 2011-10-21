@@ -6,17 +6,28 @@
 
 /**
  * @class
+ * Orientation represented as a vector and an angle.
+ *
  * @constructor
- * @param {Array|Quaternion=} data A Javascript array with the initializing data (optional)
+ * @param {Number} x
+ * @param {Number} y
+ * @param {Number} z
+ * @param {Number} theta
  */
-function Quaternion( data ) {
+function Quaternion( x, z, y, a ) {
     this.data = new Float32Array( 4 );
-    if ( data ) {
-        if ( data.data ) {
-            this.data.set( data.data );
+    if ( x ) {
+        if ( x.data ) {
+            this.data.set( x.data );
+        }
+        else if ( Array.isArray( x ) ){
+            this.data.set( x );
         }
         else {
-            this.data.set( data );
+            this.data[ 0 ] = x;
+            this.data[ 1 ] = y;
+            this.data[ 2 ] = z;
+            this.data[ 3 ] = a;
         }
     }
     else {

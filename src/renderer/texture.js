@@ -111,6 +111,7 @@ Texture.prototype = {
             this.setWrapS( Texture.CLAMP_TO_EDGE );
             this.setWrapT( Texture.CLAMP_TO_EDGE );
         }
+        return this;
     },
     setWrapS: function( wrap ) {
         /*DEBUG*/
@@ -118,7 +119,7 @@ Texture.prototype = {
         /*DEBUG_END*/
         this.wrapS = wrap;
         return this;
-            
+
     },
     setWrapT: function( wrap ) {
         /*DEBUG*/

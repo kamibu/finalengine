@@ -6,8 +6,12 @@
 */
 
 /**
- * @constructor
+ * @class
  * @extends Drawable
+ *
+ * A unit cube.
+ *
+ * @constructor
  */
 function Cube() {
     Drawable.call( this );

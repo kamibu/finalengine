@@ -2,10 +2,13 @@
 /*global Request: true, EventWaiter: true */
 
 /**
- * @constructor
+ * @class
  *
  * Imports assets into the game.
- * @param {function([*])=} defaultCallback (optional)
+ *
+ * @constructor
+ * @param {String} resourcePath
+ * @param {Function} defaultCallback
  */
 function Importer( resourcePath, defaultCallback ) {
     if ( resourcePath[ resourcePath.length - 1 ] !== '/' ) {
@@ -13,12 +16,15 @@ function Importer( resourcePath, defaultCallback ) {
     }
 
     /**
-     * @public
+     * @type String
+     * The base path from which resources will be loaded.
+     * This path will always be appended to URLs passed to {@link load}.
      */
     this.resourcePath = resourcePath;
 
     /**
-     * @pubilc
+     * @type Function
+     * The callback to be used when no callback is passed to {@link load}.
      */
     this.defaultCallback = defaultCallback;
 }
@@ -26,12 +32,12 @@ function Importer( resourcePath, defaultCallback ) {
 Importer.prototype = {
     constructor: Importer,
     /**
-     * Loads an asset.
+     * <p>Loads an asset.</p>
      *
-     * Determines the loader to be used from the extension of the filename of the asset.
-     * If no extension is recongnized, JSON extension is assumed.
+     * <p>Determines the loader to be used from the extension of the filename of the asset.<br />
+     * If no extension is recongnized, JSON extension is assumed.</p>
      *
-     * @param {string} asset The path to the asset relative to resourcePath. If no extension is given (or not recognized), .json extension is assumed.
+     * @param {String} asset The path to the asset relative to resourcePath. If no extension is given (or not recognized), .json extension is assumed.
      * @param {Function} callback Callback that is called with the loaded object as a parameter.
      */
     load: function( asset, callback ) {
@@ -63,12 +69,14 @@ Importer.prototype = {
 };
 
 /**
- * Set the loader to be used for a given extension.
+ * <p>Sets the loader to be used for a given extension.</p>
  *
- * The loader must have a load method that gets three parameters:
- *  * the path to the asset
- *  * the importer instance being used
- *  * a callback
+ * <p>The loader must have a load method that gets three parameters:</p>
+ * <ul>
+ *  <li>the path to the asset</li>
+ *  <li>the importer instance being used</li>
+ *  <li>a callback</li>
+ * </ul>
  * and calls the third parameter (callback) with the loaded object.
  */
 Importer.setLoader = function( extension, loader ) {

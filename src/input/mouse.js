@@ -1,6 +1,6 @@
 /**
- * @constructor
  * @implements InputDevice
+ * @constructor
  */
 function Mouse() {
     this.down = {};
@@ -29,7 +29,7 @@ Mouse.prototype = {
         if ( !actions ) {
             return;
         }
-        
+
         this.addCustomEventData( e );
         l = actions.length;
         for ( i = 0; i < l; ++i ) {

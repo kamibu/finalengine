@@ -45,7 +45,7 @@ Skeleton.prototype = {
             jointPositionsAndScales[ l * 4 + 1 ] = trans2.position[ 1 ];
             jointPositionsAndScales[ l * 4 + 2 ] = trans2.position[ 2 ];
             jointPositionsAndScales[ l * 4 + 3 ] = trans2.scale;
-        
+
             jointOrientations[ l * 4 + 0 ] = trans2.orientation[ 0 ];
             jointOrientations[ l * 4 + 1 ] = trans2.orientation[ 1 ];
             jointOrientations[ l * 4 + 2 ] = trans2.orientation[ 2 ];
@@ -90,7 +90,7 @@ Skeleton.prototype = {
         }
     },
     getExportData: function( exporter ) {
-        
+
 
     },
     setImportData: function( importer, data ) {

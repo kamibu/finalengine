@@ -16,7 +16,7 @@ function SoundSource() {
 
     /**
      * The asset currently playing.
-     * @type {SoundAsset}
+     * @type SoundAsset
      * @default null
      */
     this.nowPlaying = null;
@@ -29,21 +29,26 @@ function SoundSource() {
 
     /**
      * The index of the asset that is played now or will be played next.
+     * @type Number
      */
     this.currentTrack = 0;
 
     /**
      * The velocity of this source.
+     * @type Number
      */
     this.velocity = new Vector3();
 
     /**
      * A unique identifier (local)
+     * @type String
      */
     this.uid = SoundSource.uid++;
 
     /**
+     * SoundSource.LOOP_NONE, SoundSource.LOOP_ONE or SoundSource.LOOP_ALL
      * @default SoundSource.LOOP_NONE
+     * @type Number
      */
     this.loop = SoundSource.LOOP_NONE;
 
@@ -52,16 +57,22 @@ function SoundSource() {
 
 /**
  * Don't loop songs.
+ * @static
+ * @type Number
  */
 SoundSource.LOOP_NONE = 0;
 
 /**
  * Repeat the song being played infinately.
+ * @static
+ * @type Number
  */
 SoundSource.LOOP_ONE = 1;
 
 /**
  * If playing all songs, restart playing all songs when the last one is played.
+ * @static
+ * @type Number
  */
 SoundSource.LOOP_ALL = 2;
 
