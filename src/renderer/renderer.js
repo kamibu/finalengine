@@ -336,10 +336,10 @@ Renderer.prototype = {
         /*DEBUG*/
             assert( texture instanceof Texture, 'Invalid type. texture must be a Texture instance' );
             if ( !texture.width.isPowerOfTwo() || !texture.height.isPowerOfTwo() ) {
-                assert( texture.minFilter !== Texture.NEAREST_MIPMAP_NEAREST, 'Cannot use mipmapping with non power of two dimentions texture' );
-                assert( texture.minFilter !== Texture.NEAREST_MIPMAP_LINEAR, 'Cannot use mipmapping with non power of two dimentions texture' );
-                assert( texture.minFilter !== Texture.LINEAR_MIPMAP_NEAREST, 'Cannot use mipmapping with non power of two dimentions texture' );
-                assert( texture.minFilter !== Texture.LINEAR_MIPMAP_LINEAR, 'Cannot use mipmapping with non power of two dimentions texture' );
+                assert( texture.minFilter !== Texture.NEAREST_MIPMAP_NEAREST, 'Cannot use mipmapping with non power of two dimensions texture' );
+                assert( texture.minFilter !== Texture.NEAREST_MIPMAP_LINEAR, 'Cannot use mipmapping with non power of two dimensions texture' );
+                assert( texture.minFilter !== Texture.LINEAR_MIPMAP_NEAREST, 'Cannot use mipmapping with non power of two dimensions texture' );
+                assert( texture.minFilter !== Texture.LINEAR_MIPMAP_LINEAR, 'Cannot use mipmapping with non power of two dimensions texture' );
             }
         /*DEBUG_END*/
 
@@ -609,7 +609,7 @@ Renderer.prototype = {
     },
     /*
      * This method creates a framebuffer object with the specified
-     * dimentions. The color attachment of the framebuffer created
+     * dimensions. The color attachment of the framebuffer created
      * is a texture and can be used as input to a shader. Also, the
      * framebuffer created has a 16bit depth buffer.
      */
@@ -638,7 +638,7 @@ Renderer.prototype = {
         gl.bindFramebuffer( gl.FRAMEBUFFER, null );
     },
     /*
-     * This method updated the dimentions of an already created framebuffer.
+     * This method updated the dimensions of an already created framebuffer.
      * The contents of the framebuffer immediatelly after this call are
      * undefined.
      */

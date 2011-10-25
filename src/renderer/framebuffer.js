@@ -39,12 +39,12 @@ Framebuffer.prototype = {
         this.colorTexture = texture;
         return this;
     },
-    setDimentions: function( width, height ) {
+    setDimensions: function( width, height ) {
         if ( width !== this.width || height !== this.height ) {
             this.needsUpdate = true;
             this.width = width;
             this.height = height;
-            this.colorTexture.setDimentions( this.width, this.height );
+            this.colorTexture.setDimensions( this.width, this.height );
         }
         return this;
     }

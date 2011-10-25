@@ -1,4 +1,4 @@
-/*global
+/*globalA
     assertIn : false,
     UUID     : false
 */
@@ -155,14 +155,14 @@ Texture.prototype = {
             return this;
         }
         this.source = source;
-        this.setDimentions( this.source.width, this.source.height );
+        this.setDimensions( this.source.width, this.source.height );
         if ( !source.width.isPowerOfTwo() || !source.height.isPowerOfTwo() ) {
             this.setRepeat( false );
         }
         this.needsUpdate = true;
         return this;
     },
-    setDimentions: function( width, height ) {
+    setDimensions: function( width, height ) {
         this.width = width;
         this.height = height;
         return this;

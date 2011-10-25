@@ -84,7 +84,7 @@ RenderManager.prototype = {
      */
     resize: function( width, height ) {
         this.renderer.setSize( width, height );
-        this.framebuffer.setDimentions( width, height );
+        this.framebuffer.setDimensions( width, height );
         return this;
     },
     /**

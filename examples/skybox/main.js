@@ -22,6 +22,7 @@ app.input.onKey( 'DOWN_ARROW', function() {
 } );
 
 app.input.onKey( 'RIGHT_ARROW', function() { 
+    console.log( 'right' );
     yaw -= 0.01;
 } );
 
