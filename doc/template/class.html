@@ -3,147 +3,8 @@
     <head>
         <title><%= classDoc.name %> - <%= doc.title %></title>
         <link href='http://fonts.googleapis.com/css?family=Droid+Sans|Andada' rel='stylesheet' type='text/css' />
-        <script type="text/javascript" src="http://shjs.sourceforge.net/sh_main.min.js"></script>
-        <style>
-            pre.sh_sourceCode {
-              background-color: #ffffff;
-              color: #000000;
-              font-weight: normal;
-              font-style: normal;
-            }
-
-            pre.sh_sourceCode .sh_keyword {
-              color: #7f0055;
-              font-weight: bold;
-              font-style: normal;
-            }
-
-            pre.sh_sourceCode .sh_type {
-              color: #7f0055;
-              font-weight: bold;
-              font-style: normal;
-            }
-
-            pre.sh_sourceCode .sh_string {
-              color: #0000ff;
-              font-weight: normal;
-              font-style: normal;
-            }
-
-            pre.sh_sourceCode .sh_regexp {
-              color: #0000ff;
-              font-weight: normal;
-              font-style: normal;
-            }
-
-            pre.sh_sourceCode .sh_specialchar {
-              color: #0000ff;
-              font-weight: normal;
-              font-style: normal;
-            }
-
-            pre.sh_sourceCode .sh_comment {
-              color: #717ab3;
-              font-weight: normal;
-              font-style: normal;
-            }
-
-            pre.sh_sourceCode .sh_number {
-              color: #000000;
-              font-weight: normal;
-              font-style: normal;
-            }
-
-            pre.sh_sourceCode .sh_preproc {
-              color: #3f5fbf;
-              font-weight: normal;
-              font-style: normal;
-            }
-
-            pre.sh_sourceCode .sh_function {
-              color: #000000;
-              font-weight: normal;
-              font-style: normal;
-            }
-
-            pre.sh_sourceCode .sh_url {
-              color: #0000ff;
-              font-weight: normal;
-              font-style: normal;
-            }
-
-            pre.sh_sourceCode .sh_date {
-              color: #7f0055;
-              font-weight: bold;
-              font-style: normal;
-            }
-
-            pre.sh_sourceCode .sh_time {
-              color: #7f0055;
-              font-weight: bold;
-              font-style: normal;
-            }
-
-            pre.sh_sourceCode .sh_file {
-              color: #7f0055;
-              font-weight: bold;
-              font-style: normal;
-            }
-
-            pre.sh_sourceCode .sh_ip {
-              color: #0000ff;
-              font-weight: normal;
-              font-style: normal;
-            }
-
-            pre.sh_sourceCode .sh_name {
-              color: #0000ff;
-              font-weight: normal;
-              font-style: normal;
-            }
-
-            pre.sh_sourceCode .sh_variable {
-              color: #7f0055;
-              font-weight: bold;
-              font-style: normal;
-            }
-
-            pre.sh_sourceCode .sh_oldfile {
-              color: #0000ff;
-              font-weight: normal;
-              font-style: normal;
-            }
-
-            pre.sh_sourceCode .sh_newfile {
-              color: #0000ff;
-              font-weight: normal;
-              font-style: normal;
-            }
-
-            pre.sh_sourceCode .sh_difflines {
-              color: #7f0055;
-              font-weight: bold;
-              font-style: normal;
-            }
-
-            pre.sh_sourceCode .sh_selector {
-              color: #7f0055;
-              font-weight: bold;
-              font-style: normal;
-            }
-
-            pre.sh_sourceCode .sh_property {
-              color: #7f0055;
-              font-weight: bold;
-              font-style: normal;
-            }
-
-            pre.sh_sourceCode .sh_value {
-              color: #0000ff;
-              font-weight: normal;
-              font-style: normal;
-            }
-        </style>
+        <script type="text/javascript" src="http://shjs.sourceforge.net/sh_main.js"></script>
+        <link href="template/sh_nedit.css" rel="stylesheet" type="text/css" />
         <style>
         body {
             /* font-family: 'Lucida Sans Unipre', 'Lucida Grande', sans-serif; */
@@ -262,7 +123,7 @@
         }
         </style>
     </head>
-    <body onload="sh_highlightDocument( 'lang/', '.js' )">
+    <body onload="sh_highlightDocument( 'template/', '.js' )">
         <a href="index.html">Back</a>
         <header>
             <h1><%= classDoc.name %></h1>
