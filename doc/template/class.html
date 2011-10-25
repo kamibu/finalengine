@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title><%= classDoc.name %> - <%= doc.title %></title>
+        <link href='http://fonts.googleapis.com/css?family=Droid+Sans|Andada' rel='stylesheet' type='text/css' />
+        <script type="text/javascript" src="http://shjs.sourceforge.net/sh_main.min.js"></script>
+        <style>
+            pre.sh_sourceCode {
+              background-color: #ffffff;
+              color: #000000;
+              font-weight: normal;
+              font-style: normal;
+            }
+
+            pre.sh_sourceCode .sh_keyword {
+              color: #7f0055;
+              font-weight: bold;
+              font-style: normal;
+            }
+
+            pre.sh_sourceCode .sh_type {
+              color: #7f0055;
+              font-weight: bold;
+              font-style: normal;
+            }
+
+            pre.sh_sourceCode .sh_string {
+              color: #0000ff;
+              font-weight: normal;
+              font-style: normal;
+            }
+
+            pre.sh_sourceCode .sh_regexp {
+              color: #0000ff;
+              font-weight: normal;
+              font-style: normal;
+            }
+
+            pre.sh_sourceCode .sh_specialchar {
+              color: #0000ff;
+              font-weight: normal;
+              font-style: normal;
+            }
+
+            pre.sh_sourceCode .sh_comment {
+              color: #717ab3;
+              font-weight: normal;
+              font-style: normal;
+            }
+
+            pre.sh_sourceCode .sh_number {
+              color: #000000;
+              font-weight: normal;
+              font-style: normal;
+            }
+
+            pre.sh_sourceCode .sh_preproc {
+              color: #3f5fbf;
+              font-weight: normal;
+              font-style: normal;
+            }
+
+            pre.sh_sourceCode .sh_function {
+              color: #000000;
+              font-weight: normal;
+              font-style: normal;
+            }
+
+            pre.sh_sourceCode .sh_url {
+              color: #0000ff;
+              font-weight: normal;
+              font-style: normal;
+            }
+
+            pre.sh_sourceCode .sh_date {
+              color: #7f0055;
+              font-weight: bold;
+              font-style: normal;
+            }
+
+            pre.sh_sourceCode .sh_time {
+              color: #7f0055;
+              font-weight: bold;
+              font-style: normal;
+            }
+
+            pre.sh_sourceCode .sh_file {
+              color: #7f0055;
+              font-weight: bold;
+              font-style: normal;
+            }
+
+            pre.sh_sourceCode .sh_ip {
+              color: #0000ff;
+              font-weight: normal;
+              font-style: normal;
+            }
+
+            pre.sh_sourceCode .sh_name {
+              color: #0000ff;
+              font-weight: normal;
+              font-style: normal;
+            }
+
+            pre.sh_sourceCode .sh_variable {
+              color: #7f0055;
+              font-weight: bold;
+              font-style: normal;
+            }
+
+            pre.sh_sourceCode .sh_oldfile {
+              color: #0000ff;
+              font-weight: normal;
+              font-style: normal;
+            }
+
+            pre.sh_sourceCode .sh_newfile {
+              color: #0000ff;
+              font-weight: normal;
+              font-style: normal;
+            }
+
+            pre.sh_sourceCode .sh_difflines {
+              color: #7f0055;
+              font-weight: bold;
+              font-style: normal;
+            }
+
+            pre.sh_sourceCode .sh_selector {
+              color: #7f0055;
+              font-weight: bold;
+              font-style: normal;
+            }
+
+            pre.sh_sourceCode .sh_property {
+              color: #7f0055;
+              font-weight: bold;
+              font-style: normal;
+            }
+
+            pre.sh_sourceCode .sh_value {
+              color: #0000ff;
+              font-weight: normal;
+              font-style: normal;
+            }
+        </style>
+        <style>
+        body {
+            /* font-family: 'Lucida Sans Unipre', 'Lucida Grande', sans-serif; */
+            font-family: 'Droid Sans', sans-serif;
+            font-size: 10pt;
+            padding: 0 50px 0 50px;
+            width: 800px;
+        }
+        h1, h2, h3, h4 {
+            font-family: 'Andada', sans-serif;
+            font-weight: normal;
+        }
+        h1 {
+            color: green;
+        }
+        dl.summary {
+            list-style-type: none;
+            background-color: #f6f6f6;
+            border-radius: 5px;
+            border: 1px solid #e6e6e6;
+            padding: 5px 5px 5px 50px;
+            width: 700px;
+        }
+        dl.summary dt {
+            float: left;
+            clear: left;
+            text-align: right;
+            width: 100px;
+        }
+        dl.summary dd {
+            margin-left: 100px;
+            padding-left: 5px;
+        }
+        dl.summary dd.name {
+        }
+        span.keyword {
+            color: green;
+        }
+        span.builtin {
+            color: blue;
+        }
+        span.none {
+            opacity: 0.1;
+            font-size: 80%;
+            font-style: ;
+        }
+        span.argumentlist {
+            font-weight: normal;
+        }
+        a.hidden {
+            text-decoration: none;
+            color: black;
+        }
+        a.hidden:hover {
+            text-decoration: underline;
+            color: black;
+        }
+        pre {
+            display: block;
+            padding: 5px 5px 0px 40px;
+            width: 700px;
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
+        div.constructor {
+            font-weight: bold;
+        }
+        footer {
+        }
+        ul.description {
+            font-size: 12pt;
+            padding: 0px;
+            list-style-type: none;
+        }
+        ul.description li {
+            margin-bottom: 15px;
+        }
+        ul.description div {
+            color: black;
+        }
+        h3 {
+            /* font-family: 'Ardana', sans; */
+            font-family: 'Droid Sans', sans-serif;
+            margin-bottom: 2px;
+            color: black;
+            font-weight: normal;
+            font-size: 12pt;
+        }
+        ul.description div.description {
+            font-size: 10pt;
+        }
+        ul.description div.description p {
+            margin-top: 0px;
+        }
+        a {
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        span.name {
+            font-weight: bold;
+            color: #005500;
+        }
+        ul.methods h3 span.keyword {
+            color: black;
+            opacity: 0.5;
+        }
+        ul.arguments {
+            list-style-type: none;
+            padding-left: 50px;
+        }
+        ul.arguments span.name {
+            font-weight: bold;
+            color: black;
+        }
+        </style>
+    </head>
+    <body onload="sh_highlightDocument( 'lang/', '.js' )">
+        <a href="index.html">Back</a>
+        <header>
+            <h1><%= classDoc.name %></h1>
+            <div class="description"><%= classDoc.shortDescription %> 
+            <% if ( classDoc.detailedDescription.length ) { %>
+            <a href="#description">More</a></div>
+            <% } %>
+
+        </header>
+
+        <% if ( classDoc.properties.length ) { %>
+        <h2>Properties</h2>
+        <dl class="summary">
+            <% classDoc.properties.forEach( function( property ) { %>
+            <dt>
+            <% property.specifiers.forEach( function( specifier ) { %>
+            <span class="keyword"><%= specifier %></span> 
+            <% } ); %>
+            <a href="<%= property.type %>.html"><%= property.type %></a></dt>
+            <dd class="name"><a class="hidden" href="#<%= property.name %>"><%= property.name %></a></dd>
+            <% } ); %>
+        </dl>
+        <% } %>
+
+        <h2>Methods</h2>
+        <dl class="summary">
+            <% classDoc.methods.forEach( function( methodDoc ) { %>
+            <% if ( methodDoc.isConstructor ) { %>
+            <dt><span class="keyword">constructor</span></dt>
+            <% } else { %>
+            <dt>
+                <% methodDoc.specifiers.forEach( function( specifier ) { %>
+                <span class="keyword"><%= specifier %></span> 
+                <% } ); %>
+                <% if ( methodDoc.returns == undefined ) { %>
+                <span class="none">undefined</span>
+                <% } else if ( isBuiltin( methodDoc.returns ) ) { %>
+                <span class="builtin"><%= methodDoc.returns %></span>
+                <% }else { %>
+                <a href="<%= methodDoc.returns %>.html"><%= methodDoc.returns %></a>
+                <% } %>
+            </dt>
+            <% } %>
+            <dd class="name">
+                <a class="hidden" href="#<%= methodDoc.name %>"><%= methodDoc.name %></a><span class="argumentlist">(<% methodDoc.parameters.forEach( function( param, i ) { %><span class="builtin"> <%= param.type %></span> <%= param.name %><% if ( i != methodDoc.parameters.length - 1 ) { %>,<% } %> <% } ); %>)</span>
+            </dd>
+            <% }); %>
+        </dl>
+
+        <a name="description"></a>
+        
+        <% if ( classDoc.detailedDescription.length ) { %>
+        <h2>Description</h2>
+        <div class="description">
+        <%= classDoc.detailedDescription %>
+        </div>
+        <% } %>
+
+        <% if ( classDoc.properties.length ) { %>
+        <h2>Property Description</h2>
+        <ul class="description">
+            <% classDoc.properties.forEach( function( property ) { %>
+            <a name="<%= property.name %>"></a>
+            <li><h3>
+            <% property.specifiers.forEach( function( specifier ) { %>
+            <span class="keyword"><%= specifier %></span> 
+            <% } ); %>
+            <a href="<%= property.type %>.html"><%= property.type %></a> <span class="name"><%= property.name %></span><h3>
+            <div class="description"><%= property.description %></div></li>
+            <% } ); %>
+        </ul>
+        <% } %>
+
+        <h2>Method Description</h2>
+        <ul class="description methods">
+            <% classDoc.methods.forEach( function( methodDoc ) { %>
+            <a name="<%= methodDoc.name %>"></a>
+            <li>
+                <h3>
+                    <% if ( methodDoc.isConstructor ) { %>
+                    <span class="keyword">constructor</span>
+                    <% } else { %>
+                        <% methodDoc.specifiers.forEach( function( specifier ) { %>
+                        <span class="keyword"><%= specifier %></span> 
+                        <% } ); %>
+                        <% if ( methodDoc.returns == undefined ) { %>
+                        <span class="keyword">undefined</span>
+                        <% } else if ( isBuiltin( methodDoc.returns ) ) { %>
+                        <span class="builtin"><%= methodDoc.returns %></span>
+                        <% } else { %>
+                        <a href="<%= methodDoc.returns %>.html"><%= methodDoc.returns %></a>
+                        <% } %>
+                    <% } %>
+                    <span class="name"><%= methodDoc.name %></span><span class="argumentlist">(<% methodDoc.parameters.forEach( function( param, i ) { %><span class="builtin"> <%= param.type %></span> <%= param.name %><% if ( i != methodDoc.parameters.length - 1 ) { %>,<% } %> <% } ); %>)</span>
+                </h3>
+                <div class="description"><%= methodDoc.description %></div>
+            </li>
+            <% } ); %>
+        </ul>
+        <footer><a href="index.html">Back</a></footer>
+        <script type="text/javascript">
+            if (! this.sh_languages) {
+              this.sh_languages = {};
+            }
+            sh_languages['javascript'] = [
+              [
+                [
+                  /\/\/\//g,
+                  'sh_comment',
+                  1
+                ],
+                [
+                  /\/\//g,
+                  'sh_comment',
+                  7
+                ],
+                [
+                  /\/\*\*/g,
+                  'sh_comment',
+                  8
+                ],
+                [
+                  /\/\*/g,
+                  'sh_comment',
+                  9
+                ],
+                [
+                  /\b(?:abstract|break|case|catch|class|const|continue|debugger|default|delete|do|else|enum|export|extends|false|final|finally|for|function|goto|if|implements|in|instanceof|interface|native|new|null|private|protected|prototype|public|return|static|super|switch|synchronized|throw|throws|this|transient|true|try|typeof|var|volatile|while|with)\b/g,
+                  'sh_keyword',
+                  -1
+                ],
+                [
+                  /(\+\+|--|\)|\])(\s*)(\/=?(?![*\/]))/g,
+                  ['sh_symbol', 'sh_normal', 'sh_symbol'],
+                  -1
+                ],
+                [
+                  /(0x[A-Fa-f0-9]+|(?:[\d]*\.)?[\d]+(?:[eE][+-]?[\d]+)?)(\s*)(\/(?![*\/]))/g,
+                  ['sh_number', 'sh_normal', 'sh_symbol'],
+                  -1
+                ],
+                [
+                  /([A-Za-z$_][A-Za-z0-9$_]*\s*)(\/=?(?![*\/]))/g,
+                  ['sh_normal', 'sh_symbol'],
+                  -1
+                ],
+                [
+                  /\/(?:\\.|[^*\\\/])(?:\\.|[^\\\/])*\/[gim]*/g,
+                  'sh_regexp',
+                  -1
+                ],
+                [
+                  /\b[+-]?(?:(?:0x[A-Fa-f0-9]+)|(?:(?:[\d]*\.)?[\d]+(?:[eE][+-]?[\d]+)?))u?(?:(?:int(?:8|16|32|64))|L)?\b/g,
+                  'sh_number',
+                  -1
+                ],
+                [
+                  /"/g,
+                  'sh_string',
+                  10
+                ],
+                [
+                  /'/g,
+                  'sh_string',
+                  11
+                ],
+                [
+                  /~|!|%|\^|\*|\(|\)|-|\+|=|\[|\]|\\|:|;|,|\.|\/|\?|&|<|>|\|/g,
+                  'sh_symbol',
+                  -1
+                ],
+                [
+                  /\{|\}/g,
+                  'sh_cbracket',
+                  -1
+                ],
+                [
+                  /\b(?:Math|Infinity|NaN|undefined|arguments)\b/g,
+                  'sh_predef_var',
+                  -1
+                ],
+                [
+                  /\b(?:Array|Boolean|Date|Error|EvalError|Function|Number|Object|RangeError|ReferenceError|RegExp|String|SyntaxError|TypeError|URIError|decodeURI|decodeURIComponent|encodeURI|encodeURIComponent|eval|isFinite|isNaN|parseFloat|parseInt)\b/g,
+                  'sh_predef_func',
+                  -1
+                ],
+                [
+                  /(?:[A-Za-z]|_)[A-Za-z0-9_]*(?=[ \t]*\()/g,
+                  'sh_function',
+                  -1
+                ]
+              ],
+              [
+                [
+                  /$/g,
+                  null,
+                  -2
+                ],
+                [
+                  /(?:<?)[A-Za-z0-9_\.\/\-_~]+@[A-Za-z0-9_\.\/\-_~]+(?:>?)|(?:<?)[A-Za-z0-9_]+:\/\/[A-Za-z0-9_\.\/\-_~]+(?:>?)/g,
+                  'sh_url',
+                  -1
+                ],
+                [
+                  /<\?xml/g,
+                  'sh_preproc',
+                  2,
+                  1
+                ],
+                [
+                  /<!DOCTYPE/g,
+                  'sh_preproc',
+                  4,
+                  1
+                ],
+                [
+                  /<!--/g,
+                  'sh_comment',
+                  5
+                ],
+                [
+                  /<(?:\/)?[A-Za-z](?:[A-Za-z0-9_:.-]*)(?:\/)?>/g,
+                  'sh_keyword',
+                  -1
+                ],
+                [
+                  /<(?:\/)?[A-Za-z](?:[A-Za-z0-9_:.-]*)/g,
+                  'sh_keyword',
+                  6,
+                  1
+                ],
+                [
+                  /&(?:[A-Za-z0-9]+);/g,
+                  'sh_preproc',
+                  -1
+                ],
+                [
+                  /<(?:\/)?[A-Za-z][A-Za-z0-9]*(?:\/)?>/g,
+                  'sh_keyword',
+                  -1
+                ],
+                [
+                  /<(?:\/)?[A-Za-z][A-Za-z0-9]*/g,
+                  'sh_keyword',
+                  6,
+                  1
+                ],
+                [
+                  /@[A-Za-z]+/g,
+                  'sh_type',
+                  -1
+                ],
+                [
+                  /(?:TODO|FIXME|BUG)(?:[:]?)/g,
+                  'sh_todo',
+                  -1
+                ]
+              ],
+              [
+                [
+                  /\?>/g,
+                  'sh_preproc',
+                  -2
+                ],
+                [
+                  /([^=" \t>]+)([ \t]*)(=?)/g,
+                  ['sh_type', 'sh_normal', 'sh_symbol'],
+                  -1
+                ],
+                [
+                  /"/g,
+                  'sh_string',
+                  3
+                ]
+              ],
+              [
+                [
+                  /\\(?:\\|")/g,
+                  null,
+                  -1
+                ],
+                [
+                  /"/g,
+                  'sh_string',
+                  -2
+                ]
+              ],
+              [
+                [
+                  />/g,
+                  'sh_preproc',
+                  -2
+                ],
+                [
+                  /([^=" \t>]+)([ \t]*)(=?)/g,
+                  ['sh_type', 'sh_normal', 'sh_symbol'],
+                  -1
+                ],
+                [
+                  /"/g,
+                  'sh_string',
+                  3
+                ]
+              ],
+              [
+                [
+                  /-->/g,
+                  'sh_comment',
+                  -2
+                ],
+                [
+                  /<!--/g,
+                  'sh_comment',
+                  5
+                ]
+              ],
+              [
+                [
+                  /(?:\/)?>/g,
+                  'sh_keyword',
+                  -2
+                ],
+                [
+                  /([^=" \t>]+)([ \t]*)(=?)/g,
+                  ['sh_type', 'sh_normal', 'sh_symbol'],
+                  -1
+                ],
+                [
+                  /"/g,
+                  'sh_string',
+                  3
+                ]
+              ],
+              [
+                [
+                  /$/g,
+                  null,
+                  -2
+                ]
+              ],
+              [
+                [
+                  /\*\//g,
+                  'sh_comment',
+                  -2
+                ],
+                [
+                  /(?:<?)[A-Za-z0-9_\.\/\-_~]+@[A-Za-z0-9_\.\/\-_~]+(?:>?)|(?:<?)[A-Za-z0-9_]+:\/\/[A-Za-z0-9_\.\/\-_~]+(?:>?)/g,
+                  'sh_url',
+                  -1
+                ],
+                [
+                  /<\?xml/g,
+                  'sh_preproc',
+                  2,
+                  1
+                ],
+                [
+                  /<!DOCTYPE/g,
+                  'sh_preproc',
+                  4,
+                  1
+                ],
+                [
+                  /<!--/g,
+                  'sh_comment',
+                  5
+                ],
+                [
+                  /<(?:\/)?[A-Za-z](?:[A-Za-z0-9_:.-]*)(?:\/)?>/g,
+                  'sh_keyword',
+                  -1
+                ],
+                [
+                  /<(?:\/)?[A-Za-z](?:[A-Za-z0-9_:.-]*)/g,
+                  'sh_keyword',
+                  6,
+                  1
+                ],
+                [
+                  /&(?:[A-Za-z0-9]+);/g,
+                  'sh_preproc',
+                  -1
+                ],
+                [
+                  /<(?:\/)?[A-Za-z][A-Za-z0-9]*(?:\/)?>/g,
+                  'sh_keyword',
+                  -1
+                ],
+                [
+                  /<(?:\/)?[A-Za-z][A-Za-z0-9]*/g,
+                  'sh_keyword',
+                  6,
+                  1
+                ],
+                [
+                  /@[A-Za-z]+/g,
+                  'sh_type',
+                  -1
+                ],
+                [
+                  /(?:TODO|FIXME|BUG)(?:[:]?)/g,
+                  'sh_todo',
+                  -1
+                ]
+              ],
+              [
+                [
+                  /\*\//g,
+                  'sh_comment',
+                  -2
+                ],
+                [
+                  /(?:<?)[A-Za-z0-9_\.\/\-_~]+@[A-Za-z0-9_\.\/\-_~]+(?:>?)|(?:<?)[A-Za-z0-9_]+:\/\/[A-Za-z0-9_\.\/\-_~]+(?:>?)/g,
+                  'sh_url',
+                  -1
+                ],
+                [
+                  /(?:TODO|FIXME|BUG)(?:[:]?)/g,
+                  'sh_todo',
+                  -1
+                ]
+              ],
+              [
+                [
+                  /"/g,
+                  'sh_string',
+                  -2
+                ],
+                [
+                  /\\./g,
+                  'sh_specialchar',
+                  -1
+                ]
+              ],
+              [
+                [
+                  /'/g,
+                  'sh_string',
+                  -2
+                ],
+                [
+                  /\\./g,
+                  'sh_specialchar',
+                  -1
+                ]
+              ]
+            ];
+        </script>
+    </body>
+</html>

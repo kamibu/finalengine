@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title><%= doc.title %></title>
+        <link href='http://fonts.googleapis.com/css?family=Droid+Sans|Andada' rel='stylesheet' type='text/css' />
+        <script type="text/javascript" src="http://shjs.sourceforge.net/sh_main.min.js"></script>
+        <link href="sh_nedit.css" rel="stylesheet" type="text/css" />
+        <style>
+        body {
+            /* font-family: 'Lucida Sans Unipre', 'Lucida Grande', sans-serif; */
+            font-family: 'Droid Sans', sans-serif;
+            font-size: 10pt;
+            padding: 0 50px 0 50px;
+            width: 800px;
+        }
+        h1, h2, h3, h4 {
+            font-family: 'Andada', sans-serif;
+            font-weight: normal;
+        }
+        h1 {
+            color: green;
+        }
+        dl.summary {
+            list-style-type: none;
+            background-color: #f6f6f6;
+            border-radius: 5px;
+            border: 1px solid #e6e6e6;
+            padding: 5px 5px 5px 50px;
+            width: 700px;
+        }
+        dl.summary dt {
+            float: left;
+            clear: left;
+            text-align: right;
+            width: 100px;
+        }
+        dl.summary dd {
+            margin-left: 100px;
+            padding-left: 5px;
+            min-height: 20px;
+        }
+        dl.summary dd.name {
+        }
+        </style>
+    </head>
+    <body>
+        <h1><%= doc.title %></h1>
+
+        <% doc.classesByDirectory().forEach( function( directory ) { %>
+            <% switch ( directory.name ) { case '': void( 0 ); %>
+            <h2>Application</h2>
+            <p>Main class of your 3D application.</p>
+            <% break; %>
+            <% case 'events': void( 0 ); %>
+            <h2>Events</h2>
+            <p>Main class of your 3D application.</p>
+            <% break; %>
+            <% case 'exporter': void( 0 ); %>
+            <h2>Importing</h2>
+            <p>Main class of your 3D application.</p>
+            <% break; %>
+            <% case 'input': void( 0 ); %>
+            <h2>IO</h2>
+            <p>Main class of your 3D application.</p>
+            <% break; %>
+            <% case 'material': void( 0 ); %>
+            <h2>Material</h2>
+            <p>Main class of your 3D application.</p>
+            <% break; %>
+            <% case 'math': void( 0 ); %>
+            <h2>Mathematics</h2>
+            <p>Main class of your 3D application.</p>
+            <% break; %>
+            <% case 'network': void( 0 ); %>
+            <h2>Network</h2>
+            <p>Main class of your 3D application.</p>
+            <% break; %>
+            <% case 'geometry': void( 0 ); %>
+            <h2>Shapes</h2>
+            <p>Main class of your 3D application.</p>
+            <% break; %>
+            <% case 'renderer': void( 0 ); %>
+            <h2>Rendering</h2>
+            <p>Main class of your 3D application.</p>
+            <% break; %>
+            <% case 'scene': void( 0 ); %>
+            <h2>Scene</h2>
+            <p>Main class of your 3D application.</p>
+            <% break; %>
+            <% case 'sound': void( 0 ); %>
+            <h2>Sound</h2>
+            <p>Main class of your 3D application.</p>
+            <% break; %>
+            <% case 'ui': void( 0 ); %>
+            <h2>User Interface</h2>
+            <p>Main class of your 3D application.</p>
+            <% break; %>
+            <% case 'utils': void( 0 ); %>
+            <h2>Utilities</h2>
+            <p>Main class of your 3D application.</p>
+            <% break; %>
+            <% } %>
+            <dl class="summary">
+                <% directory.classes.forEach( function( classDoc ) { %>
+                <dt><a href="<%= classDoc.name %>.html"><%= classDoc.name %></a></dt>
+                <dd><%= classDoc.shortDescription %></dd>
+                <% } ); %>
+            </dl>
+        <% } ); %>
+    </body>
+</html>
