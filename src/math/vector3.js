@@ -16,17 +16,17 @@
  *
  * <p>The usual way to instantiate a Vector3 is to pass three numbers:</p>
  *
- * <pre class="sh_javascript">
+ * <code>
  * var v = new Vector3( 1, 2, 3 );
- * </pre>
+ </code>
  *
  * <p>You can also pass an array with 3 elements:</p>
- * <pre class="sh_javascript">
+ * <code>
  * var v = new Vector3( [ 1, 2, 3 ] );
- * </pre>
+ </code>
  *
  * <p>Or another vector that will be copied:</p>
- * <pre class="sh_javascript">
+ * <code>
  * var v = new Vector3( [ 1, 2, 3 ] );
  * var v2 = new Vector3( v );
  */

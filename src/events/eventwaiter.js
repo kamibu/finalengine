@@ -8,20 +8,20 @@
  * Handle waiting a group of events to finish.
  *
  * Consider the case that you need two wait for all the files to finish loading:
- * <pre class="sh_javascript">
+ * <code>
  * loader.load( 'file1', callback );
  * loader.load( 'file2', callback );
- * </pre>
+ </code>
  *
  * You can use the EventWaiter to call a function when all files have finished loading.
- * <pre class="sh_javascript">
+ * <code>
  * var w = new EventWaiter();
  * loader.load( 'file1', w.callback() );
  * loader.load( 'file2', w.callback() );
  * w.on( 'complete', function() {
  *     console.log( 'finished loading' );
  * } );
- * </pre>
+ </code>
  * @constructor
  * @extends EventEmitter
  */

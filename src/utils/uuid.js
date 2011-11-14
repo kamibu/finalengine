@@ -10,19 +10,19 @@
  *
  * <p>To create a UUID, call the static {@link generate} method.</p>
  *
- * <pre class="sh_javascript">
+ * <code>
  * function MyConstructor() {
  *     this.uuid = UUID.generate();
  * }
- * </pre>
+ </code>
  *
  * <p>The {@link generate} method generates UUID that is in a compressed form,
  * suitable for sending through the network, and so contains unprintable characters too.</p>
  *
  * <p>If you want a printable version, you should generate a UUID in canonical form:</p>
- * <pre class="sh_javascript">
+ * <code>
  * this.uuid = UUID.generateCanonicalForm();
- * </pre>
+ </code>
  *
  * You can also convert between the forms with {@link toCanonicalForm} and {@link fromCanonicalForm}.
  */

@@ -17,13 +17,13 @@
  *
  * The most basic Final Engine application is just the creation of an instance of Application:
  *
- * <pre class="sh_javascript">
+ * <code>
  * var app = new Application();
- * </pre>
+ </code>
  *
  * Most applications will import some assets, add them to the scene and update them:
  *
- * <pre class="sh_javascript">
+ * <code>
  * var app = new Application();
  *
  * var character = null;
@@ -41,7 +41,7 @@
  *         // character has not loaded yet
  *     }
  * };
- * </pre>
+ </code>
  *
  * You can get access to the instantiated application from any part of your code by calling the static method <a href="#getInstance">Application.getInstance()</a>.</p>
  *
@@ -49,7 +49,7 @@
  *
  * You can extend the Application class to write the main application code inside a class.
  *
- * <pre class="sh_javascript">
+ * <code>
  * function MyApplication() {
  *    Application.call( this );
  *
