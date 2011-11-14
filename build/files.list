@@ -47,6 +47,7 @@ geometry/cube.js
 geometry/rectangle.js
 geometry/sphere.js
 geometry/skybox.js
+geometry/floor.js
 
 input/inputdevice.js
 input/keyboard.js
