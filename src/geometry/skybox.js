@@ -3,6 +3,50 @@
 // extern
 var Buffer, Drawable, Mesh, VertexAttribute;
 
+/**
+ * @class
+ * Display background images on a 3D scene.
+ *
+ * <p>
+ * The skybox is a box that has the camera on its center and has a texture on each
+ * of its (internal) sides.
+ * </p>
+ *
+ * <p>To instantiate the Skybox, pass an array of 6 textures as a parameter to the constructor.
+ * The order is the following: (following the order of the WebGL specification constants):</p>
+ * <ul>
+ * <li>positive x</li>
+ * <li>negative x</li>
+ * <li>positive y</li>
+ * <li>negative y</li>
+ * <li>positive z</li>
+ * <li>negative z</li>
+ * </ul>
+ *
+ * After instantiating the skybox, you have to add it to the Scene.
+ *
+ * <p>Example:</p>
+ * <pre class="sh_javascript">
+ * var skybox = new Skybox( [ 
+ *  'skybox/posx.jpg', 
+ *  'skybox/negx.jpg', 
+ *  'skybox/posy.jpg', 
+ *  'skybox/negy.jpg',
+ *  'skybox/posz.jpg',
+ *  'skybox/negz.jpg'
+ * ] );
+ * 
+ * scene.appendChild( skybox );
+ * </pre>
+ * 
+ * <p>You can also pass a second parameter to the Skybox to denote the size of skybox (e.g. distance from camera). However, you should be careful that it does not exceed the camera zfar value (by default 1000) or it won't be rendered.</p>
+ *
+ * @extends Drawable
+ *
+ * @constructor
+ * @param {Array} sources
+ * @param {Number} scale
+ */
 function Skybox( sources, scale ) {
     scale = scale || 500;
 
