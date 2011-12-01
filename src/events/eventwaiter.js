@@ -74,11 +74,12 @@ EventWaiter.prototype = {
      * Create a callback that will wait to be called.
      * @param {String} title
      */
-	callback: function( title ) {
-        this.waitMore( title );
+	callback: function( callback ) {
+        this.waitMore();
         var that = this;
         return function() {
-            that.waitLess( title );
+            callback.apply( arguments );
+            that.waitLess();
         };
     },
     /**
@@ -92,6 +93,7 @@ EventWaiter.prototype = {
      * @param {String} title
      */
 	waitLess: function( title ) {
+        title = title || "";
         var i = this._waitingList.indexOf( title );
         this._waitingList.splice( i, 1 );
         this.emit( 'one', title );
