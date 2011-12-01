@@ -1,1 +1,4 @@
-* When an already created textures changes its parameters they should be updated to the API
+* 3D light sources
+* Bone animations
+* Material system
+* Write complete unit tests (remove obsolete tests)

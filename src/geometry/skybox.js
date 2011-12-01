@@ -26,7 +26,7 @@ var Buffer, Drawable, Mesh, VertexAttribute;
  * After instantiating the skybox, you have to add it to the Scene.
  *
  * <p>Example:</p>
- * <pre class="sh_javascript">
+ * <code>
  * var skybox = new Skybox( [ 
  *  'skybox/posx.jpg', 
  *  'skybox/negx.jpg', 
@@ -37,7 +37,7 @@ var Buffer, Drawable, Mesh, VertexAttribute;
  * ] );
  * 
  * scene.appendChild( skybox );
- * </pre>
+ </code>
  * 
  * <p>You can also pass a second parameter to the Skybox to denote the size of skybox (e.g. distance from camera). However, you should be careful that it does not exceed the camera zfar value (by default 1000) or it won't be rendered.</p>
  *

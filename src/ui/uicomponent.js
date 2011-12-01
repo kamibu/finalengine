@@ -31,11 +31,11 @@ UIComponent.prototype = {
      *
      * The callback is passed a HTMLElement instance, that can be added somewhere in the HTML document.
      *
-     * <pre class="sh_javascript">
+     * <code>
      * new UIComponent().loadHTML( "frontend/menu.html", function( menuTag ) {
      *     document.body.appendChild( menuTag );
      * } );
-     * </pre>
+     </code>
      *
      * @param {String} url
      * @param {Function} callback
