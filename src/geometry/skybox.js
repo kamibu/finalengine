@@ -27,18 +27,18 @@ var Buffer, Drawable, Mesh, VertexAttribute;
  *
  * <p>Example:</p>
  * <code>
- * var skybox = new Skybox( [ 
- *  'skybox/posx.jpg', 
- *  'skybox/negx.jpg', 
- *  'skybox/posy.jpg', 
+ * var skybox = new Skybox( [
+ *  'skybox/posx.jpg',
+ *  'skybox/negx.jpg',
+ *  'skybox/posy.jpg',
  *  'skybox/negy.jpg',
  *  'skybox/posz.jpg',
  *  'skybox/negz.jpg'
  * ] );
- * 
+ *
  * scene.appendChild( skybox );
  </code>
- * 
+ *
  * <p>You can also pass a second parameter to the Skybox to denote the size of skybox (e.g. distance from camera). However, you should be careful that it does not exceed the camera zfar value (by default 1000) or it won't be rendered.</p>
  *
  * @extends Drawable
